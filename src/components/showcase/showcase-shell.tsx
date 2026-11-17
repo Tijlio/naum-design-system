@@ -1,6 +1,6 @@
 "use client"
 
-import type { ReactNode } from "react"
+import { useId, type ReactNode } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
@@ -15,7 +15,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { AmbientBackdrop } from "@/components/ui/ambient-backdrop"
-import { MotionProvider } from "@/components/ui/motion"
+import { MotionPill, MotionProvider } from "@/components/ui/motion"
 import {
   Sidebar,
   SidebarContent,
@@ -41,12 +41,14 @@ const NAVIGATION = [
 
 const WorkspaceNavigation = () => {
   const path = usePathname()
+  const navigationId = useId()
   const { isMobile, setOpenMobile } = useSidebar()
   return (
     <Sidebar
       variant="inset"
       collapsible="icon"
       aria-label="Workspace navigation"
+      className="[&_[data-slot=sidebar-inner]]:bg-transparent"
     >
       <SidebarHeader className="p-3 group-data-[collapsible=icon]:p-2">
         <SidebarMenu>
@@ -66,11 +68,12 @@ const WorkspaceNavigation = () => {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Workspace</SidebarGroupLabel>
-          <SidebarMenu>
+          <SidebarMenu className="gap-2">
             {NAVIGATION.map(({ label, href, icon: Icon }) => (
               <SidebarMenuItem key={href}>
                 <SidebarMenuButton
                   tooltip={label}
+                  className="relative isolate rounded-full bg-surface-frosted ring-1 ring-white/40 backdrop-blur-md hover:bg-card/70 data-active:bg-transparent dark:ring-white/10 dark:data-active:text-black"
                   isActive={path === href}
                   aria-current={path === href ? "page" : undefined}
                   render={<Link href={href} />}
@@ -78,6 +81,13 @@ const WorkspaceNavigation = () => {
                     if (isMobile) setOpenMobile(false)
                   }}
                 >
+                  {path === href && (
+                    <MotionPill
+                      layoutId={`${navigationId}-active`}
+                      aria-hidden="true"
+                      className="bg-white shadow-sm ring-1 ring-foreground/5"
+                    />
+                  )}
                   <Icon />
                   <span>{label}</span>
                 </SidebarMenuButton>
@@ -119,11 +129,11 @@ const WorkspaceNavigation = () => {
 
 export const ShowcaseShell = ({ children }: { children: ReactNode }) => (
   <MotionProvider>
-    <div className="relative isolate min-h-screen">
+    <div className="relative isolate min-h-screen bg-background text-foreground">
       <AmbientBackdrop />
-      <SidebarProvider className="relative z-10">
+      <SidebarProvider className="relative z-10 has-data-[variant=inset]:bg-transparent">
         <WorkspaceNavigation />
-        <SidebarInset className="workspace-inset">
+        <SidebarInset className="workspace-inset bg-transparent">
           <header className="workspace-header">
             <div className="flex min-w-0 items-center gap-3">
               <SidebarTrigger />

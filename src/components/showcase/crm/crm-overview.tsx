@@ -1,7 +1,14 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowUpRight, ArrowRight, CalendarDays } from "lucide-react"
+import {
+  ArrowUpRight,
+  ArrowRight,
+  CalendarDays,
+  TrendingUp,
+  Users,
+  Trophy,
+} from "lucide-react"
 import { format, parseISO } from "date-fns"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -40,11 +47,15 @@ export const CrmOverview = () => {
       label: "Pipeline value",
       value: formatMoney(openDeals.reduce((sum, deal) => sum + deal.value, 0)),
       detail: `${openDeals.length} open opportunities`,
+      mesh: "naum-mesh-lime",
+      icon: TrendingUp,
     },
     {
       label: "Active contacts",
       value: String(active.length),
       detail: `${active.filter((contact) => contact.stage === "Lead").length} leads to follow up`,
+      mesh: "naum-mesh-indigo",
+      icon: Users,
     },
     {
       label: "Won this month",
@@ -55,6 +66,8 @@ export const CrmOverview = () => {
         ),
       ),
       detail: "November 2026",
+      mesh: "naum-mesh-coral",
+      icon: Trophy,
     },
     {
       label: "Appointments",
@@ -63,10 +76,12 @@ export const CrmOverview = () => {
           .length,
       ),
       detail: "Tuesday, 17 November",
+      mesh: "naum-mesh-mint",
+      icon: CalendarDays,
     },
   ]
   return (
-    <div className="workspace-stack">
+    <div className="workspace-stack crm-workspace">
       <MotionFadeUp>
         <div className="workspace-heading">
           <div>
@@ -83,15 +98,23 @@ export const CrmOverview = () => {
         </div>
       </MotionFadeUp>
       <MotionStagger className="workspace-metrics">
-        {metrics.map((metric) => (
+        {metrics.map(({ icon: Icon, ...metric }) => (
           <MotionStaggerItem key={metric.label}>
-            <Card variant="glass" className="h-full">
+            <Card
+              variant="mesh"
+              className={`crm-metric ${metric.mesh} h-full text-(--crm-metric-ink) naum-card-lift [&_[data-slot=card-description]]:text-inherit`}
+            >
               <CardHeader>
                 <CardDescription>{metric.label}</CardDescription>
+                <CardAction>
+                  <span className="crm-metric-icon">
+                    <Icon className="size-4" aria-hidden="true" />
+                  </span>
+                </CardAction>
               </CardHeader>
               <CardContent className="space-y-3">
                 <p className="workspace-metric-value">{metric.value}</p>
-                <p className="text-xs text-muted-foreground">{metric.detail}</p>
+                <p className="text-xs">{metric.detail}</p>
               </CardContent>
             </Card>
           </MotionStaggerItem>
@@ -99,7 +122,7 @@ export const CrmOverview = () => {
       </MotionStagger>
       <div className="grid gap-5 lg:grid-cols-3">
         <RevenueChart />
-        <Card variant="frosted">
+        <Card variant="frosted" className="crm-conversations">
           <CardHeader>
             <CardTitle>
               <h2>Coming up</h2>
@@ -112,7 +135,10 @@ export const CrmOverview = () => {
               .slice(0, 3)
               .map((event) => (
                 <div className="flex items-start gap-3" key={event.id}>
-                  <span className="workspace-icon">
+                  <span
+                    className="workspace-icon crm-accent"
+                    data-tone="lavender"
+                  >
                     <CalendarDays className="size-4" />
                   </span>
                   <div className="min-w-0 flex-1">
@@ -138,7 +164,7 @@ export const CrmOverview = () => {
         </Card>
       </div>
       <div className="grid gap-5 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
+        <Card variant="glass" className="lg:col-span-2">
           <CardHeader>
             <CardTitle>
               <h2>Open opportunities</h2>
@@ -177,7 +203,19 @@ export const CrmOverview = () => {
                       </Button>
                     </TableCell>
                     <TableCell>
-                      <Badge variant="outline">{deal.stage}</Badge>
+                      <Badge
+                        variant="outline"
+                        className="crm-accent"
+                        data-tone={
+                          deal.stage === "Negotiation"
+                            ? "lavender"
+                            : deal.stage === "Proposal"
+                              ? "amber"
+                              : "mint"
+                        }
+                      >
+                        {deal.stage}
+                      </Badge>
                     </TableCell>
                     <TableCell className="text-right tabular-nums">
                       {formatMoney(deal.value)}
@@ -188,7 +226,7 @@ export const CrmOverview = () => {
             </Table>
           </CardContent>
         </Card>
-        <Card>
+        <Card variant="frosted">
           <CardHeader>
             <CardTitle>
               <h2>Your people</h2>
@@ -203,7 +241,7 @@ export const CrmOverview = () => {
                 className="workspace-person"
               >
                 <Avatar>
-                  <AvatarFallback>
+                  <AvatarFallback className="crm-accent" data-tone="lavender">
                     {contact.name
                       .split(" ")
                       .map((part) => part[0])

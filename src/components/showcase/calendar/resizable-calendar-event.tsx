@@ -139,7 +139,7 @@ export const ResizableCalendarEvent = ({
         <Button
           key={edge}
           variant="ghost"
-          className={`calendar-resize-handle absolute inset-x-1 z-20 h-2 touch-none cursor-ns-resize rounded-sm p-0 hover:bg-foreground/10 ${edge === "start" ? "top-0" : "bottom-0"}`}
+          className={`calendar-resize-handle absolute inset-x-1 z-20 h-3 touch-none cursor-ns-resize rounded-sm p-0 hover:bg-foreground/10 ${edge === "start" ? "top-0.5" : "bottom-1"}`}
           aria-label={`Resize ${edge} ${placement.event.title}`}
           aria-describedby={hintId}
           onClick={(event) => event.stopPropagation()}

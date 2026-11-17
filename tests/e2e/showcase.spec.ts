@@ -18,10 +18,50 @@ test("search expands, filters results and restores focus", async ({ page }) => {
   await expect(page).toHaveURL(/\/showcase\/crm$/)
 })
 
+test("Bento search opens without moving the header or dashboard", async ({
+  page,
+}, testInfo) => {
+  const sizes = testInfo.project.name === "desktop" ? [1440, 1100] : [390]
+  for (const width of sizes) {
+    await page.setViewportSize({ width, height: 1000 })
+    await page.goto("/")
+    const header = page.locator("header")
+    const heading = page.getByRole("heading", {
+      name: "Dashboard",
+      exact: true,
+    })
+    const before = await header.boundingBox()
+    const headingBefore = await heading.boundingBox()
+    await page.getByRole("button", { name: "Search", exact: true }).click()
+    await expect(
+      page.getByRole("combobox", { name: "Search workspace" }),
+    ).toBeFocused()
+    const after = await header.boundingBox()
+    const headingAfter = await heading.boundingBox()
+    expect(after?.height).toBe(before?.height)
+    expect(headingAfter?.y).toBe(headingBefore?.y)
+    const field = await page
+      .getByRole("combobox", { name: "Search workspace" })
+      .boundingBox()
+    if (!field) throw new Error("Search field is missing")
+    expect(field.width).toBeGreaterThan(200)
+    expect(field.x).toBeGreaterThanOrEqual(0)
+    expect(field.x + field.width).toBeLessThanOrEqual(width)
+  }
+})
+
 test("contacts can be filtered, created, annotated and archived", async ({
   page,
 }) => {
   await page.goto("/showcase/crm/contacts")
+  const heading = page.getByRole("heading", { name: "Contacts 8" })
+  const titleSize = await heading.evaluate((element) =>
+    parseFloat(getComputedStyle(element).fontSize),
+  )
+  const countSize = await heading
+    .getByText("8", { exact: true })
+    .evaluate((element) => parseFloat(getComputedStyle(element).fontSize))
+  expect(countSize).toBeLessThan(titleSize)
   await page.getByRole("button", { name: "New contact", exact: true }).click()
   const form = page.getByRole("dialog", { name: "New contact" })
   await form.getByLabel("Full name").fill("Ada Rivers")

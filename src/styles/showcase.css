@@ -4,6 +4,8 @@
     min-width: 0;
   }
   .workspace-header {
+    background: color-mix(in oklch, var(--card) 35%, transparent);
+    backdrop-filter: blur(var(--glass-blur));
     display: flex;
     min-height: --spacing(20);
     flex-wrap: wrap;
@@ -64,6 +66,25 @@
     letter-spacing: -0.05em;
     font-weight: 400;
     font-variant-numeric: tabular-nums;
+  }
+  .crm-workspace {
+    --crm-metric-ink: oklch(0.21 0.025 265);
+  }
+  .crm-metric-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: --spacing(8);
+    height: --spacing(8);
+    border-radius: 50%;
+    background: oklch(1 0 0 / 25%);
+  }
+  .crm-conversations {
+    background-image: radial-gradient(
+      at 100% 0%,
+      color-mix(in oklch, var(--chart-1) 12%, transparent),
+      transparent 65%
+    );
   }
   .workspace-icon {
     display: flex;
@@ -159,10 +180,14 @@
     z-index: 40;
   }
   .site-search-expand {
-    width: auto;
-  }
-  .site-search-expand > [data-slot="command"] {
-    width: 20rem;
+    position: absolute;
+    top: calc(100% + --spacing(3));
+    right: 0;
+    width: max-content;
+    padding: --spacing(2);
+    border-radius: var(--radius-3xl);
+    background: var(--popover);
+    box-shadow: var(--naum-shadow-toast);
   }
   .site-search-results {
     position: absolute;
@@ -176,7 +201,7 @@
     padding: --spacing(2);
     box-shadow: var(--naum-shadow-toast);
   }
-  @media (width < 48rem) {
+  @media (width < 80rem) {
     .site-search-expand {
       position: fixed;
       inset: --spacing(4) --spacing(4) auto;
@@ -185,12 +210,24 @@
       background: var(--popover);
       box-shadow: var(--naum-shadow-toast);
     }
-    .site-search-expand > [data-slot="command"] {
-      width: 100%;
-    }
     .site-search-results {
       width: 100%;
       max-width: 100%;
     }
+  }
+}
+
+@layer utilities {
+  .crm-accent {
+    --crm-accent-color: var(--chart-1);
+    background: color-mix(in oklch, var(--crm-accent-color) 14%, var(--card));
+    color: color-mix(in oklch, var(--crm-accent-color) 35%, var(--foreground));
+    border-color: color-mix(in oklch, var(--crm-accent-color) 20%, transparent);
+  }
+  .crm-accent[data-tone="mint"] {
+    --crm-accent-color: var(--chart-2);
+  }
+  .crm-accent[data-tone="amber"] {
+    --crm-accent-color: var(--chart-4);
   }
 }

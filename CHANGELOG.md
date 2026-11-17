@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Carry Bento mesh cards, glass surfaces, ambient depth and animated sidebar navigation into the application showcase. Keep contact totals compact, search out of document flow, and resize grips inside appointment cards.
+
 - Add shared Naum date/time and select controls; replace browser-native showcase pickers.
 - Resize timed appointments by pointer or keyboard, with 15-minute snapping, cancellation and undo.
 

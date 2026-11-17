@@ -77,25 +77,29 @@ export const ContactsWorkspace = () => {
     visible.length > 0 &&
     visible.every((contact) => selected.includes(contact.id))
   return (
-    <div className="workspace-stack">
+    <div className="workspace-stack crm-workspace">
       <MotionFadeUp>
         <div className="workspace-heading">
           <div>
             <p className="workspace-eyebrow">Relationships</p>
-            <h1 className="workspace-title">
-              Contacts{" "}
-              <span className="text-muted-foreground">
+            <h1 className="workspace-title flex items-center gap-3">
+              Contacts
+              <Badge
+                variant="secondary"
+                className="crm-accent"
+                data-tone="lavender"
+              >
                 {
                   contacts.filter((contact) => contact.stage !== "Archived")
                     .length
                 }
-              </span>
+              </Badge>
             </h1>
           </div>
           <ContactForm />
         </div>
       </MotionFadeUp>
-      <Card className="gap-0">
+      <Card variant="glass" className="gap-0">
         <div className="workspace-table-toolbar">
           <InputGroup className="max-w-sm">
             <InputGroupAddon>

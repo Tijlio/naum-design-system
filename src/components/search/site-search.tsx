@@ -113,7 +113,7 @@ export const SiteSearch = ({
           >
             <Command
               label="Search workspace"
-              className="overflow-visible rounded-full bg-transparent p-0"
+              className="w-80 overflow-visible rounded-full bg-transparent p-0 max-[80rem]:w-full"
             >
               <div className="flex items-center gap-1">
                 <CommandInput

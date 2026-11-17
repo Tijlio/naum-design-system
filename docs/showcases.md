@@ -7,9 +7,11 @@
 - `/showcase/crm/contacts`: searchable contacts with relationship filters, name sorting, paging, selection, bulk archiving, contact creation and a detail sheet with notes and relationship editing.
 - `/showcase/calendar`: week, day, month and agenda views, date navigation, calendar filters and appointment creation/editing/deletion with undo. Month days open a day view; empty time slots open an appointment draft. Desktop events can be dragged to another day/time, with 15-minute snapping and undo. Timed events can be resized from either edge using a pointer or the Up/Down arrows, also in 15-minute steps. Escape cancels an active resize. Touch users can resize with the handles or move events through the appointment dialog.
 
+The application shell reuses Bento’s indigo/cyan ambient backdrop, translucent surfaces and animated active navigation pill. CRM metrics use the existing lime, indigo, coral and mint mesh utilities with dark ink for readable labels. Contact totals use a compact Badge beside the title.
+
 The sidebar collapses to icons on desktop and opens as a sheet on mobile. Calendar defaults to the week on desktop and agenda on mobile. The mini calendar moves out of the main grid on smaller screens to preserve readable event columns.
 
-Search is shared between Bento and the application shell. Click its icon or press Cmd/Ctrl+K. Search covers pages, contacts, deals and appointments; results support arrow keys and Enter. Escape restores focus to the search trigger. The mobile search surface uses a compact overlay. Outside clicks dismiss it.
+Search is shared between Bento and the application shell. Click its icon or press Cmd/Ctrl+K. Search covers pages, contacts, deals and appointments; results support arrow keys and Enter. Escape restores focus to the search trigger. The mobile search surface uses a compact overlay. Outside clicks dismiss it. The expanding search surface floats above the layout so opening it cannot wrap the header or move page content.
 
 ## Data and boundaries
 

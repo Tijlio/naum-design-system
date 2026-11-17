@@ -198,6 +198,23 @@ test("appointments resize by dragging or by keyboard", async ({
     name: "Resize end Studio North · Kick-off",
     exact: true,
   })
+  const gripsFit = await page
+    .locator(".calendar-placed-event")
+    .evaluateAll((events) =>
+      events.every((event) => {
+        const chip = event
+          .querySelector(".calendar-event")
+          ?.getBoundingClientRect()
+        if (!chip) return false
+        return Array.from(
+          event.querySelectorAll(".calendar-resize-handle"),
+        ).every((handle) => {
+          const grip = handle.querySelector("svg")?.getBoundingClientRect()
+          return grip && grip.top >= chip.top && grip.bottom <= chip.bottom
+        })
+      }),
+    )
+  expect(gripsFit).toBe(true)
   if (testInfo.project.name === "desktop") {
     await handle.scrollIntoViewIfNeeded()
     const bounds = await handle.boundingBox()
