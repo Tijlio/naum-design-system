@@ -47,6 +47,14 @@ export function PreviewHeader({
           variant="outline"
           size="sm"
           nativeButton={false}
+          render={<Link href="/docs" />}
+        >
+          Documentation
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          nativeButton={false}
           render={<Link href="/" />}
         >
           Bento showcase

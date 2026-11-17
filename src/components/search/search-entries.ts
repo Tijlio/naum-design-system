@@ -27,4 +27,5 @@ export const PAGE_ENTRIES: SearchEntry[] = [
     group: "Pages",
     href: "/preview",
   },
+  { id: "docs", title: "Documentation", group: "Pages", href: "/docs" },
 ]
