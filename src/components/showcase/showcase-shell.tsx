@@ -1,16 +1,22 @@
 "use client"
 
-import type { ReactNode } from "react"
+import { Fragment, type ReactNode } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
   ArrowUpRight,
   CalendarDays,
+  CheckCheck,
   Columns3,
   Layers,
   LayoutDashboard,
   Users,
 } from "lucide-react"
+import {
+  CRM_ROUTES,
+  routeActive,
+  workspaceBreadcrumbs,
+} from "./workspace-routes"
 import { AppShell } from "@/components/blocks/app-shell"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
@@ -33,24 +39,41 @@ import { cn } from "@/lib/utils"
 import { DemoControls } from "./demo-controls"
 import { WorkspaceSearch } from "./workspace-search"
 
-const NAVIGATION = [
-  { label: "Calendar", href: "/showcase/calendar", icon: CalendarDays },
-  { label: "Overview", href: "/showcase/crm", icon: LayoutDashboard },
-  { label: "Pipeline", href: "/showcase/crm/pipeline", icon: Columns3 },
-  { label: "Contacts", href: "/showcase/crm/contacts", icon: Users },
-]
+const ICONS = {
+  overview: LayoutDashboard,
+  contacts: Users,
+  pipeline: Columns3,
+  tasks: CheckCheck,
+}
 
 export const ShowcaseShell = ({ children }: { children: ReactNode }) => {
   const path = usePathname()
   return (
     <AppShell
-      navigation={NAVIGATION.map(({ label, href, icon: Icon }) => ({
-        id: href,
-        label,
-        icon: <Icon />,
-        render: <Link href={href} />,
-        active: path === href,
-      }))}
+      navigation={[
+        {
+          id: "calendar",
+          label: "Calendar",
+          icon: <CalendarDays />,
+          render: <Link href="/showcase/calendar" />,
+          active: routeActive(path, "/showcase/calendar"),
+        },
+        {
+          id: "crm",
+          label: "CRM",
+          icon: <Users />,
+          children: CRM_ROUTES.map(({ label, href, icon }) => {
+            const Icon = ICONS[icon]
+            return {
+              id: href,
+              label,
+              icon: <Icon />,
+              render: <Link href={href} />,
+              active: routeActive(path, href),
+            }
+          }),
+        },
+      ]}
       brand={
         <SidebarMenu>
           <SidebarMenuItem>
@@ -102,18 +125,26 @@ export const ShowcaseShell = ({ children }: { children: ReactNode }) => {
       header={
         <Breadcrumb>
           <BreadcrumbList>
-            <BreadcrumbItem className="hidden sm:inline-flex">
-              <BreadcrumbLink render={<Link href="/showcase/crm" />}>
-                Workspace
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator className="hidden sm:block" />
-            <BreadcrumbItem>
-              <BreadcrumbPage>
-                {NAVIGATION.find((item) => item.href === path)?.label ??
-                  "Workspace"}
-              </BreadcrumbPage>
-            </BreadcrumbItem>
+            {workspaceBreadcrumbs(path).map((crumb, index, all) => (
+              <Fragment key={`${crumb.label}-${crumb.href}`}>
+                <BreadcrumbItem
+                  className={
+                    index < all.length - 1 ? "hidden sm:inline-flex" : undefined
+                  }
+                >
+                  {index === all.length - 1 ? (
+                    <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
+                  ) : (
+                    <BreadcrumbLink render={<Link href={crumb.href} />}>
+                      {crumb.label}
+                    </BreadcrumbLink>
+                  )}
+                </BreadcrumbItem>
+                {index < all.length - 1 && (
+                  <BreadcrumbSeparator className="hidden sm:block" />
+                )}
+              </Fragment>
+            ))}
           </BreadcrumbList>
         </Breadcrumb>
       }

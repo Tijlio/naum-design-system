@@ -230,6 +230,16 @@
           "background": "radial-gradient(\n      at 0% 0%,\n      color-mix(in oklch, var(--chart-1) 10%, transparent),\n      transparent 55%\n    ),\n    var(--background)",
           "color": "var(--foreground)",
           "box-shadow": "var(--naum-shadow-toast)"
+        },
+        "@utility naum-collapsible-panel": {
+          "height": "var(--collapsible-panel-height)",
+          "overflow": "hidden",
+          "opacity": "1",
+          "transition": "height var(--naum-duration-normal) var(--ease-naum),\n    opacity var(--naum-duration-fast) var(--ease-naum)",
+          "&[data-starting-style],\n  &[data-ending-style]": {
+            "height": "0",
+            "opacity": "0"
+          }
         }
       },
       "type": "registry:style"
@@ -532,7 +542,8 @@
         "@base-ui/react@1.9.0"
       ],
       "registryDependencies": [
-        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json"
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
       ],
       "files": [
         {
@@ -1446,10 +1457,33 @@
       "type": "registry:component"
     },
     {
+      "name": "activity-timeline",
+      "title": "Naum Activity Timeline",
+      "description": "Naum activity-timeline for React and Tailwind CSS v4.",
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/empty.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/motion.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/blocks/activity-timeline.tsx",
+          "type": "registry:component",
+          "target": "@components/blocks/activity-timeline.tsx"
+        }
+      ],
+      "type": "registry:block"
+    },
+    {
       "name": "app-navigation",
       "title": "Naum App Navigation",
       "description": "Naum app-navigation for React and Tailwind CSS v4.",
+      "dependencies": [
+        "lucide-react@1.74.0"
+      ],
       "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/collapsible.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/dropdown-menu.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/motion.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/navigation-styles.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/sidebar.json",
@@ -1699,6 +1733,7 @@
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/use-mobile.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme-provider.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/activity-timeline.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/app-navigation.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/app-shell.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/bento-stat-card.json",

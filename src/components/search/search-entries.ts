@@ -2,7 +2,7 @@ export type SearchEntry = {
   id: string
   title: string
   description?: string
-  group: "Pages" | "Contacts" | "Deals" | "Appointments"
+  group: "Pages" | "Contacts" | "Deals" | "Appointments" | "Tasks"
   href: string
 }
 
@@ -34,4 +34,5 @@ export const PAGE_ENTRIES: SearchEntry[] = [
     href: "/showcase/crm/pipeline",
   },
   { id: "docs", title: "Documentation", group: "Pages", href: "/docs" },
+  { id: "tasks", title: "Tasks", group: "Pages", href: "/showcase/crm/tasks" },
 ]

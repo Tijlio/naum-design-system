@@ -13,7 +13,7 @@ Use `pnpm dlx shadcn@4.23.0 add @naum/<name>` with the existing namespace config
 
 The Bento dashboard and CRM use `BentoStatCard`; the CRM/calendar shell uses `AppShell`. Generic blocks accept data/actions through props and do not depend on showcase fixtures or business state. A host must configure its fonts, theme provider and TooltipProvider as described in `design-system.md`. AppShell includes MotionProvider; standalone animated blocks use the host's MotionProvider.
 
-`AppNavigation` requires SidebarProvider. Items contain stable `id`, `label`, `icon`, `render` and optional `active`. Brand and footer content should hide secondary text for `group-data-[collapsible=icon]`. The app shell owns one main landmark; its children should use sections/headings, not another main.
+`AppNavigation` requires SidebarProvider. Leaf items contain stable `id`, `label`, `icon`, `render` and optional `active`. Groups use `children` instead of `render`; active descendants, recursive expansion and compact flyout menus are supported. Brand and footer content should hide secondary text for `group-data-[collapsible=icon]`. The app shell owns one main landmark; its children should use sections/headings, not another main.
 
 Registry generation discovers block sources and registers alias-aware file targets. Clean consumer tests independently install the stat card, insight card and shell, and then the complete preset, checking TypeScript, CSS, alias rewriting and theme parity.
 
@@ -22,3 +22,5 @@ Registry generation discovers block sources and registers alias-aware file targe
 `data-table` installs `DataTable<T>`, a presentation block for a host-owned TanStack v8 table. Supply stable record IDs, the appropriate row models and typed column definitions. It supports sortable/grouped headers, visibility controls, page selection, pagination, bulk-action slots and loading/error/empty states. `mobileHiddenColumns` omits secondary fields from compact tables and their column picker; detail views should keep those fields accessible. Bulk actions receive only selected records that match the current filter. The block does not fetch, persist or interpret domain data.
 
 `data-table-views` installs the saved-view picker and save-name dialog. The host owns snapshots, URL integration and storage. Read-only presets cannot be changed or deleted. `data-table-view` supplies the serializable state type and runtime guard. Live examples in `/docs` demonstrate sorting, selection, filtering, loading/retry and named views.
+
+`activity-timeline` installs the portable `ActivityTimeline` and `TimelineEntry` contract. The host owns chronological ordering, date formatting, icons and optional actions. CRM contact history is one consumer. [Table, view and follow-up integration](data-tables-and-follow-ups.md) documents the application contracts.

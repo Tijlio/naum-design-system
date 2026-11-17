@@ -1,3 +1,4 @@
+import { type FollowUpTask, type WorkspaceActivity } from "./tasks/task-data"
 import { isWorkspaceSavedView, type WorkspaceSavedView } from "./table-views"
 import { isValid, parseISO } from "date-fns"
 import {
@@ -14,9 +15,11 @@ export type DemoWorkspace = {
   appointments: Appointment[]
   deals: Deal[]
   savedViews: WorkspaceSavedView[]
+  tasks: FollowUpTask[]
+  activities: WorkspaceActivity[]
 }
 export const DEMO_STORAGE_KEY = "naum-demo-workspace"
-export const DEMO_STORAGE_VERSION = 2
+export const DEMO_STORAGE_VERSION = 3
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null && !Array.isArray(value)
 const hasStrings = (value: Record<string, unknown>, keys: string[]) =>
@@ -58,6 +61,21 @@ const isDeal = (value: unknown): value is Deal =>
   hasStrings(value, ["id", "title", "contactId"]) &&
   isAmount(value.value) &&
   includes(DEAL_STAGES, value.stage)
+const isTask = (value: unknown): value is FollowUpTask =>
+  isRecord(value) &&
+  hasStrings(value, ["id", "title", "contactId"]) &&
+  typeof value.title === "string" &&
+  value.title.trim().length > 0 &&
+  isDate(value.dueDate) &&
+  typeof value.completed === "boolean" &&
+  (value.dealId === undefined || typeof value.dealId === "string")
+const isActivity = (value: unknown): value is WorkspaceActivity =>
+  isRecord(value) &&
+  hasStrings(value, ["id", "contactId", "title", "description"]) &&
+  includes(["contact", "opportunity", "appointment", "task"], value.kind) &&
+  typeof value.timestamp === "string" &&
+  isValid(parseISO(value.timestamp)) &&
+  (value.entityId === undefined || typeof value.entityId === "string")
 const uniqueIds = (records: { id: string }[]) =>
   records.every((record) => record.id.length > 0) &&
   new Set(records.map((record) => record.id)).size === records.length
@@ -67,7 +85,9 @@ export const parseWorkspace = (raw: string): DemoWorkspace | null => {
     const value: unknown = JSON.parse(raw)
     if (
       !isRecord(value) ||
-      (value.version !== 1 && value.version !== DEMO_STORAGE_VERSION) ||
+      (value.version !== 1 &&
+        value.version !== 2 &&
+        value.version !== DEMO_STORAGE_VERSION) ||
       !isRecord(value.data)
     )
       return null
@@ -99,11 +119,32 @@ export const parseWorkspace = (raw: string): DemoWorkspace | null => {
       )
     )
       return null
+    const deals = new Map(data.deals.map((deal) => [deal.id, deal]))
+    const legacy = value.version !== DEMO_STORAGE_VERSION
+    const tasks = legacy ? [] : data.tasks
+    const activities = legacy ? [] : data.activities
+    if (
+      !Array.isArray(tasks) ||
+      !tasks.every(isTask) ||
+      !uniqueIds(tasks) ||
+      tasks.some(
+        (task) =>
+          !contacts.has(task.contactId) ||
+          (task.dealId && deals.get(task.dealId)?.contactId !== task.contactId),
+      ) ||
+      !Array.isArray(activities) ||
+      !activities.every(isActivity) ||
+      !uniqueIds(activities) ||
+      activities.some((event) => !contacts.has(event.contactId))
+    )
+      return null
     return {
       contacts: data.contacts,
       appointments: data.appointments,
       deals: data.deals,
       savedViews,
+      tasks,
+      activities,
     }
   } catch {
     return null

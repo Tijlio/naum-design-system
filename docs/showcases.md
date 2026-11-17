@@ -5,6 +5,7 @@
 - `/`: Bento dashboard, centered decorative activity motifs, volumes with explicit periods, and expanding workspace search.
 - `/showcase/crm`: CRM overview with derived contact/pipeline metrics, a revenue chart, upcoming conversations and contact navigation.
 - `/showcase/crm/pipeline`: four-stage opportunity board with per-stage counts and values, title/contact/company search, creation/editing, stage moves, deletion and undo. Desktop cards can be dragged across stages; each card also offers a shared SelectControl for keyboard/touch movement. Moves update overview metrics, contact details and workspace search, and survive refresh. Search and overview links open the opportunity editor through `?deal=<id>`.
+- `/showcase/crm/tasks`: reusable follow-up table with saved open/completed/overdue views, deadlines, create/edit/delete, completion, bulk completion, undo and search deep links. Contacts/opportunities expose contextual task creation; contact timelines merge notes, scheduled appointments and recorded changes.
 - `/showcase/crm/contacts`: searchable contacts with relationship filters, name sorting, paging, selection, bulk archiving, contact creation and a detail sheet with notes and relationship editing.
 - `/showcase/calendar`: week, day, month and agenda views, date navigation, calendar filters and appointment creation/editing/deletion with undo. Month days open a day view; empty time slots open an appointment draft. Desktop events can be dragged to another day/time, with 15-minute snapping and undo. Timed events can be resized from either edge using a pointer or the Up/Down arrows, also in 15-minute steps. Escape cancels an active resize. Touch users can resize with the handles or move events through the appointment dialog.
 
@@ -39,3 +40,5 @@ Browser coverage exercises contact creation/notes/archive, search focus and navi
 The latest cross-app review is documented in [quality-review.md](quality-review.md).
 
 Only test sources and reviewed reference PNGs are committed. Run reports and traces remain in ignored build storage or temporary CI artifacts.
+
+Contacts, pipeline tables and tasks share the installable DataTable and view controls. Views persist locally and in validated URL state. CRM routes are nested under one expandable group, with flyout destinations in the compact sidebar. See [data-tables-and-follow-ups.md](data-tables-and-follow-ups.md) for migrations and contracts.

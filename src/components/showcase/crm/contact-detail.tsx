@@ -17,7 +17,8 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet"
 import { Textarea } from "@/components/ui/textarea"
-import { MotionFadeUp } from "@/components/ui/motion"
+import { RelatedTasks } from "../tasks/related-tasks"
+import { ContactTimeline } from "./contact-timeline"
 import { CONTACT_STAGES, DEMO_DATE, type Contact } from "../showcase-data"
 import { useShowcase } from "../showcase-provider"
 import { ContactAvatar } from "./contact-avatar"
@@ -138,6 +139,7 @@ export const ContactDetail = ({
                   </p>
                 )}
               </section>
+              <RelatedTasks contactId={contact.id} />
               <section className="space-y-4" aria-label="Contact activity">
                 <h3 className="font-medium">Activity</h3>
                 <Card size="sm">
@@ -178,19 +180,7 @@ export const ContactDetail = ({
                     </form>
                   </CardContent>
                 </Card>
-                {contact.notes.map((note) => (
-                  <MotionFadeUp
-                    key={note.id}
-                    className="workspace-timeline-item"
-                  >
-                    <p className="text-xs text-muted-foreground">
-                      {format(parseISO(note.date), "d MMM yyyy")} · Alex Morgan
-                    </p>
-                    <p className="mt-2 whitespace-pre-wrap text-sm">
-                      {note.text}
-                    </p>
-                  </MotionFadeUp>
-                ))}
+                <ContactTimeline contact={contact} />
               </section>
             </div>
           </>

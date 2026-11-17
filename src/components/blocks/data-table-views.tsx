@@ -62,6 +62,7 @@ export const DataTableViews = ({
       </Label>
       <SelectControl
         id={`${id}-view`}
+        className="max-w-[calc(100%-2rem)]"
         placeholder="Custom view"
         value={current?.id ?? null}
         items={views.map((view) => ({

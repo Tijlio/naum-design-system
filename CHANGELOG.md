@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Add installable DataTable, saved-view controls and ActivityTimeline blocks with live documentation and clean-consumer coverage.
+- Reuse tables across contacts, opportunity list/board and tasks, with shareable URL state, saved views, filters, columns, bulk actions and history navigation.
+- Add persisted contextual follow-ups and atomic activity history, with migration from earlier demo storage versions and undo for task actions.
+- Nest CRM navigation with animated expansion, compact flyouts and breadcrumbs derived from the shared route tree.
+
 - Add interactive documentation with registry installation commands, live component/block examples and typed source references with retry/copy recovery.
 - Publish portable BentoStatCard, InsightCard, AppNavigation and AppShell blocks; reuse them in Bento and CRM and verify clean consumer installs.
 - Persist validated, versioned demo contacts, notes, appointments and opportunities in local storage, with a confirmed reset scoped to the demo key and session-only fallback.

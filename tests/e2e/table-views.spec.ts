@@ -5,6 +5,14 @@ test("contact views persist filters, sorting and columns with URL back/forward",
   page,
 }, testInfo) => {
   await page.goto("/showcase/crm/contacts")
+  await page.getByRole("button", { name: "Next", exact: true }).click()
+  await expect(
+    page.getByRole("button", { name: /Sofia De Smet/ }),
+  ).toBeVisible()
+  await page.getByRole("button", { name: "Previous", exact: true }).click()
+  await expect(page.getByRole("button", { name: /Sofia De Smet/ })).toHaveCount(
+    0,
+  )
   await chooseOption(page, "Filter by relationship", "Lead")
   await chooseOption(page, "Filter by owner", "Alex Morgan")
   await page.getByRole("button", { name: "Name", exact: true }).click()

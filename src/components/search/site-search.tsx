@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/motion"
 import { PAGE_ENTRIES, type SearchEntry } from "./search-entries"
 
-const GROUPS = ["Pages", "Contacts", "Deals", "Appointments"] as const
+const GROUPS = ["Pages", "Contacts", "Deals", "Appointments", "Tasks"] as const
 
 export const SiteSearch = ({
   entries = PAGE_ENTRIES,

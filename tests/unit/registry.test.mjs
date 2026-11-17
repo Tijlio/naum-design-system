@@ -55,6 +55,7 @@ describe("consumer registry contract", () => {
 
   it("ships portable Bento/app blocks with alias-aware component targets", () => {
     for (const name of [
+      "activity-timeline",
       "data-table",
       "data-table-views",
       "bento-stat-card",

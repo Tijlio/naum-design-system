@@ -1,3 +1,4 @@
+import { INITIAL_ACTIVITIES, INITIAL_TASKS } from "./tasks/task-data"
 import { DEALS, INITIAL_APPOINTMENTS, INITIAL_CONTACTS } from "./showcase-data"
 import {
   DEMO_STORAGE_KEY,
@@ -15,6 +16,8 @@ const createDemoData = (): DemoWorkspace =>
     appointments: INITIAL_APPOINTMENTS,
     deals: DEALS,
     savedViews: [],
+    tasks: INITIAL_TASKS,
+    activities: INITIAL_ACTIVITIES,
   })
 
 // One store per mounted provider. Browser storage is only read after hydration.

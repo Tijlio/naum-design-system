@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { SelectControl } from "@/components/ui/select-control"
 import { DEAL_STAGES, type Deal } from "../showcase-data"
+import { RelatedTasks } from "../tasks/related-tasks"
 import { useShowcase } from "../showcase-provider"
 
 export const DealEditor = ({
@@ -158,6 +159,7 @@ export const DealEditor = ({
             </div>
           </DialogFooter>
         </form>
+        {deal && <RelatedTasks contactId={deal.contactId} dealId={deal.id} />}
       </DialogContent>
     </Dialog>
   )

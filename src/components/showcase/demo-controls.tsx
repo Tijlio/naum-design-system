@@ -40,8 +40,8 @@ export const DemoControls = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>Reset demo data?</AlertDialogTitle>
             <AlertDialogDescription>
-              This replaces contacts, appointments and opportunities with the
-              original demo data in this browser.
+              This replaces contacts, appointments, opportunities, tasks and
+              saved views with the original demo data in this browser.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

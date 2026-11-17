@@ -8,7 +8,7 @@ import {
 import { useShowcase } from "./showcase-provider"
 
 export const WorkspaceSearch = () => {
-  const { contacts, appointments, deals } = useShowcase()
+  const { contacts, appointments, deals, tasks } = useShowcase()
   const entries: SearchEntry[] = [
     ...PAGE_ENTRIES,
     ...contacts
@@ -25,6 +25,13 @@ export const WorkspaceSearch = () => {
       title: deal.title,
       group: "Deals",
       href: `/showcase/crm/pipeline?deal=${deal.id}`,
+    })),
+    ...tasks.map((task): SearchEntry => ({
+      id: `task-${task.id}`,
+      title: task.title,
+      description: task.completed ? "Completed" : `Due ${task.dueDate}`,
+      group: "Tasks",
+      href: `/showcase/crm/tasks?task=${task.id}`,
     })),
     ...appointments.map((appointment): SearchEntry => ({
       id: appointment.id,

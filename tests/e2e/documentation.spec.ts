@@ -125,3 +125,52 @@ test("typed source reference recovers from a failed load", async ({ page }) => {
     page.getByRole("button", { name: "Copy component source" }),
   ).toBeVisible()
 })
+
+test("DataTable, view controls and timeline examples work independently of CRM data", async ({
+  page,
+}) => {
+  await page.goto("/docs")
+  const catalog = page.getByRole("navigation", { name: "Component catalog" })
+  await page.getByLabel("Find a component").fill("data-table")
+  await catalog
+    .getByRole("button", { name: "data-table Block", exact: true })
+    .click()
+  await page.getByRole("textbox", { name: "Search members" }).fill("Emma")
+  await expect(page.getByRole("table", { name: "Members" })).toContainText(
+    "Emma Laurent",
+  )
+  await expect(page.getByRole("table", { name: "Members" })).not.toContainText(
+    "Oliver Chen",
+  )
+  await chooseOption(page, "Example state", "Error")
+  await expect(
+    page.getByRole("table", { name: "Members" }).getByRole("alert"),
+  ).toContainText("Members could not be loaded")
+  await page.getByRole("button", { name: "Retry", exact: true }).click()
+  await expect(page.getByRole("table", { name: "Members" })).toContainText(
+    "Emma Laurent",
+  )
+  await catalog
+    .getByRole("button", { name: "data-table-views Block", exact: true })
+    .click()
+  await page.getByRole("button", { name: "Save view", exact: true }).click()
+  const form = page.getByRole("dialog", { name: "Save view", exact: true })
+  await form.getByLabel("View name").fill("View " + "x".repeat(50))
+  await form.getByRole("button", { name: "Save view", exact: true }).click()
+  await expect(
+    page.getByRole("combobox", { name: "Saved view" }),
+  ).toContainText("View " + "x".repeat(50))
+  expect(
+    await page
+      .locator("body")
+      .evaluate((body) => body.scrollWidth <= body.clientWidth),
+  ).toBe(true)
+  await page.getByLabel("Find a component").fill("activity-timeline")
+  await catalog
+    .getByRole("button", { name: "activity-timeline Block", exact: true })
+    .click()
+  await page
+    .getByRole("button", { name: "Show empty state", exact: true })
+    .click()
+  await expect(page.getByText("No activity yet", { exact: true })).toBeVisible()
+})

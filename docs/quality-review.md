@@ -34,7 +34,7 @@ No runtime dependency was added. No migration, backend integration or persistenc
 - `pnpm test:registry`: real CLI installs of `command` and `all`, including consumer TypeScript, CSS, aliases and theme parity.
 - `pnpm build:test` and the full desktop/mobile browser suite, including screenshots, axe, reduced motion, contacts, search, calendar CRUD and drag/resize.
 
-Latest feature pass: 40 unit/contract tests passed; 110 browser tests passed and two desktop drag/drop tests were deliberately skipped in the mobile project. Five clean-consumer registry installs passed (command, app shell, stat card, insight card and complete preset). Build, lint, TypeScript, formatting and registry parity passed.
+Latest feature pass: 50 unit/contract tests passed; 128 browser tests passed and two desktop drag/drop tests were deliberately skipped in the mobile project. Eight clean-consumer registry installs passed (command, activity timeline, DataTable, view controls, app shell, stat card, insight card and complete preset). Build, lint, TypeScript, formatting and registry parity passed.
 
 Browser reports/traces remain ignored locally and are uploaded by CI as temporary artifacts. Only test sources and reviewed reference images are committed.
 
@@ -45,3 +45,11 @@ The workspace remains a local demonstration with validated, versioned browser pe
 ## Documentation and workspace additions
 
 The follow-up pass covers the `/docs` catalog, live variant/state examples, install/copy commands and typed source API load/retry; portable Bento/app blocks with alias-aware installs; validated local storage, refresh, cross-tab/iframe synchronization and confirmed reset; and the four-stage CRM pipeline. Pipeline coverage exercises create/edit, desktop dragging, keyboard/touch selection, per-stage totals, search deep links, overview metric updates, persistence, delete/undo, both themes and 320px form actions. The shared app shell now includes a compact content transition with the breadcrumb in the topbar. Runtime console/page errors are checked on the production pipeline pages.
+
+## Data table, follow-up and navigation pass
+
+Contacts, opportunity tables and tasks now share DataTable and saved-view controls. Coverage checks URL normalization, filter combinations, sorting, visibility, stable selection, pagination, bulk updates, saved-view update/delete/undo and back/forward restoration. Task coverage includes deadlines, context-filled creation, nested-dialog isolation, completion/deletion/undo, persistent activity, deleted/reassigned opportunity links and legacy storage migration. The timeline keeps insertion order when event timestamps match and avoids inventing times for date-only notes. Overdue status remains visible on mobile.
+
+Nested CRM routes are checked expanded, collapsed, on mobile and with keyboard activation. Fresh screenshots cover tasks and the visible contact timeline in both themes, alongside the existing application/primitive scenes. The shared Select primitive constrains long labels; the documentation tests a long saved-view name without horizontal overflow.
+
+ESLint reports zero errors and three known `react-hooks/incompatible-library` warnings from TanStack v8's mutable `useReactTable` instance (documentation, application adapter and test fixture). The relevant functions and instance renderer use `use no memo`; the compiler compatibility contract is documented in [data-tables-and-follow-ups.md](data-tables-and-follow-ups.md). No lint rule or test was disabled to accept these warnings.

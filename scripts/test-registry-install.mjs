@@ -28,6 +28,7 @@ try {
   outputs = await createRegistry({ baseUrl })
   for (const item of [
     "command",
+    "activity-timeline",
     "data-table",
     "data-table-views",
     "app-shell",

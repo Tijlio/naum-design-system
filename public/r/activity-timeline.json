@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "activity-timeline",
+  "title": "Naum Activity Timeline",
+  "description": "Naum activity-timeline for React and Tailwind CSS v4.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/empty.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/motion.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/blocks/activity-timeline.tsx",
+      "type": "registry:component",
+      "target": "@components/blocks/activity-timeline.tsx",
+      "content": "import type { ReactNode } from \"react\"\nimport { MotionStagger, MotionStaggerItem } from \"@/components/ui/motion\"\nimport { Empty, EmptyHeader, EmptyTitle } from \"@/components/ui/empty\"\n\nexport type TimelineEntry = {\n  id: string\n  title: string\n  description?: string\n  dateLabel: string\n  dateTime: string\n  icon?: ReactNode\n  action?: ReactNode\n}\nexport const ActivityTimeline = ({\n  entries,\n  label = \"Activity timeline\",\n  emptyLabel = \"No activity yet\",\n}: {\n  entries: readonly TimelineEntry[]\n  label?: string\n  emptyLabel?: string\n}) =>\n  entries.length ? (\n    <MotionStagger role=\"list\" aria-label={label} className=\"space-y-5\">\n      {entries.map((entry) => (\n        <MotionStaggerItem\n          key={entry.id}\n          role=\"listitem\"\n          className=\"flex gap-3\"\n        >\n          <span\n            aria-hidden\n            className=\"flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground [&>svg]:size-4\"\n          >\n            {entry.icon ?? (\n              <span className=\"size-1.5 rounded-full bg-current\" />\n            )}\n          </span>\n          <div className=\"min-w-0 flex-1 space-y-1\">\n            <time\n              dateTime={entry.dateTime}\n              className=\"text-xs text-muted-foreground\"\n            >\n              {entry.dateLabel}\n            </time>\n            <p className=\"text-sm font-medium\">{entry.title}</p>\n            {entry.description && (\n              <p className=\"text-sm whitespace-pre-wrap text-muted-foreground\">\n                {entry.description}\n              </p>\n            )}\n            {entry.action}\n          </div>\n        </MotionStaggerItem>\n      ))}\n    </MotionStagger>\n  ) : (\n    <Empty>\n      <EmptyHeader>\n        <EmptyTitle className=\"text-sm font-normal text-muted-foreground\">\n          {emptyLabel}\n        </EmptyTitle>\n      </EmptyHeader>\n    </Empty>\n  )\n"
+    }
+  ],
+  "type": "registry:block"
+}

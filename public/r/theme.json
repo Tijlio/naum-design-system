@@ -226,6 +226,16 @@
       "background": "radial-gradient(\n      at 0% 0%,\n      color-mix(in oklch, var(--chart-1) 10%, transparent),\n      transparent 55%\n    ),\n    var(--background)",
       "color": "var(--foreground)",
       "box-shadow": "var(--naum-shadow-toast)"
+    },
+    "@utility naum-collapsible-panel": {
+      "height": "var(--collapsible-panel-height)",
+      "overflow": "hidden",
+      "opacity": "1",
+      "transition": "height var(--naum-duration-normal) var(--ease-naum),\n    opacity var(--naum-duration-fast) var(--ease-naum)",
+      "&[data-starting-style],\n  &[data-ending-style]": {
+        "height": "0",
+        "opacity": "0"
+      }
     }
   },
   "type": "registry:style"

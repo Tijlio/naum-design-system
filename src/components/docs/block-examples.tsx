@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { SelectControl } from "@/components/ui/select-control"
 import { Label } from "@/components/ui/label"
+import { TimelineExample } from "./timeline-example"
 import { DataTableExample } from "./data-table-example"
 import { SavedViewsExample } from "./saved-views-example"
 import { CodeSample } from "./code-sample"
@@ -22,6 +23,7 @@ export const BlockExamples = ({ name }: { name: string }) => {
     { id: "contacts", label: "Contacts", icon: <Users /> },
     { id: "calendar", label: "Calendar", icon: <CalendarDays /> },
   ]
+  if (name === "activity-timeline") return <TimelineExample />
   if (name === "data-table") return <DataTableExample />
   if (name === "data-table-views") return <SavedViewsExample />
   const code =
@@ -93,11 +95,18 @@ export const BlockExamples = ({ name }: { name: string }) => {
           >
             <div className="w-full max-w-xs">
               <AppNavigation
-                items={navigation.map((item) => ({
-                  ...item,
-                  active: active === item.id,
-                  render: <button onClick={() => setActive(item.id)} />,
-                }))}
+                items={[
+                  {
+                    id: "crm",
+                    label: "CRM",
+                    icon: <Users />,
+                    children: navigation.map((item) => ({
+                      ...item,
+                      active: active === item.id,
+                      render: <button onClick={() => setActive(item.id)} />,
+                    })),
+                  },
+                ]}
               />
             </div>
           </SidebarProvider>
