@@ -74,3 +74,38 @@ for (const path of ["/showcase/crm", "/showcase/crm/contacts"]) {
     expect(errors).toEqual([])
   })
 }
+
+test("sidebar collapse keeps identity centered and mobile navigation works", async ({
+  page,
+}, testInfo) => {
+  await page.goto("/showcase/crm")
+  await page.getByRole("button", { name: "Toggle Sidebar" }).click()
+  if (testInfo.project.name === "mobile") {
+    const navigation = page.getByRole("dialog")
+    await navigation
+      .getByRole("link", { name: "Contacts", exact: true })
+      .click()
+    await expect(navigation).toBeHidden()
+    await expect(page.getByRole("heading", { name: /Contacts/ })).toBeVisible()
+  } else {
+    await expect(
+      page.locator('[data-state="collapsed"][data-slot="sidebar"]'),
+    ).toBeVisible()
+    const offsets = await page
+      .locator('[data-slot="sidebar"]')
+      .evaluate((sidebar) => {
+        const rail = sidebar.getBoundingClientRect()
+        const logo = sidebar
+          .querySelector(".workspace-logo")
+          ?.getBoundingClientRect()
+        const avatar = sidebar
+          .querySelector('[data-slot="sidebar-footer"] [data-slot="avatar"]')
+          ?.getBoundingClientRect()
+        if (!logo || !avatar) throw new Error("Workspace identity is missing")
+        return [logo, avatar].map((box) =>
+          Math.abs(box.x + box.width / 2 - rail.x - rail.width / 2),
+        )
+      })
+    for (const offset of offsets) expect(offset).toBeLessThan(1)
+  }
+})

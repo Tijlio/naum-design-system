@@ -3,7 +3,13 @@
 import type { ReactNode } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { ArrowUpRight, Layers, LayoutDashboard, Users } from "lucide-react"
+import {
+  ArrowUpRight,
+  CalendarDays,
+  Layers,
+  LayoutDashboard,
+  Users,
+} from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -28,6 +34,7 @@ import {
 import { WorkspaceSearch } from "./workspace-search"
 
 const NAVIGATION = [
+  { label: "Calendar", href: "/showcase/calendar", icon: CalendarDays },
   { label: "Overview", href: "/showcase/crm", icon: LayoutDashboard },
   { label: "Contacts", href: "/showcase/crm/contacts", icon: Users },
 ]
@@ -41,14 +48,14 @@ const WorkspaceNavigation = () => {
       collapsible="icon"
       aria-label="Workspace navigation"
     >
-      <SidebarHeader className="p-3">
+      <SidebarHeader className="p-3 group-data-[collapsible=icon]:p-2">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" render={<Link href="/showcase/crm" />}>
-              <span className="workspace-logo">
+              <span className="workspace-logo group-data-[collapsible=icon]:size-8">
                 <Layers className="size-5" />
               </span>
-              <span className="flex flex-col">
+              <span className="flex flex-col group-data-[collapsible=icon]:sr-only">
                 <span className="font-semibold">Naum Studio</span>
                 <span className="text-xs text-muted-foreground">Workspace</span>
               </span>
@@ -79,7 +86,7 @@ const WorkspaceNavigation = () => {
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="p-3">
+      <SidebarFooter className="p-3 group-data-[collapsible=icon]:p-2">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
@@ -96,7 +103,7 @@ const WorkspaceNavigation = () => {
               <Avatar className="size-8">
                 <AvatarFallback>AM</AvatarFallback>
               </Avatar>
-              <span className="flex flex-col">
+              <span className="flex flex-col group-data-[collapsible=icon]:sr-only">
                 <span className="font-medium">Alex Morgan</span>
                 <span className="text-xs text-muted-foreground">
                   alex@naum.example

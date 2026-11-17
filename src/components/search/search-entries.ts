@@ -7,6 +7,12 @@ export type SearchEntry = {
 }
 
 export const PAGE_ENTRIES: SearchEntry[] = [
+  {
+    id: "calendar",
+    title: "Calendar",
+    group: "Pages",
+    href: "/showcase/calendar",
+  },
   { id: "crm", title: "CRM overview", group: "Pages", href: "/showcase/crm" },
   {
     id: "contacts",

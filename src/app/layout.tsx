@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { ShowcaseProvider } from "@/components/showcase/showcase-provider"
 import { cn } from "@/lib/utils"
 import "./globals.css"
 
@@ -35,7 +36,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <TooltipProvider>{children}</TooltipProvider>
+          <ShowcaseProvider>
+            <TooltipProvider>{children}</TooltipProvider>
+          </ShowcaseProvider>
           <Toaster />
         </ThemeProvider>
       </body>

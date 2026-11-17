@@ -38,7 +38,7 @@ export const RevenueChart = () => {
       </CardHeader>
       <CardContent>
         <ChartContainer
-        role="region"
+          role="region"
           config={config}
           className="h-64 w-full"
           aria-label="Revenue increased from €26,000 in June to €57,000 in November."

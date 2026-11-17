@@ -23,12 +23,14 @@ export const SiteSearch = ({
   entries?: SearchEntry[]
 }) => {
   const [open, setOpen] = useState(false)
+  const [expanded, setExpanded] = useState(false)
   const [query, setQuery] = useState("")
   const trigger = useRef<HTMLButtonElement>(null)
   const container = useRef<HTMLDivElement>(null)
   const router = useRouter()
   const panelId = useId()
   const close = () => {
+    setExpanded(false)
     setOpen(false)
     setQuery("")
     trigger.current?.focus()
@@ -38,6 +40,7 @@ export const SiteSearch = ({
     const keydown = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault()
+        setExpanded(false)
         setOpen((value) => !value)
       }
     }
@@ -80,7 +83,10 @@ export const SiteSearch = ({
         aria-controls={open ? panelId : undefined}
         onClick={() => {
           if (open) close()
-          else setOpen(true)
+          else {
+            setExpanded(false)
+            setOpen(true)
+          }
         }}
       >
         <Search className="size-3.5" />
@@ -90,7 +96,19 @@ export const SiteSearch = ({
           <MotionExpand
             id={panelId}
             axis="x"
-            className="site-search-expand overflow-visible"
+            className={
+              expanded
+                ? "site-search-expand overflow-visible"
+                : "site-search-expand"
+            }
+            onAnimationComplete={(definition) => {
+              if (
+                typeof definition === "object" &&
+                "opacity" in definition &&
+                definition.opacity === 1
+              )
+                setExpanded(true)
+            }}
             key="search"
           >
             <Command

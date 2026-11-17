@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { ArrowUpRight, Bell, Mail } from "lucide-react"
-import { SiteSearch } from "@/components/search/site-search"
+import { WorkspaceSearch } from "@/components/showcase/workspace-search"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
 import {
@@ -123,7 +123,7 @@ export function BentoHeader() {
         >
           <Bell className="size-3.5" />
         </Button>
-        <SiteSearch />
+        <WorkspaceSearch />
         <ThemeToggle className="ml-1 h-8 px-3 text-xs font-normal" />
         <Button
           variant="glass"
