@@ -167,7 +167,7 @@ export function ActivitiesSection() {
                       size="icon-xs"
                       aria-label={item.title.replace("\n", " ")}
                     >
-                      <ArrowUpRight className="size-3 transition-transform duration-200 motion-safe:group-hover/card:translate-x-0.5 motion-safe:group-hover/card:-translate-y-0.5" />
+                      <ArrowUpRight className="size-3 transition-transform duration-(--naum-duration-hover) motion-safe:group-hover/card:translate-x-0.5 motion-safe:group-hover/card:-translate-y-0.5" />
                     </Button>
                   </CardAction>
                 </CardHeader>

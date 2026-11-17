@@ -93,7 +93,7 @@ export const ComponentExamples = ({ name }: { name: string }) => {
       )
       code = `import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"\n\n<Card variant="${cardVariant}"${cardVariant === "mesh" ? ' className="naum-mesh-indigo"' : ""}>\n  <CardHeader><CardTitle>Workspace</CardTitle></CardHeader>\n  <CardContent>Your content</CardContent>\n</Card>`
       contract =
-        "variant: default | glass | frosted | mesh. size: default | sm. Mesh cards need a mesh-* background class. CardHeader, CardTitle, CardDescription, CardAction, CardContent and CardFooter compose the layout. Native div props are forwarded."
+        "variant: default | glass | frosted | mesh. size: default | sm. Optional tone: lavender | mint | amber supplies a shared decorative palette. Mesh cards need a mesh-* background class. CardHeader, CardTitle, CardDescription, CardAction, CardContent and CardFooter compose the layout. Native div props are forwarded."
       break
     case "input":
       preview = (
@@ -123,11 +123,20 @@ export const ComponentExamples = ({ name }: { name: string }) => {
           <Badge variant="secondary">Pending</Badge>
           <Badge variant="outline">Archived</Badge>
           <Badge variant="destructive">Overdue</Badge>
+          <Badge variant="soft" tone="lavender">
+            Sales
+          </Badge>
+          <Badge variant="soft" tone="mint">
+            Team
+          </Badge>
+          <Badge variant="soft" tone="amber">
+            Personal
+          </Badge>
         </div>
       )
       code = `import { Badge } from "@/components/ui/badge"\n\n<Badge variant="secondary">Pending</Badge>`
       contract =
-        "variant: default | secondary | destructive | outline | ghost | link. The render prop can change the element. A badge communicates status; pair colors with meaningful text."
+        "variant: default | secondary | destructive | outline | ghost | link | soft. tone: lavender | mint | amber for soft badges. The render prop can change the element. A badge communicates status; pair colors with meaningful text."
       break
     case "select-control":
       preview = (

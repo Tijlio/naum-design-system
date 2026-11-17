@@ -15,11 +15,11 @@ The registry generator produces the Motion module and its installable payload fr
 
 ## Color and tone
 
-Use `foreground` / `muted-foreground` for ordinary and secondary copy. `primary` is an action color, `destructive` marks destructive/error actions, and `chart-*` identifies data series. Do not use chart colors as an alternative application palette.
+Use `foreground` / `muted-foreground` for ordinary and secondary copy. `primary` is an action color, `destructive` marks destructive/error actions, and `chart-*` identifies data series. Do not use chart colors as an alternative application palette. Bento trend icons and labels use the shared `--trend-up`, `--trend-down` and paired soft/copy tokens.
 
 Lavender, mint and amber each have `--tone-<name>-background`, `foreground` and `accent` tokens. The first two form a light/dark contrast pair for soft surfaces; the accent is for decorative washes. A tone does not communicate status by itself: retain a text label or icon. Calendar names and pipeline stages map to tones in their domain modules.
 
-Use `Badge variant="soft" tone="mint"` for compact tinted labels, `AvatarFallback variant="soft" tone="lavender"` for identities, and the `naum-tone` / `naum-tone-fill` utilities for existing compositions that need the same palette. `data-tone` selects lavender, mint or amber; lavender is the default. `Card tone` sets the palette for a decorative wash without changing its surface variant.
+Use `Badge variant="soft" tone="mint"` for compact tinted labels, `AvatarFallback variant="soft" tone="lavender"` for identities, and the `naum-tone` / `naum-tone-fill` utilities for existing compositions that need the same palette. `data-tone` selects lavender, mint or amber; lavender is the default. `Checkbox tone` uses the same fill/check contrast pair while retaining a visible unchecked/focus state. `Card tone` sets the palette for a decorative wash without changing its surface variant.
 
 ## Spacing
 

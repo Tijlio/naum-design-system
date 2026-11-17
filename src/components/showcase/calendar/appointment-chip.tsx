@@ -3,6 +3,7 @@
 import { format, parseISO } from "date-fns"
 import { Button } from "@/components/ui/button"
 import type { Appointment } from "../showcase-data"
+import { CALENDAR_TONES } from "./calendar-tones"
 import { cn } from "@/lib/utils"
 
 export const AppointmentChip = ({
@@ -21,8 +22,9 @@ export const AppointmentChip = ({
   <Button
     variant="ghost"
     data-calendar={appointment.calendar}
+    data-tone={CALENDAR_TONES[appointment.calendar]}
     className={cn(
-      "calendar-event h-auto w-full flex-col items-start justify-start gap-0.5 overflow-hidden rounded-lg bg-(--event-background) px-2 py-1.5 text-left whitespace-normal text-(--event-foreground) hover:bg-(--event-background)",
+      "calendar-event naum-tone h-auto w-full flex-col items-start justify-start gap-0.5 overflow-hidden rounded-lg bg-(--tone-background) px-2 py-1.5 text-left whitespace-normal text-(--tone-foreground) hover:bg-(--tone-background)",
       compact && "calendar-event-compact h-auto",
       className,
     )}

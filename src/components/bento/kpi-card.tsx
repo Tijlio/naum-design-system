@@ -214,7 +214,7 @@ export function KpiCard({ kpi }: { kpi: KpiCardItem }) {
           size="icon-sm"
           aria-label={`Open ${kpi.title}`}
         >
-          <ArrowUpRight className="size-3.5 transition-transform duration-200 motion-safe:group-hover/card:translate-x-0.5 motion-safe:group-hover/card:-translate-y-0.5" />
+          <ArrowUpRight className="size-3.5 transition-transform duration-(--naum-duration-hover) motion-safe:group-hover/card:translate-x-0.5 motion-safe:group-hover/card:-translate-y-0.5" />
         </Button>
       }
     >
@@ -223,8 +223,8 @@ export function KpiCard({ kpi }: { kpi: KpiCardItem }) {
           variant="secondary"
           className={
             kpi.trend === "up"
-              ? "pointer-events-none absolute -top-1 right-3 z-10 h-5 rounded-full bg-emerald-500/15 px-2 text-[10px] font-medium text-emerald-700 dark:text-emerald-300"
-              : "pointer-events-none absolute -top-1 right-3 z-10 h-5 rounded-full bg-orange-500/15 px-2 text-[10px] font-medium text-orange-700 dark:text-orange-300"
+              ? "pointer-events-none absolute -top-1 right-3 z-10 h-5 rounded-full bg-(--trend-up-soft) px-2 text-[10px] font-medium text-(--trend-up-copy)"
+              : "pointer-events-none absolute -top-1 right-3 z-10 h-5 rounded-full bg-(--trend-down-soft) px-2 text-[10px] font-medium text-(--trend-down-copy)"
           }
         >
           {kpi.delta}

@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Reuse shared surface/tone variants and spacing across page composition, forms, badges, avatars, calendar filters/events and navigation. Align CSS and Motion timing, preserve reduced motion and opaque popups, and remove application palette duplication.
 - Establish a shared design contract for semantic tones, spacing, surfaces and motion. Generate typed Motion defaults from the CSS source and distribute them with the registry.
 
 - Add installable DataTable, saved-view controls and ActivityTimeline blocks with live documentation and clean-consumer coverage.

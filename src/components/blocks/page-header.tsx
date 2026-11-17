@@ -28,7 +28,7 @@ export const PageHeader = ({
     )}
     {...props}
   >
-    <div className="min-w-0 space-y-2">
+    <div className="min-w-0 space-y-(--naum-space-field)">
       {eyebrow && <p className="text-xs text-muted-foreground">{eyebrow}</p>}
       <h1 className="naum-page-title flex flex-wrap items-center gap-(--naum-space-control)">
         {title}

@@ -34,6 +34,7 @@ import { CalendarTimeGrid } from "./calendar-time-grid"
 import { CalendarMonth } from "./calendar-month"
 import { CalendarAgenda } from "./calendar-agenda"
 import { EventEditor } from "./event-editor"
+import { CALENDAR_TONES } from "./calendar-tones"
 import { useCalendarClock } from "./use-calendar-clock"
 
 const VIEWS = ["Week", "Day", "Month", "Agenda"] as const
@@ -116,36 +117,38 @@ export const CalendarWorkspace = () => {
                 weekStartsOn={1}
                 className="w-full bg-transparent p-0"
               />
-              <fieldset className="mt-6 space-y-4">
+              <fieldset className="calendar-filters">
                 <legend className="mb-4 text-sm font-medium">
                   My calendars
                 </legend>
-                {CALENDARS.map((calendar) => (
-                  <div
-                    className="flex items-center gap-2"
-                    key={calendar}
-                    data-calendar={calendar}
-                  >
-                    <Checkbox
-                      id={`calendar-${calendar}`}
-                      className="data-checked:border-transparent data-checked:bg-(--event-background) data-checked:text-(--event-foreground) dark:data-checked:bg-(--event-background)"
-                      checked={enabledCalendars.includes(calendar)}
-                      onCheckedChange={(checked) =>
-                        setEnabledCalendars((current) =>
-                          checked
-                            ? [...current, calendar]
-                            : current.filter((value) => value !== calendar),
-                        )
-                      }
-                    />
-                    <Label
-                      htmlFor={`calendar-${calendar}`}
-                      className="text-sm font-normal"
+                <div className="calendar-filter-options">
+                  {CALENDARS.map((calendar) => (
+                    <div
+                      className="flex items-center gap-(--naum-space-inline)"
+                      key={calendar}
+                      data-calendar={calendar}
                     >
-                      {calendar}
-                    </Label>
-                  </div>
-                ))}
+                      <Checkbox
+                        id={`calendar-${calendar}`}
+                        tone={CALENDAR_TONES[calendar]}
+                        checked={enabledCalendars.includes(calendar)}
+                        onCheckedChange={(checked) =>
+                          setEnabledCalendars((current) =>
+                            checked
+                              ? [...current, calendar]
+                              : current.filter((value) => value !== calendar),
+                          )
+                        }
+                      />
+                      <Label
+                        htmlFor={`calendar-${calendar}`}
+                        className="text-sm font-normal"
+                      >
+                        {calendar}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
               </fieldset>
             </CardContent>
           </Card>

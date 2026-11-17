@@ -1,36 +1,16 @@
 @layer components {
-  .calendar-workspace {
-    --event-sales-bg: oklch(0.93 0.035 270);
-    --event-sales-fg: oklch(0.34 0.12 270);
-    --event-team-bg: oklch(0.94 0.035 170);
-    --event-team-fg: oklch(0.33 0.08 170);
-    --event-personal-bg: oklch(0.95 0.035 70);
-    --event-personal-fg: oklch(0.36 0.08 60);
+  .calendar-filters {
+    margin-top: var(--naum-space-page);
   }
-  .dark .calendar-workspace {
-    --event-sales-bg: oklch(0.28 0.06 270);
-    --event-sales-fg: oklch(0.88 0.05 270);
-    --event-team-bg: oklch(0.28 0.045 170);
-    --event-team-fg: oklch(0.88 0.05 170);
-    --event-personal-bg: oklch(0.3 0.045 70);
-    --event-personal-fg: oklch(0.91 0.05 70);
-  }
-  .calendar-workspace [data-calendar="Sales"] {
-    --event-background: var(--event-sales-bg);
-    --event-foreground: var(--event-sales-fg);
-  }
-  .calendar-workspace [data-calendar="Team"] {
-    --event-background: var(--event-team-bg);
-    --event-foreground: var(--event-team-fg);
-  }
-  .calendar-workspace [data-calendar="Personal"] {
-    --event-background: var(--event-personal-bg);
-    --event-foreground: var(--event-personal-fg);
+  .calendar-filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--naum-space-section);
   }
   .calendar-workspace-layout {
     display: grid;
     grid-template-columns: 16rem minmax(0, 1fr);
-    gap: --spacing(6);
+    gap: var(--naum-space-page);
     align-items: start;
   }
   .calendar-sidebar {
@@ -206,12 +186,12 @@
     padding: --spacing(5);
     display: flex;
     flex-direction: column;
-    gap: --spacing(6);
+    gap: var(--naum-space-page);
   }
   .calendar-agenda-day {
     display: grid;
     grid-template-columns: 3.5rem minmax(0, 1fr);
-    gap: --spacing(4);
+    gap: var(--naum-space-section);
   }
   @media (width < 96rem) {
     .calendar-workspace-layout {
@@ -220,7 +200,7 @@
     .calendar-sidebar-content {
       display: flex;
       flex-wrap: wrap;
-      gap: --spacing(6);
+      gap: var(--naum-space-page);
       align-items: start;
     }
     .calendar-sidebar-content > .rdp-root {
@@ -230,11 +210,17 @@
       display: flex;
       flex-wrap: wrap;
       column-gap: --spacing(5);
+      align-items: center;
       margin: 0;
     }
     .calendar-sidebar legend {
       float: left;
       margin: 0 --spacing(5) 0 0;
+    }
+    .calendar-filter-options {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: var(--naum-space-section);
     }
     .calendar-sidebar fieldset > div {
       margin: 0;
@@ -266,7 +252,7 @@
     background-image: linear-gradient(
       120deg,
       var(--card),
-      var(--event-background)
+      var(--tone-background)
     );
     border: 1px solid var(--border);
     border-radius: var(--radius-xl);

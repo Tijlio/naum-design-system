@@ -90,8 +90,8 @@ export const TaskEditor = ({
               : "Plan the next step for this relationship."}
           </DialogDescription>
         </DialogHeader>
-        <form className="workspace-form" onSubmit={submit}>
-          <div className="workspace-field">
+        <form className="naum-form" onSubmit={submit}>
+          <div className="naum-field">
             <Label htmlFor={`${id}-title`}>Title</Label>
             <Input
               autoFocus
@@ -102,7 +102,7 @@ export const TaskEditor = ({
               defaultValue={task?.title}
             />
           </div>
-          <div className="workspace-field">
+          <div className="naum-field">
             <Label htmlFor={`${id}-due`}>Due date</Label>
             <DateTimePicker
               id={`${id}-due`}
@@ -113,7 +113,7 @@ export const TaskEditor = ({
               onValueChange={(value) => setDueDate(value.slice(0, 10))}
             />
           </div>
-          <div className="workspace-field">
+          <div className="naum-field">
             <Label htmlFor={`${id}-contact`}>Contact</Label>
             <SelectControl
               id={`${id}-contact`}
@@ -131,7 +131,7 @@ export const TaskEditor = ({
               }}
             />
           </div>
-          <div className="workspace-field">
+          <div className="naum-field">
             <Label htmlFor={`${id}-deal`}>Opportunity</Label>
             <SelectControl
               id={`${id}-deal`}

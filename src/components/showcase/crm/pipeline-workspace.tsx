@@ -28,15 +28,9 @@ import { formatMoney } from "@/lib/money-format"
 import type { Deal } from "../showcase-data"
 import { useShowcase } from "../showcase-provider"
 import { DealEditor } from "./deal-editor"
+import { DEAL_TONES } from "./deal-tones"
 import { getPipelineColumns } from "./pipeline-data"
 import { PipelineCard, DEAL_DRAG_TYPE } from "./pipeline-card"
-
-const TONES = {
-  Discovery: "mint",
-  Proposal: "amber",
-  Negotiation: "lavender",
-  Won: "mint",
-} as const
 
 export const PipelineWorkspace = () => {
   const { contacts, deals, saveDeal } = useShowcase()
@@ -203,7 +197,7 @@ export const PipelineWorkspace = () => {
               <Card
                 key={column.stage}
                 variant="frosted"
-                data-tone={TONES[column.stage]}
+                tone={DEAL_TONES[column.stage]}
                 className={cn(
                   "pipeline-column min-w-0 transition-shadow",
                   dropStage === column.stage && "ring-2 ring-ring",
@@ -236,11 +230,7 @@ export const PipelineWorkspace = () => {
                     <CardTitle>
                       <h2 className="text-base font-medium">{column.stage}</h2>
                     </CardTitle>
-                    <Badge
-                      variant="secondary"
-                      className="crm-accent"
-                      data-tone={TONES[column.stage]}
-                    >
+                    <Badge variant="soft" tone={DEAL_TONES[column.stage]}>
                       {column.deals.length}
                     </Badge>
                   </div>

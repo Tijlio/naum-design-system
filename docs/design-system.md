@@ -64,6 +64,8 @@ Use Base UI's `render` contract for links, with `nativeButton={false}`. Keep nav
 
 ## Card and surfaces
 
+`Card` supports an optional `tone="lavender" | "mint" | "amber"` for shared decorative washes. `Badge variant="soft"` and `AvatarFallback variant="soft"` use the same tone pairs; `Checkbox tone` uses a borderless soft fill when checked, retaining its focus ring.
+
 `Card` variants: `default`, `glass`, `frosted`, `mesh`. Sizes: `default` and `sm`. Compose headers, actions, content and footers rather than making each screen's own card shell. Card titles are styled containers, not heading elements; give content an appropriate semantic heading when it forms a document section.
 
 ```tsx

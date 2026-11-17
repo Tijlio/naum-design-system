@@ -62,8 +62,8 @@ export const ContactDetail = ({
             </Card>
             <div className="workspace-stack px-4 pt-6 pb-4">
               <Card size="sm">
-                <CardContent className="workspace-form">
-                  <div className="workspace-field">
+                <CardContent className="naum-form">
+                  <div className="naum-field">
                     <Label htmlFor="detail-stage">Relationship</Label>
                     <SelectControl
                       id="detail-stage"
@@ -145,7 +145,7 @@ export const ContactDetail = ({
                 <Card size="sm">
                   <CardContent>
                     <form
-                      className="workspace-form"
+                      className="naum-form"
                       onSubmit={(event) => {
                         event.preventDefault()
                         const form = event.currentTarget

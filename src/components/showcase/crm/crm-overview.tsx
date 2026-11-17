@@ -130,7 +130,7 @@ export const CrmOverview = () => {
             {upcoming.map((event) => (
               <div className="flex items-start gap-3" key={event.id}>
                 <span
-                  className="workspace-icon crm-accent"
+                  className="workspace-icon naum-tone naum-tone-fill"
                   data-tone="lavender"
                 >
                   <CalendarDays className="size-4" />

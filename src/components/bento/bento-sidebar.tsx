@@ -45,7 +45,7 @@ export function BentoSidebar() {
             {active && (
               <MotionPill
                 layoutId="naum-sidebar-active"
-                className="bg-white shadow-sm ring-1 ring-foreground/5"
+                className="naum-active-pill"
               />
             )}
             <Icon className="size-4" />

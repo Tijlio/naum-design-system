@@ -56,7 +56,7 @@ export const DataTableViews = ({
   }
   return (
     <div
-      className="flex min-w-0 max-w-full flex-wrap items-center gap-2"
+      className="flex min-w-0 max-w-full flex-wrap items-center gap-(--naum-space-inline)"
       aria-label="Saved views"
     >
       <Label htmlFor={`${id}-view`} className="sr-only">
@@ -112,8 +112,8 @@ export const DataTableViews = ({
               Keep the current filters, sorting and columns.
             </DialogDescription>
           </DialogHeader>
-          <form onSubmit={submit} className="space-y-4">
-            <div className="space-y-2">
+          <form onSubmit={submit} className="naum-form">
+            <div className="naum-field">
               <Label htmlFor={`${id}-name`}>View name</Label>
               <Input
                 autoFocus

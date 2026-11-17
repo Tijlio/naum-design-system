@@ -26,9 +26,9 @@ export const BentoMetricTrend = ({
             className={cn(
               "inline-flex size-5 shrink-0 items-center justify-center rounded-full text-white outline-none focus-visible:ring-2 focus-visible:ring-ring",
               direction === "up"
-                ? "bg-emerald-500"
+                ? "bg-(--trend-up)"
                 : direction === "down"
-                  ? "bg-orange-600"
+                  ? "bg-(--trend-down)"
                   : "bg-muted-foreground",
             )}
           />

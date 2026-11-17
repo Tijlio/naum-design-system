@@ -36,7 +36,7 @@ export const ContactForm = () => {
           <DialogDescription>Add someone to your workspace.</DialogDescription>
         </DialogHeader>
         <form
-          className="workspace-form"
+          className="naum-form"
           onSubmit={(event) => {
             event.preventDefault()
             const data = new FormData(event.currentTarget)
@@ -71,7 +71,7 @@ export const ContactForm = () => {
             toast.success("Contact added")
           }}
         >
-          <div className="workspace-field">
+          <div className="naum-field">
             <Label htmlFor="contact-name">Full name</Label>
             <Input
               id="contact-name"
@@ -81,7 +81,7 @@ export const ContactForm = () => {
               autoComplete="name"
             />
           </div>
-          <div className="workspace-field">
+          <div className="naum-field">
             <Label htmlFor="contact-email">Email</Label>
             <Input
               id="contact-email"
@@ -91,7 +91,7 @@ export const ContactForm = () => {
               autoComplete="email"
             />
           </div>
-          <div className="workspace-field">
+          <div className="naum-field">
             <Label htmlFor="contact-company">Company</Label>
             <Input
               id="contact-company"
@@ -101,7 +101,7 @@ export const ContactForm = () => {
               autoComplete="organization"
             />
           </div>
-          <div className="workspace-field">
+          <div className="naum-field">
             <Label htmlFor="contact-stage">Relationship</Label>
             <SelectControl
               id="contact-stage"

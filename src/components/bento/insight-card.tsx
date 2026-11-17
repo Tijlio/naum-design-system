@@ -32,7 +32,7 @@ export function InsightCard({
         <CardAction>
           {action ?? (
             <Button variant="mesh" size="icon-sm" aria-label="Open Insights">
-              <ArrowUpRight className="size-3.5 transition-transform duration-200 motion-safe:group-hover/card:translate-x-0.5 motion-safe:group-hover/card:-translate-y-0.5" />
+              <ArrowUpRight className="size-3.5 transition-transform duration-(--naum-duration-hover) motion-safe:group-hover/card:translate-x-0.5 motion-safe:group-hover/card:-translate-y-0.5" />
             </Button>
           )}
         </CardAction>

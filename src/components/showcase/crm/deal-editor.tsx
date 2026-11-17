@@ -85,11 +85,11 @@ export const DealEditor = ({
           </DialogDescription>
         </DialogHeader>
         <form
-          className="workspace-form"
+          className="naum-form"
           onSubmit={submit}
           aria-describedby={error ? "deal-error" : undefined}
         >
-          <div className="workspace-field">
+          <div className="naum-field">
             <Label htmlFor="deal-title">Title</Label>
             <Input
               id="deal-title"
@@ -100,7 +100,7 @@ export const DealEditor = ({
               autoFocus
             />
           </div>
-          <div className="workspace-field">
+          <div className="naum-field">
             <Label htmlFor="deal-value">Value (€)</Label>
             <Input
               id="deal-value"
@@ -113,7 +113,7 @@ export const DealEditor = ({
               required
             />
           </div>
-          <div className="workspace-field">
+          <div className="naum-field">
             <Label htmlFor="deal-contact">Contact</Label>
             <SelectControl
               id="deal-contact"
@@ -126,7 +126,7 @@ export const DealEditor = ({
               }))}
             />
           </div>
-          <div className="workspace-field">
+          <div className="naum-field">
             <Label htmlFor="deal-stage">Stage</Label>
             <SelectControl
               id="deal-stage"

@@ -61,7 +61,7 @@ export const EventEditor = ({
           </DialogDescription>
         </DialogHeader>
         <form
-          className="workspace-form"
+          className="naum-form"
           onSubmit={(event) => {
             event.preventDefault()
             const data = new FormData(event.currentTarget)
@@ -112,7 +112,7 @@ export const EventEditor = ({
             onClose()
           }}
         >
-          <div className="workspace-field">
+          <div className="naum-field">
             <Label htmlFor="event-title">Title</Label>
             <Input
               id="event-title"
@@ -135,7 +135,7 @@ export const EventEditor = ({
             <Label htmlFor="event-all-day">All day</Label>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
-            <div className="workspace-field">
+            <div className="naum-field">
               <Label htmlFor="event-start">Start</Label>
               <DateTimePicker
                 id="event-start"
@@ -148,7 +148,7 @@ export const EventEditor = ({
                 }}
               />
             </div>
-            <div className="workspace-field">
+            <div className="naum-field">
               <Label htmlFor="event-end">End</Label>
               <DateTimePicker
                 id="event-end"
@@ -174,7 +174,7 @@ export const EventEditor = ({
             </p>
           )}
           <div className="grid grid-cols-2 gap-4">
-            <div className="workspace-field">
+            <div className="naum-field">
               <Label htmlFor="event-calendar">Calendar</Label>
               <SelectControl
                 id="event-calendar"
@@ -187,7 +187,7 @@ export const EventEditor = ({
                 }))}
               />
             </div>
-            <div className="workspace-field">
+            <div className="naum-field">
               <Label htmlFor="event-contact">Contact</Label>
               <SelectControl
                 id="event-contact"
@@ -210,7 +210,7 @@ export const EventEditor = ({
               />
             </div>
           </div>
-          <div className="workspace-field">
+          <div className="naum-field">
             <Label htmlFor="event-description">Description</Label>
             <Textarea
               id="event-description"

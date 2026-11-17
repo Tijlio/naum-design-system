@@ -10,10 +10,7 @@ export const ContactAvatar = ({
   onMesh?: boolean
 }) => (
   <Avatar className={className}>
-    <AvatarFallback
-      className={onMesh ? "bg-white/20 text-white" : "crm-accent"}
-      data-tone="lavender"
-    >
+    <AvatarFallback variant={onMesh ? "mesh" : "soft"} tone="lavender">
       {name
         .split(" ")
         .filter(Boolean)
