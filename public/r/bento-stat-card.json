@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "bento-stat-card",
+  "title": "Naum Bento Stat Card",
+  "description": "Naum bento-stat-card for React and Tailwind CSS v4.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/card.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/metric-trend.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/metric-value.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/blocks/bento-stat-card.tsx",
+      "type": "registry:component",
+      "target": "@components/blocks/bento-stat-card.tsx",
+      "content": "import type { ComponentProps, ReactNode } from \"react\"\nimport {\n  Card,\n  CardAction,\n  CardContent,\n  CardHeader,\n  CardTitle,\n} from \"@/components/ui/card\"\nimport { BentoMetricValue } from \"@/components/bento/metric-value\"\nimport { BentoMetricTrend } from \"@/components/bento/metric-trend\"\nimport { cn } from \"@/lib/utils\"\n\nexport type BentoStatCardProps = {\n  title: string\n  value: ComponentProps<typeof BentoMetricValue>\n  trend?: ComponentProps<typeof BentoMetricTrend>\n  action?: ReactNode\n  children?: ReactNode\n  className?: string\n}\n\nexport const BentoStatCard = ({\n  title,\n  value,\n  trend,\n  action,\n  children,\n  className,\n}: BentoStatCardProps) => (\n  <Card\n    className={cn(\"h-full w-full justify-between naum-card-lift\", className)}\n  >\n    <CardHeader>\n      <CardTitle className=\"text-sm font-normal text-muted-foreground\">\n        {title}\n      </CardTitle>\n      {action && <CardAction>{action}</CardAction>}\n    </CardHeader>\n    <CardContent className=\"flex flex-col gap-4\">\n      <div className=\"flex items-center gap-2\">\n        <BentoMetricValue {...value} />\n        {trend && <BentoMetricTrend {...trend} />}\n      </div>\n      {children}\n    </CardContent>\n  </Card>\n)\n"
+    }
+  ],
+  "type": "registry:block"
+}

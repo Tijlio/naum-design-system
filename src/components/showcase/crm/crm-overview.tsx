@@ -3,8 +3,7 @@
 import Link from "next/link"
 import { ArrowUpRight, ArrowRight, CalendarDays } from "lucide-react"
 import { InsightCard } from "@/components/bento/insight-card"
-import { BentoMetricValue } from "@/components/bento/metric-value"
-import { BentoMetricTrend } from "@/components/bento/metric-trend"
+import { BentoStatCard } from "@/components/blocks/bento-stat-card"
 import { format, parseISO } from "date-fns"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -61,44 +60,34 @@ export const CrmOverview = () => {
       <MotionStagger className="workspace-metrics">
         {metrics.map((metric) => (
           <MotionStaggerItem key={metric.label}>
-            <Card
-              variant="default"
-              className="h-full justify-between naum-card-lift"
+            <BentoStatCard
+              title={metric.label}
+              value={
+                metric.currency
+                  ? formatMoneyParts(metric.value)
+                  : { major: String(metric.value) }
+              }
+              trend={metric.trend}
+              action={
+                <Button
+                  variant="secondary"
+                  size="icon-sm"
+                  nativeButton={false}
+                  aria-label={`Open ${metric.label}`}
+                  render={<Link href="/showcase/crm/contacts" />}
+                >
+                  <ArrowUpRight className="size-3.5" />
+                </Button>
+              }
             >
-              <CardHeader>
-                <CardTitle className="text-sm font-normal text-muted-foreground">
-                  {metric.label}
-                </CardTitle>
-                <CardAction>
-                  <Button
-                    variant="secondary"
-                    size="icon-sm"
-                    nativeButton={false}
-                    aria-label={`Open ${metric.label}`}
-                    render={<Link href="/showcase/crm/contacts" />}
-                  >
-                    <ArrowUpRight className="size-3.5" />
-                  </Button>
-                </CardAction>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <p className="flex items-center gap-2">
-                  <BentoMetricValue
-                    {...(metric.currency
-                      ? formatMoneyParts(metric.value)
-                      : { major: String(metric.value) })}
-                  />
-                  <BentoMetricTrend {...metric.trend} />
-                </p>
-                <MetricBreakdown
-                  data={metric.breakdown}
-                  label={metric.breakdownLabel}
-                  color={metric.color}
-                  currency={metric.currency}
-                />
-                <p className="text-xs text-muted-foreground">{metric.detail}</p>
-              </CardContent>
-            </Card>
+              <MetricBreakdown
+                data={metric.breakdown}
+                label={metric.breakdownLabel}
+                color={metric.color}
+                currency={metric.currency}
+              />
+              <p className="text-xs text-muted-foreground">{metric.detail}</p>
+            </BentoStatCard>
           </MotionStaggerItem>
         ))}
         <MotionStaggerItem>

@@ -70,5 +70,12 @@ Install an item with `pnpm dlx shadcn@4.23.0 add @naum/<name>`. Every UI item in
 | `utils` | `cn` | [Source](../src/lib/utils.ts) |
 | `use-mobile` | `useIsMobile` | [Source](../src/hooks/use-mobile.ts) |
 | `theme-provider` | `ThemeProvider` | [Source](../src/components/theme-provider.tsx) |
+| `app-navigation` | `AppNavigationItem`, `AppNavigation` | [Source](../src/components/blocks/app-navigation.tsx) |
+| `app-shell` | `AppShellProps`, `AppShell` | [Source](../src/components/blocks/app-shell.tsx) |
+| `bento-stat-card` | `BentoStatCardProps`, `BentoStatCard` | [Source](../src/components/blocks/bento-stat-card.tsx) |
+| `bento-insight-card` | `InsightCard` | [Source](../src/components/bento/insight-card.tsx) |
+| `metric-value` | `BentoMetricValue` | [Source](../src/components/bento/metric-value.tsx) |
+| `metric-trend` | `BentoMetricTrend` | [Source](../src/components/bento/metric-trend.tsx) |
+| `navigation-styles` | `navigationItemVariants` | [Source](../src/lib/navigation-styles.ts) |
 
 The source props are the API reference. Base UI wrappers preserve primitive props; Naum-specific variants and provider requirements are described in the integration guide.

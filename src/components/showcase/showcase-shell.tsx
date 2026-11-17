@@ -1,6 +1,6 @@
 "use client"
 
-import { useId, type ReactNode } from "react"
+import type { ReactNode } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
@@ -10,30 +10,19 @@ import {
   LayoutDashboard,
   Users,
 } from "lucide-react"
+import { AppShell } from "@/components/blocks/app-shell"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { AmbientBackdrop } from "@/components/ui/ambient-backdrop"
-import { MotionPill, MotionProvider } from "@/components/ui/motion"
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarInset,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarProvider,
-  SidebarTrigger,
-  useSidebar,
 } from "@/components/ui/sidebar"
-import { WorkspaceSearch } from "./workspace-search"
-import { cn } from "@/lib/utils"
 import { navigationItemVariants } from "@/lib/navigation-styles"
+import { cn } from "@/lib/utils"
+import { WorkspaceSearch } from "./workspace-search"
 
 const NAVIGATION = [
   { label: "Calendar", href: "/showcase/calendar", icon: CalendarDays },
@@ -41,25 +30,22 @@ const NAVIGATION = [
   { label: "Contacts", href: "/showcase/crm/contacts", icon: Users },
 ]
 
-const WorkspaceNavigation = () => {
+export const ShowcaseShell = ({ children }: { children: ReactNode }) => {
   const path = usePathname()
-  const navigationId = useId()
-  const { isMobile, setOpenMobile } = useSidebar()
   return (
-    <Sidebar
-      variant="inset"
-      collapsible="icon"
-      aria-label="Workspace navigation"
-      className={cn(
-        "[&_[data-slot=sidebar-inner]]:bg-transparent group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4)))]",
-        isMobile && "workspace-overlay",
-      )}
-    >
-      <SidebarHeader className="p-3 group-data-[collapsible=icon]:p-2">
+    <AppShell
+      navigation={NAVIGATION.map(({ label, href, icon: Icon }) => ({
+        id: href,
+        label,
+        icon: <Icon />,
+        render: <Link href={href} />,
+        active: path === href,
+      }))}
+      brand={
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" render={<Link href="/showcase/crm" />}>
-              <span className="workspace-logo group-data-[collapsible=icon]:size-8">
+              <span className="workspace-logo flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground group-data-[collapsible=icon]:size-8">
                 <Layers className="size-5" />
               </span>
               <span className="flex flex-col group-data-[collapsible=icon]:sr-only">
@@ -69,44 +55,8 @@ const WorkspaceNavigation = () => {
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
-      </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Workspace</SidebarGroupLabel>
-          <SidebarMenu className="gap-2.5 group-data-[collapsible=icon]:items-center">
-            {NAVIGATION.map(({ label, href, icon: Icon }) => (
-              <SidebarMenuItem key={href}>
-                <SidebarMenuButton
-                  tooltip={label}
-                  className={cn(
-                    navigationItemVariants({ active: path === href }),
-                    "group-data-[collapsible=icon]:size-10! group-data-[collapsible=icon]:justify-center",
-                  )}
-                  isActive={path === href}
-                  aria-current={path === href ? "page" : undefined}
-                  render={<Link href={href} />}
-                  onClick={() => {
-                    if (isMobile) setOpenMobile(false)
-                  }}
-                >
-                  {path === href && (
-                    <MotionPill
-                      layoutId={`${navigationId}-active`}
-                      aria-hidden="true"
-                      className="bg-white shadow-sm ring-1 ring-foreground/5"
-                    />
-                  )}
-                  <Icon />
-                  <span className="group-data-[collapsible=icon]:sr-only">
-                    {label}
-                  </span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
-      </SidebarContent>
-      <SidebarFooter className="p-3 group-data-[collapsible=icon]:p-2">
+      }
+      footer={
         <SidebarMenu className="group-data-[collapsible=icon]:items-center">
           <SidebarMenuItem>
             <SidebarMenuButton
@@ -138,43 +88,32 @@ const WorkspaceNavigation = () => {
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
-      </SidebarFooter>
-    </Sidebar>
+      }
+      header={
+        <>
+          <span className="text-sm font-medium">Naum Studio</span>
+          <Badge variant="outline" className="hidden sm:inline-flex">
+            Demo workspace
+          </Badge>
+        </>
+      }
+      actions={
+        <>
+          <WorkspaceSearch />
+          <ThemeToggle />
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            nativeButton={false}
+            aria-label="Bento showcase"
+            render={<Link href="/" />}
+          >
+            <ArrowUpRight />
+          </Button>
+        </>
+      }
+    >
+      {children}
+    </AppShell>
   )
 }
-
-export const ShowcaseShell = ({ children }: { children: ReactNode }) => (
-  <MotionProvider>
-    <div className="relative isolate min-h-screen bg-background text-foreground">
-      <AmbientBackdrop />
-      <SidebarProvider className="relative z-10 has-data-[variant=inset]:bg-transparent">
-        <WorkspaceNavigation />
-        <SidebarInset className="workspace-inset bg-transparent md:peer-data-[variant=inset]:shadow-none">
-          <header className="workspace-header">
-            <div className="flex min-w-0 items-center gap-3">
-              <SidebarTrigger />
-              <span className="text-sm font-medium">Naum Studio</span>
-              <Badge variant="outline" className="hidden sm:inline-flex">
-                Demo workspace
-              </Badge>
-            </div>
-            <div className="flex items-center gap-2">
-              <WorkspaceSearch />
-              <ThemeToggle />
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                nativeButton={false}
-                aria-label="Bento showcase"
-                render={<Link href="/" />}
-              >
-                <ArrowUpRight />
-              </Button>
-            </div>
-          </header>
-          <div className="workspace-page">{children}</div>
-        </SidebarInset>
-      </SidebarProvider>
-    </div>
-  </MotionProvider>
-)

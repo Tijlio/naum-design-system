@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "metric-trend",
+  "title": "Naum Metric Trend",
+  "description": "Naum metric-trend for React and Tailwind CSS v4.",
+  "dependencies": [
+    "lucide-react@1.74.0"
+  ],
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/tooltip.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/bento/metric-trend.tsx",
+      "type": "registry:component",
+      "target": "@components/bento/metric-trend.tsx",
+      "content": "import { ArrowDown, ArrowUp, Minus } from \"lucide-react\"\nimport { cn } from \"@/lib/utils\"\nimport {\n  Tooltip,\n  TooltipContent,\n  TooltipTrigger,\n} from \"@/components/ui/tooltip\"\n\nexport const BentoMetricTrend = ({\n  direction,\n  label,\n}: {\n  direction: \"up\" | \"down\" | \"flat\"\n  label: string\n}) => {\n  const Icon =\n    direction === \"up\" ? ArrowUp : direction === \"down\" ? ArrowDown : Minus\n  return (\n    <Tooltip>\n      <TooltipTrigger\n        render={\n          <span\n            role=\"img\"\n            tabIndex={0}\n            aria-label={label}\n            className={cn(\n              \"inline-flex size-5 shrink-0 items-center justify-center rounded-full text-white outline-none focus-visible:ring-2 focus-visible:ring-ring\",\n              direction === \"up\"\n                ? \"bg-emerald-500\"\n                : direction === \"down\"\n                  ? \"bg-orange-600\"\n                  : \"bg-muted-foreground\",\n            )}\n          />\n        }\n      >\n        <Icon className=\"size-3\" aria-hidden=\"true\" />\n      </TooltipTrigger>\n      <TooltipContent>{label}</TooltipContent>\n    </Tooltip>\n  )\n}\n"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "navigation-styles",
+  "title": "Naum Navigation Styles",
+  "description": "Naum navigation-styles for React and Tailwind CSS v4.",
+  "dependencies": [
+    "class-variance-authority@0.7.1"
+  ],
+  "files": [
+    {
+      "path": "src/lib/navigation-styles.ts",
+      "type": "registry:lib",
+      "content": "import { cva } from \"class-variance-authority\"\n\nexport const navigationItemVariants = cva(\n  \"relative isolate h-10 rounded-full border border-transparent bg-clip-padding data-active:bg-transparent\",\n  {\n    variants: {\n      active: {\n        true: \"text-foreground hover:bg-transparent data-active:text-foreground dark:text-black dark:data-active:text-black\",\n        false:\n          \"bg-surface-frosted text-foreground/65 ring-1 ring-white/50 backdrop-blur-md hover:bg-card/80 hover:text-foreground dark:ring-white/10 dark:hover:bg-card/80\",\n      },\n    },\n    defaultVariants: { active: false },\n  },\n)\n"
+    }
+  ],
+  "type": "registry:lib"
+}

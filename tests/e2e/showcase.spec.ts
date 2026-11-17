@@ -213,7 +213,7 @@ test("sidebar collapse keeps identity centered and mobile navigation works", asy
   await page.getByRole("button", { name: "Toggle Sidebar" }).click()
   if (testInfo.project.name === "mobile") {
     const navigation = page.getByRole("dialog")
-    await expect(navigation).toHaveClass(/workspace-overlay/)
+    await expect(navigation).toHaveClass(/naum-app-overlay/)
     await navigation
       .getByRole("link", { name: "Contacts", exact: true })
       .click()

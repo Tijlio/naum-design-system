@@ -18,13 +18,7 @@ import {
 } from "recharts"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+
 import {
   ChartContainer,
   ChartTooltip,
@@ -32,8 +26,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart"
 import type { KpiCardItem } from "./bento-data"
-import { BentoMetricValue } from "./metric-value"
-import { BentoMetricTrend } from "./metric-trend"
+import { BentoStatCard } from "@/components/blocks/bento-stat-card"
 
 function KpiChart({
   kpi,
@@ -208,63 +201,53 @@ export function KpiCard({ kpi }: { kpi: KpiCardItem }) {
   } satisfies ChartConfig
 
   return (
-    <Card variant="default" className="w-full justify-between naum-card-lift">
-      <CardHeader className="pb-0">
-        <CardTitle className="text-sm font-normal text-muted-foreground">
-          {kpi.title}
-        </CardTitle>
-        <CardAction>
-          <Button
-            variant="secondary"
-            size="icon-sm"
-            className="rounded-full"
-            aria-label={`Open ${kpi.title}`}
-          >
-            <ArrowUpRight className="size-3.5 transition-transform duration-200 motion-safe:group-hover/card:translate-x-0.5 motion-safe:group-hover/card:-translate-y-0.5" />
-          </Button>
-        </CardAction>
-      </CardHeader>
+    <BentoStatCard
+      title={kpi.title}
+      value={{ major: kpi.major, minor: kpi.minor, currency: "$" }}
+      trend={{
+        direction: kpi.trend,
+        label: `${kpi.delta} compared with last week`,
+      }}
+      action={
+        <Button
+          variant="secondary"
+          size="icon-sm"
+          aria-label={`Open ${kpi.title}`}
+        >
+          <ArrowUpRight className="size-3.5 transition-transform duration-200 motion-safe:group-hover/card:translate-x-0.5 motion-safe:group-hover/card:-translate-y-0.5" />
+        </Button>
+      }
+    >
+      <div className="relative flex flex-col gap-2">
+        <Badge
+          variant="secondary"
+          className={
+            kpi.trend === "up"
+              ? "pointer-events-none absolute -top-1 right-3 z-10 h-5 rounded-full bg-emerald-500/15 px-2 text-[10px] font-medium text-emerald-700 dark:text-emerald-300"
+              : "pointer-events-none absolute -top-1 right-3 z-10 h-5 rounded-full bg-orange-500/15 px-2 text-[10px] font-medium text-orange-700 dark:text-orange-300"
+          }
+        >
+          {kpi.delta}
+        </Badge>
 
-      <CardContent className="flex flex-col gap-4">
-        <div className="flex items-center gap-2">
-          <BentoMetricValue major={kpi.major} minor={kpi.minor} currency="$" />
-          <BentoMetricTrend
-            direction={kpi.trend}
-            label={`${kpi.delta} compared with last week`}
-          />
+        <ChartContainer config={chartConfig} className="h-24 w-full">
+          <KpiChart kpi={kpi} gradientId={gradientId} />
+        </ChartContainer>
+
+        <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+          <span className="inline-flex items-center gap-1.5">
+            <span className="size-1.5 rounded-full bg-foreground" />
+            Last Week
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <span
+              className="size-1.5 rounded-full"
+              style={{ backgroundColor: kpi.lineColor }}
+            />
+            This Week
+          </span>
         </div>
-
-        <div className="relative flex flex-col gap-2">
-          <Badge
-            variant="secondary"
-            className={
-              kpi.trend === "up"
-                ? "pointer-events-none absolute -top-1 right-3 z-10 h-5 rounded-full bg-emerald-500/15 px-2 text-[10px] font-medium text-emerald-700 dark:text-emerald-300"
-                : "pointer-events-none absolute -top-1 right-3 z-10 h-5 rounded-full bg-orange-500/15 px-2 text-[10px] font-medium text-orange-700 dark:text-orange-300"
-            }
-          >
-            {kpi.delta}
-          </Badge>
-
-          <ChartContainer config={chartConfig} className="h-24 w-full">
-            <KpiChart kpi={kpi} gradientId={gradientId} />
-          </ChartContainer>
-
-          <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-            <span className="inline-flex items-center gap-1.5">
-              <span className="size-1.5 rounded-full bg-foreground" />
-              Last Week
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <span
-                className="size-1.5 rounded-full"
-                style={{ backgroundColor: kpi.lineColor }}
-              />
-              This Week
-            </span>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+      </div>
+    </BentoStatCard>
   )
 }

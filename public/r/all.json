@@ -66,7 +66,14 @@
     "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/tooltip.json",
     "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json",
     "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/use-mobile.json",
-    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme-provider.json"
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme-provider.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/app-navigation.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/app-shell.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/bento-stat-card.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/bento-insight-card.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/metric-value.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/metric-trend.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/navigation-styles.json"
   ],
   "type": "registry:style"
 }

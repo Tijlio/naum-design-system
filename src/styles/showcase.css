@@ -1,23 +1,4 @@
 @layer components {
-  .workspace-inset {
-    background: transparent;
-    min-width: 0;
-  }
-  .workspace-header {
-    display: flex;
-    min-height: --spacing(20);
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: --spacing(3);
-    padding: --spacing(6) --spacing(8);
-  }
-  .workspace-page {
-    width: 100%;
-    max-width: 100rem;
-    margin-inline: auto;
-    padding: --spacing(8);
-  }
   .workspace-stack {
     display: flex;
     flex-direction: column;
@@ -34,17 +15,6 @@
     color: var(--muted-foreground);
     font-size: var(--text-xs);
     margin-bottom: --spacing(2);
-  }
-  .workspace-logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: --spacing(9);
-    height: --spacing(9);
-    border-radius: var(--radius-xl);
-    color: var(--primary-foreground);
-    background: var(--primary);
-    flex-shrink: 0;
   }
   .workspace-metrics {
     display: grid;
@@ -123,12 +93,6 @@
     }
   }
   @media (width < 48rem) {
-    .workspace-page {
-      padding: --spacing(5);
-    }
-    .workspace-header {
-      padding: --spacing(4) --spacing(5);
-    }
   }
   @media (width < 25rem) {
     .workspace-metrics {
@@ -186,15 +150,7 @@
 
 @layer utilities {
   .workspace-overlay {
-    background:
-      radial-gradient(
-        at 0% 0%,
-        color-mix(in oklch, var(--chart-1) 10%, transparent),
-        transparent 55%
-      ),
-      var(--background);
-    color: var(--foreground);
-    box-shadow: var(--naum-shadow-toast);
+    @apply naum-app-overlay;
   }
   .workspace-dialog {
     max-height: calc(100dvh - --spacing(8));

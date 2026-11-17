@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "metric-value",
+  "title": "Naum Metric Value",
+  "description": "Naum metric-value for React and Tailwind CSS v4.",
+  "files": [
+    {
+      "path": "src/components/bento/metric-value.tsx",
+      "type": "registry:component",
+      "target": "@components/bento/metric-value.tsx",
+      "content": "export const BentoMetricValue = ({\n  major,\n  minor,\n  currency,\n}: {\n  major: string\n  minor?: string\n  currency?: string\n}) => {\n  return (\n    <span className=\"text-3xl font-normal tracking-tight tabular-nums\">\n      {currency && (\n        <span className=\"mr-1 text-lg text-muted-foreground\">{currency}</span>\n      )}\n      {major}\n      {minor && <span className=\"text-muted-foreground\">{minor}</span>}\n    </span>\n  )\n}\n"
+    }
+  ],
+  "type": "registry:component"
+}

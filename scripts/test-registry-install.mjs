@@ -26,7 +26,13 @@ const report = []
 
 try {
   outputs = await createRegistry({ baseUrl })
-  for (const item of ["command", "all"]) {
+  for (const item of [
+    "command",
+    "app-shell",
+    "bento-stat-card",
+    "bento-insight-card",
+    "all",
+  ]) {
     const cwd = resolve(temporary, item)
     await mkdir(resolve(cwd, "src"), { recursive: true })
     const json = async (path, value) =>

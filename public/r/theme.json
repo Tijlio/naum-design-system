@@ -221,6 +221,11 @@
           "transform": "translateY(-2px)"
         }
       }
+    },
+    "@utility naum-app-overlay": {
+      "background": "radial-gradient(\n      at 0% 0%,\n      color-mix(in oklch, var(--chart-1) 10%, transparent),\n      transparent 55%\n    ),\n    var(--background)",
+      "color": "var(--foreground)",
+      "box-shadow": "var(--naum-shadow-toast)"
     }
   },
   "type": "registry:style"

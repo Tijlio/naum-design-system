@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "app-navigation",
+  "title": "Naum App Navigation",
+  "description": "Naum app-navigation for React and Tailwind CSS v4.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/motion.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/navigation-styles.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/sidebar.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/blocks/app-navigation.tsx",
+      "type": "registry:component",
+      "target": "@components/blocks/app-navigation.tsx",
+      "content": "\"use client\"\n\nimport { useId, type ReactElement, type ReactNode } from \"react\"\nimport { MotionPill } from \"@/components/ui/motion\"\nimport {\n  SidebarMenu,\n  SidebarMenuButton,\n  SidebarMenuItem,\n  useSidebar,\n} from \"@/components/ui/sidebar\"\nimport { navigationItemVariants } from \"@/lib/navigation-styles\"\nimport { cn } from \"@/lib/utils\"\n\nexport type AppNavigationItem = {\n  id: string\n  label: string\n  icon: ReactNode\n  render: ReactElement\n  active?: boolean\n}\n\nexport const AppNavigation = ({\n  items,\n}: {\n  items: readonly AppNavigationItem[]\n}) => {\n  const navigationId = useId()\n  const { isMobile, setOpenMobile } = useSidebar()\n  return (\n    <SidebarMenu className=\"gap-2.5 group-data-[collapsible=icon]:items-center\">\n      {items.map((item) => (\n        <SidebarMenuItem key={item.id}>\n          <SidebarMenuButton\n            tooltip={item.label}\n            className={cn(\n              navigationItemVariants({ active: Boolean(item.active) }),\n              \"group-data-[collapsible=icon]:size-10! group-data-[collapsible=icon]:justify-center\",\n            )}\n            isActive={item.active}\n            aria-current={item.active ? \"page\" : undefined}\n            render={item.render}\n            onClick={() => {\n              if (isMobile) setOpenMobile(false)\n            }}\n          >\n            {item.active && (\n              <MotionPill\n                layoutId={`${navigationId}-active`}\n                aria-hidden=\"true\"\n                className=\"bg-white shadow-sm ring-1 ring-foreground/5\"\n              />\n            )}\n            {item.icon}\n            <span className=\"group-data-[collapsible=icon]:sr-only\">\n              {item.label}\n            </span>\n          </SidebarMenuButton>\n        </SidebarMenuItem>\n      ))}\n    </SidebarMenu>\n  )\n}\n"
+    }
+  ],
+  "type": "registry:block"
+}

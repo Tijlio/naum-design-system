@@ -66,3 +66,39 @@ test("documentation remains accessible in both themes and compact layouts", asyn
     )
   }
 })
+
+test("installable blocks expose working examples and usage", async ({
+  page,
+}) => {
+  await page.goto("/docs")
+  const catalog = page.getByRole("navigation", { name: "Component catalog" })
+  await page.getByLabel("Find a component").fill("bento-stat-card")
+  await catalog
+    .getByRole("button", { name: "bento-stat-card Block", exact: true })
+    .click()
+  await chooseOption(page, "Trend", "Down")
+  await expect(
+    page.getByLabel("Block preview").getByRole("img"),
+  ).toHaveAttribute("aria-label", "Compared with last month")
+  await expect(page.getByLabel("Block usage")).toContainText(
+    'direction: "down"',
+  )
+  await page.getByLabel("Find a component").fill("app-navigation")
+  await catalog
+    .getByRole("button", { name: "app-navigation Block", exact: true })
+    .click()
+  const contacts = page
+    .getByLabel("Block preview")
+    .getByRole("button", { name: "Contacts" })
+  await contacts.click()
+  await expect(contacts).toHaveAttribute("aria-current", "page")
+  await page.getByLabel("Find a component").fill("app-shell")
+  await catalog
+    .getByRole("button", { name: "app-shell Block", exact: true })
+    .click()
+  await expect(
+    page
+      .frameLocator('iframe[title="App shell live example"]')
+      .getByRole("heading", { name: "Good morning, Alex" }),
+  ).toBeVisible()
+})

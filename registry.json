@@ -225,6 +225,11 @@
               "transform": "translateY(-2px)"
             }
           }
+        },
+        "@utility naum-app-overlay": {
+          "background": "radial-gradient(\n      at 0% 0%,\n      color-mix(in oklch, var(--chart-1) 10%, transparent),\n      transparent 55%\n    ),\n    var(--background)",
+          "color": "var(--foreground)",
+          "box-shadow": "var(--naum-shadow-toast)"
         }
       },
       "type": "registry:style"
@@ -1426,6 +1431,135 @@
       "type": "registry:component"
     },
     {
+      "name": "app-navigation",
+      "title": "Naum App Navigation",
+      "description": "Naum app-navigation for React and Tailwind CSS v4.",
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/motion.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/navigation-styles.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/sidebar.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/blocks/app-navigation.tsx",
+          "type": "registry:component",
+          "target": "@components/blocks/app-navigation.tsx"
+        }
+      ],
+      "type": "registry:block"
+    },
+    {
+      "name": "app-shell",
+      "title": "Naum App Shell",
+      "description": "Naum app-shell for React and Tailwind CSS v4.",
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/ambient-backdrop.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/app-navigation.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/motion.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/sidebar.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/blocks/app-shell.tsx",
+          "type": "registry:component",
+          "target": "@components/blocks/app-shell.tsx"
+        }
+      ],
+      "type": "registry:block"
+    },
+    {
+      "name": "bento-stat-card",
+      "title": "Naum Bento Stat Card",
+      "description": "Naum bento-stat-card for React and Tailwind CSS v4.",
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/card.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/metric-trend.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/metric-value.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/blocks/bento-stat-card.tsx",
+          "type": "registry:component",
+          "target": "@components/blocks/bento-stat-card.tsx"
+        }
+      ],
+      "type": "registry:block"
+    },
+    {
+      "name": "bento-insight-card",
+      "title": "Naum Bento Insight Card",
+      "description": "Naum bento-insight-card for React and Tailwind CSS v4.",
+      "dependencies": [
+        "lucide-react@1.74.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/button.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/card.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/bento/insight-card.tsx",
+          "type": "registry:component",
+          "target": "@components/bento/insight-card.tsx"
+        }
+      ],
+      "type": "registry:block"
+    },
+    {
+      "name": "metric-value",
+      "title": "Naum Metric Value",
+      "description": "Naum metric-value for React and Tailwind CSS v4.",
+      "files": [
+        {
+          "path": "src/components/bento/metric-value.tsx",
+          "type": "registry:component",
+          "target": "@components/bento/metric-value.tsx"
+        }
+      ],
+      "type": "registry:component"
+    },
+    {
+      "name": "metric-trend",
+      "title": "Naum Metric Trend",
+      "description": "Naum metric-trend for React and Tailwind CSS v4.",
+      "dependencies": [
+        "lucide-react@1.74.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/tooltip.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/bento/metric-trend.tsx",
+          "type": "registry:component",
+          "target": "@components/bento/metric-trend.tsx"
+        }
+      ],
+      "type": "registry:component"
+    },
+    {
+      "name": "navigation-styles",
+      "title": "Naum Navigation Styles",
+      "description": "Naum navigation-styles for React and Tailwind CSS v4.",
+      "dependencies": [
+        "class-variance-authority@0.7.1"
+      ],
+      "files": [
+        {
+          "path": "src/lib/navigation-styles.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "type": "registry:lib"
+    },
+    {
       "name": "all",
       "title": "Naum Complete Preset",
       "description": "Every Naum UI component, shared dependency, theme and provider.",
@@ -1492,7 +1626,14 @@
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/tooltip.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/use-mobile.json",
-        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme-provider.json"
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme-provider.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/app-navigation.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/app-shell.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/bento-stat-card.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/bento-insight-card.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/metric-value.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/metric-trend.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/navigation-styles.json"
       ],
       "type": "registry:style"
     }

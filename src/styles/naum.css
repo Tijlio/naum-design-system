@@ -285,3 +285,15 @@
     }
   }
 }
+
+@utility naum-app-overlay {
+  background:
+    radial-gradient(
+      at 0% 0%,
+      color-mix(in oklch, var(--chart-1) 10%, transparent),
+      transparent 55%
+    ),
+    var(--background);
+  color: var(--foreground);
+  box-shadow: var(--naum-shadow-toast);
+}

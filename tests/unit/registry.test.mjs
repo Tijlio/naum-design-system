@@ -53,6 +53,26 @@ describe("consumer registry contract", () => {
     )
   })
 
+  it("ships portable Bento/app blocks with alias-aware component targets", () => {
+    for (const name of [
+      "bento-stat-card",
+      "bento-insight-card",
+      "app-navigation",
+      "app-shell",
+    ]) {
+      const item = outputs.get(`public/r/${name}.json`)
+      expect(item.type).toBe("registry:block")
+      expect(item.files[0].type).toBe("registry:component")
+      expect(item.files[0].target).toMatch(/^@components\//)
+      expect(
+        item.registryDependencies.some((dependency) =>
+          dependency.endsWith("/theme.json"),
+        ),
+      ).toBe(true)
+      expect(item.files[0].content).not.toMatch(/from ["']next[\/"']/)
+    }
+  })
+
   it("distributes the typography, radius, surfaces and motion policy together", () => {
     const theme = outputs.get("public/r/theme.json")
     expect(theme.cssVars.theme["radius-3xl"]).toBe("calc(var(--radius) * 2.2)")

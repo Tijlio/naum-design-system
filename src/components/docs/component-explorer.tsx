@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { AmbientBackdrop } from "@/components/ui/ambient-backdrop"
 import { MotionFadeUp, MotionProvider } from "@/components/ui/motion"
+import { BlockExamples } from "./block-examples"
 import { CodeSample } from "./code-sample"
 import { ComponentExamples, INTERACTIVE_COMPONENTS } from "./component-examples"
 
@@ -147,7 +148,9 @@ export const ComponentExplorer = ({ entries }: { entries: CatalogEntry[] }) => {
                       code={`pnpm dlx shadcn@4.23.0 add https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/${entry.name}.json`}
                     />
                   </section>
-                  {INTERACTIVE_COMPONENTS.includes(entry.name) ? (
+                  {entry.block ? (
+                    <BlockExamples key={entry.name} name={entry.name} />
+                  ) : INTERACTIVE_COMPONENTS.includes(entry.name) ? (
                     <ComponentExamples key={entry.name} name={entry.name} />
                   ) : (
                     <div className="space-y-3">

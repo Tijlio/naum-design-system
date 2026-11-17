@@ -105,6 +105,40 @@ export const createRegistry = async ({
       type: "registry:component",
     },
   )
+  entries.push(
+    ...(await readdir(resolve(root, "src/components/blocks")))
+      .filter((name) => name.endsWith(".tsx"))
+      .sort()
+      .map((name) => ({
+        name: name.slice(0, -4),
+        path: `src/components/blocks/${name}`,
+        type: "registry:block",
+        target: `@components/blocks/${name}`,
+      })),
+    {
+      name: "bento-insight-card",
+      path: "src/components/bento/insight-card.tsx",
+      type: "registry:block",
+      target: "@components/bento/insight-card.tsx",
+    },
+    {
+      name: "metric-value",
+      path: "src/components/bento/metric-value.tsx",
+      type: "registry:component",
+      target: "@components/bento/metric-value.tsx",
+    },
+    {
+      name: "metric-trend",
+      path: "src/components/bento/metric-trend.tsx",
+      type: "registry:component",
+      target: "@components/bento/metric-trend.tsx",
+    },
+    {
+      name: "navigation-styles",
+      path: "src/lib/navigation-styles.ts",
+      type: "registry:lib",
+    },
+  )
   const names = new Map(
     entries.map((entry) => [entry.path.replace(/\.tsx?$/, ""), entry.name]),
   )
@@ -149,7 +183,9 @@ export const createRegistry = async ({
     )
     const dependencies = new Set()
     const registryDependencies = new Set(
-      entry.type === "registry:ui" ? [url("theme")] : [],
+      ["registry:ui", "registry:block"].includes(entry.type)
+        ? [url("theme")]
+        : [],
     )
     for (const statement of source.statements) {
       if (
@@ -186,7 +222,14 @@ export const createRegistry = async ({
       ...(registryDependencies.size
         ? { registryDependencies: [...registryDependencies].sort() }
         : {}),
-      files: [{ path: entry.path, type: entry.type }],
+      files: [
+        {
+          path: entry.path,
+          type:
+            entry.type === "registry:block" ? "registry:component" : entry.type,
+          ...(entry.target ? { target: entry.target } : {}),
+        },
+      ],
     })
   }
   items.push({
