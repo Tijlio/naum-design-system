@@ -173,7 +173,10 @@ export function ActivitiesSection() {
                 </CardHeader>
 
                 <CardContent className="flex flex-col gap-3 px-4">
-                  <div aria-hidden="true" className="ml-auto w-3/4 opacity-45">
+                  <div
+                    aria-hidden="true"
+                    className="mx-auto flex h-10 w-3/4 items-center justify-center opacity-45"
+                  >
                     <ActivityMotif motif={item.motif} />
                   </div>
                   <div className="flex flex-col gap-2">
