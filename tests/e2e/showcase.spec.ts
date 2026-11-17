@@ -88,7 +88,7 @@ test("contacts can be filtered, created, annotated and archived", async ({
   await form.getByLabel("Company").fill("Rivers Studio")
   await form.getByRole("button", { name: "Add contact" }).click()
   await expect(form).toBeHidden()
-  await page.getByRole("textbox", { name: "Search contacts" }).fill("Ada")
+  await page.getByRole("searchbox", { name: "Search contacts" }).fill("Ada")
   await page.getByRole("button", { name: /Ada Rivers/ }).click()
   const details = page.getByRole("dialog", { name: "Ada Rivers" })
   await expect(

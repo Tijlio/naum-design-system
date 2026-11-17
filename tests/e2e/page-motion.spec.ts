@@ -21,7 +21,7 @@ test("route pages animate together and query-only updates retain the page bounda
     if (testInfo.project.name === "mobile" && !(await navigation.isVisible()))
       await page.getByRole("button", { name: "Toggle Sidebar" }).click()
     await navigation.getByRole("link", { name, exact: true }).click()
-    const content = page.locator('[data-slot="workspace-page"]')
+    const content = page.locator('[data-slot="app-page"]')
     await expect(content).toBeVisible()
     // The title and page contents share one transition boundary on every route.
     await expect(content.getByRole("heading", { level: 1 })).toBeVisible()
@@ -30,17 +30,17 @@ test("route pages animate together and query-only updates retain the page bounda
     await expect(content).toHaveCSS("transform", "none")
   }
   const pageBoundary = await page
-    .locator('[data-slot="workspace-page"]')
+    .locator('[data-slot="app-page"]')
     .elementHandle()
   await page
-    .getByRole("textbox", { name: "Search contacts", exact: true })
+    .getByRole("searchbox", { name: "Search contacts", exact: true })
     .fill("Emma")
   await expect(
     page.getByRole("table", { name: "Contacts", exact: true }),
   ).toContainText("Emma Laurent")
   expect(await pageBoundary?.evaluate((node) => node.isConnected)).toBe(true)
   await expect(
-    page.getByRole("textbox", { name: "Search contacts", exact: true }),
+    page.getByRole("searchbox", { name: "Search contacts", exact: true }),
   ).toBeFocused()
   await pageBoundary?.dispose()
 })

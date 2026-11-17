@@ -4,8 +4,9 @@ import { useMemo } from "react"
 import type { ColumnDef } from "@tanstack/react-table"
 import { toast } from "sonner"
 import { DataTable } from "@/components/blocks/data-table"
+import { PageToolbar } from "@/components/blocks/page-toolbar"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { SearchInput } from "@/components/ui/search-input"
 import { Label } from "@/components/ui/label"
 import { SelectControl } from "@/components/ui/select-control"
 import { formatMoney } from "@/lib/money-format"
@@ -78,12 +79,14 @@ export const OpportunitiesTable = ({
     update("filters", (current) => ({ ...current, [key]: value }))
   return (
     <div className="space-y-6">
-      <WorkspaceSavedViews
-        scope="opportunities"
-        state={view}
-        selected={selectedView}
-        onApply={apply}
-      />
+      <PageToolbar aria-label="View controls">
+        <WorkspaceSavedViews
+          scope="opportunities"
+          state={view}
+          selected={selectedView}
+          onApply={apply}
+        />
+      </PageToolbar>
       <DataTable
         table={table}
         label="Opportunities"
@@ -98,9 +101,9 @@ export const OpportunitiesTable = ({
         }}
         toolbar={
           <>
-            <Input
+            <SearchInput
               className="max-w-sm"
-              aria-label="Search opportunities"
+              label="Search opportunities"
               placeholder="Search opportunities…"
               value={view.query}
               onChange={(event) => update("query", event.target.value)}

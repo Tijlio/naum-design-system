@@ -42,3 +42,9 @@ The latest cross-app review is documented in [quality-review.md](quality-review.
 Only test sources and reviewed reference PNGs are committed. Run reports and traces remain in ignored build storage or temporary CI artifacts.
 
 Contacts, pipeline tables and tasks share the installable DataTable and view controls. Views persist locally and in validated URL state. CRM routes share a fixed labeled section in expanded/mobile navigation and flyout destinations in the compact sidebar. The installable navigation also retains an optional collapsible variant. See [data-tables-and-follow-ups.md](data-tables-and-follow-ups.md) for migrations and contracts.
+
+## Shared page composition
+
+Overview, Contacts, Tasks, Pipeline (board and table) and Calendar use AppPage and PageHeader. View controls, DataTable filters/actions and calendar date/view navigation use PageToolbar. Ordinary query fields use SearchInput; command search and comboboxes keep their own interaction behavior. Header counts are application-owned totals (active contacts, open tasks and all opportunities). The board only adds a matching-result badge when filtering changes the result count. The shared page root stays mounted during query-only changes; generic tables no longer add a second vertical entrance.
+
+PageToolbar lays out controls and trailing actions in a single wrapping row, so full-width mobile search can be followed by filters/actions without an empty grouping row. Saved-view groups can shrink inside that toolbar, including long user-defined names. Existing dialogs and detail sheets retain their own semantic headers rather than adding nested page headings. Page-specific data, validation, URL state, saved views and local persistence remain in the showcase layer.

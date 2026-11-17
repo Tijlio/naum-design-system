@@ -1,5 +1,7 @@
 "use client"
 
+import { AppPage } from "@/components/blocks/app-page"
+import { PageHeader } from "@/components/blocks/page-header"
 import Link from "next/link"
 import { ArrowUpRight, ArrowRight, CalendarDays } from "lucide-react"
 import { InsightCard } from "@/components/bento/insight-card"
@@ -23,7 +25,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { MotionFadeUp } from "@/components/ui/motion"
 import { formatMoney, formatMoneyParts } from "@/lib/money-format"
 import { useShowcase } from "../showcase-provider"
 import { ContactAvatar } from "./contact-avatar"
@@ -37,20 +38,20 @@ export const CrmOverview = () => {
   const { openDeals, metrics, appointmentCount, upcoming, recentContacts } =
     getCrmOverview(contacts, appointments, deals)
   return (
-    <MotionFadeUp data-slot="workspace-page" className="workspace-stack">
-      <div className="workspace-heading">
-        <div>
-          <p className="workspace-eyebrow">Tuesday, 17 November 2026</p>
-          <h1 className="naum-page-title">Good morning, Alex</h1>
-        </div>
-        <Button
-          nativeButton={false}
-          render={<Link href="/showcase/crm/contacts" />}
-        >
-          View contacts
-          <ArrowUpRight />
-        </Button>
-      </div>
+    <AppPage>
+      <PageHeader
+        eyebrow="Tuesday, 17 November 2026"
+        title="Good morning, Alex"
+        actions={
+          <Button
+            nativeButton={false}
+            render={<Link href="/showcase/crm/contacts" />}
+          >
+            View contacts
+            <ArrowUpRight />
+          </Button>
+        }
+      />
       <div className="workspace-metrics">
         {metrics.map((metric) => (
           <div key={metric.label}>
@@ -241,6 +242,6 @@ export const CrmOverview = () => {
           </CardContent>
         </Card>
       </div>
-    </MotionFadeUp>
+    </AppPage>
   )
 }

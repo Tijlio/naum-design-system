@@ -42,7 +42,7 @@ export const ContactsExample = () => {
         onChange={event => setQuery(event.target.value)} />
     </PageToolbar>
     <ul>{matches.map(name => <li key={name}>{name}</li>)}</ul>
-    <p role="status">{matches.length} matching contacts</p>
+    <p role="status">{matches.length} matching {matches.length === 1 ? "contact" : "contacts"}</p>
   </AppPage>
 }`
   return (
@@ -110,7 +110,8 @@ export const ContactsExample = () => {
             ))}
           </ul>
           <p role="status" className="text-sm text-muted-foreground">
-            {matches.length} matching contacts
+            {matches.length} matching{" "}
+            {matches.length === 1 ? "contact" : "contacts"}
           </p>
         </AppPage>
       </ExampleFrame>

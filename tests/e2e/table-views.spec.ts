@@ -52,14 +52,14 @@ test("contact views persist filters, sorting and columns with URL back/forward",
   await expect(
     page.getByRole("combobox", { name: "Saved view" }),
   ).toContainText("Sales leads")
-  await page.getByRole("textbox", { name: "Search contacts" }).fill("Oliver")
+  await page.getByRole("searchbox", { name: "Search contacts" }).fill("Oliver")
   await expect(
     page.getByRole("combobox", { name: "Saved view" }),
   ).toContainText("Modified")
   await page.getByRole("button", { name: "Update view", exact: true }).click()
   await page.reload()
   await expect(
-    page.getByRole("textbox", { name: "Search contacts" }),
+    page.getByRole("searchbox", { name: "Search contacts" }),
   ).toHaveValue("Oliver")
   await page
     .getByRole("button", { name: "Delete view Sales leads", exact: true })

@@ -55,7 +55,10 @@ export const DataTableViews = ({
     setOpen(false)
   }
   return (
-    <div className="flex flex-wrap items-center gap-2" aria-label="Saved views">
+    <div
+      className="flex min-w-0 max-w-full flex-wrap items-center gap-2"
+      aria-label="Saved views"
+    >
       <Bookmark className="size-4 text-muted-foreground" aria-hidden />
       <Label htmlFor={`${id}-view`} className="sr-only">
         Saved view

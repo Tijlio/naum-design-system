@@ -2,13 +2,10 @@ import type { ComponentProps, ReactNode } from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
-const toolbarVariants = cva(
-  "flex min-w-0 flex-wrap items-center justify-between gap-3",
-  {
-    variants: { variant: { plain: "", inset: "p-6" } },
-    defaultVariants: { variant: "plain" },
-  },
-)
+const toolbarVariants = cva("flex min-w-0 flex-wrap items-center gap-3", {
+  variants: { variant: { plain: "", inset: "p-6" } },
+  defaultVariants: { variant: "plain" },
+})
 
 export type PageToolbarProps = ComponentProps<"div"> &
   VariantProps<typeof toolbarVariants> & { actions?: ReactNode }
@@ -26,12 +23,7 @@ export const PageToolbar = ({
     className={cn(toolbarVariants({ variant }), className)}
     {...props}
   >
-    <div
-      data-slot="page-toolbar-controls"
-      className="flex min-w-0 flex-1 basis-full flex-wrap items-center gap-3 sm:basis-0"
-    >
-      {children}
-    </div>
+    {children}
     {actions && (
       <div
         data-slot="page-toolbar-actions"

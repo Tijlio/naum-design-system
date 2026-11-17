@@ -1,9 +1,11 @@
 "use client"
 
+import { AppPage } from "@/components/blocks/app-page"
+import { PageHeader } from "@/components/blocks/page-header"
 import { useCallback, useId, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
-import { Plus, Search } from "lucide-react"
+import { Plus } from "lucide-react"
 import { toast } from "sonner"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { OpportunitiesTable } from "./opportunities-table"
@@ -17,17 +19,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@/components/ui/input-group"
+import { SearchInput } from "@/components/ui/search-input"
+import { PageToolbar } from "@/components/blocks/page-toolbar"
 import { Empty, EmptyHeader, EmptyTitle } from "@/components/ui/empty"
-import {
-  MotionFadeUp,
-  MotionLayout,
-  MotionPresence,
-} from "@/components/ui/motion"
+import { MotionLayout, MotionPresence } from "@/components/ui/motion"
 import { cn } from "@/lib/utils"
 import { formatMoney } from "@/lib/money-format"
 import type { Deal } from "../showcase-data"
@@ -112,20 +107,21 @@ export const PipelineWorkspace = () => {
   }
   const canCreate = contacts.some((contact) => contact.stage !== "Archived")
   return (
-    <MotionFadeUp data-slot="workspace-page" className="workspace-stack">
-      <div className="workspace-heading">
-        <div>
-          <p className="workspace-eyebrow">Opportunities</p>
-          <h1 className="naum-page-title">Pipeline</h1>
-        </div>
-        <Button onClick={() => setCreateOpen(true)} disabled={!canCreate}>
-          <Plus />
-          New opportunity
-        </Button>
-      </div>
+    <AppPage>
+      <PageHeader
+        eyebrow="Opportunities"
+        title="Pipeline"
+        count={deals.length}
+        actions={
+          <Button onClick={() => setCreateOpen(true)} disabled={!canCreate}>
+            <Plus />
+            New opportunity
+          </Button>
+        }
+      />
       <Tabs
         value={layout}
-        className="gap-4"
+        className="gap-6"
         onValueChange={(layout) => {
           const url = new URL(window.location.href)
           if (layout === "table") url.searchParams.set("layout", "table")
@@ -133,34 +129,29 @@ export const PipelineWorkspace = () => {
           window.history.replaceState(null, "", `${url.pathname}${url.search}`)
         }}
       >
-        <div className="flex flex-wrap items-center gap-3">
+        <PageToolbar aria-label="Pipeline view controls">
           <TabsList aria-label="Pipeline view">
             <TabsTrigger value="board">Board</TabsTrigger>
             <TabsTrigger value="table">Table</TabsTrigger>
           </TabsList>
           {layout === "board" && (
             <div className="flex min-w-0 flex-1 basis-full items-center gap-3 sm:basis-auto">
-              <InputGroup className="max-w-sm">
-                <InputGroupAddon>
-                  <Search />
-                </InputGroupAddon>
-                <InputGroupInput
-                  aria-label="Search opportunities"
-                  placeholder="Search opportunities…"
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                />
-              </InputGroup>
-              <Badge variant="outline">
-                {count} {count === 1 ? "opportunity" : "opportunities"}
-              </Badge>
+              <SearchInput
+                label="Search opportunities"
+                placeholder="Search opportunities…"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+              />
+              {count !== deals.length && (
+                <Badge variant="outline">{count} matching</Badge>
+              )}
             </div>
           )}
-        </div>
+        </PageToolbar>
         <TabsContent value="table">
           <OpportunitiesTable onEdit={editDeal} />
         </TabsContent>
-        <TabsContent value="board" className="space-y-4">
+        <TabsContent value="board" className="space-y-6">
           {Object.keys(view.filters).length > 0 && (
             <div className="flex flex-wrap items-center gap-2">
               {Object.entries(view.filters).map(([key, value]) => (
@@ -298,6 +289,6 @@ export const PipelineWorkspace = () => {
           onClose={closeEditor}
         />
       )}
-    </MotionFadeUp>
+    </AppPage>
   )
 }

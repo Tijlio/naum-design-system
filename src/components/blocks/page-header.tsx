@@ -2,7 +2,10 @@ import type { ComponentProps, ReactNode } from "react"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 
-export type PageHeaderProps = Omit<ComponentProps<"header">, "title"> & {
+export type PageHeaderProps = Omit<
+  ComponentProps<"header">,
+  "title" | "children"
+> & {
   title: string
   eyebrow?: ReactNode
   count?: number

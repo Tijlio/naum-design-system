@@ -1,6 +1,8 @@
 "use client"
 
-import { MotionFadeUp } from "@/components/ui/motion"
+import { AppPage } from "@/components/blocks/app-page"
+import { PageToolbar } from "@/components/blocks/page-toolbar"
+import { PageHeader } from "@/components/blocks/page-header"
 import { useCallback, useMemo } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import type { ColumnDef } from "@tanstack/react-table"
@@ -10,7 +12,7 @@ import { DataTable } from "@/components/blocks/data-table"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Input } from "@/components/ui/input"
+import { SearchInput } from "@/components/ui/search-input"
 import { Label } from "@/components/ui/label"
 import { SelectControl } from "@/components/ui/select-control"
 import { DEMO_DATE } from "../showcase-data"
@@ -124,29 +126,21 @@ export const TasksWorkspace = () => {
   })
   const selected = tasks.find((task) => task.id === params.get("task"))
   return (
-    <MotionFadeUp data-slot="workspace-page" className="workspace-stack">
-      <div className="workspace-heading">
-        <div>
-          <p className="workspace-eyebrow">Follow-ups</p>
-          <h1 className="naum-page-title flex items-center gap-3">
-            Tasks
-            <Badge
-              variant="secondary"
-              className="crm-accent"
-              data-tone="lavender"
-            >
-              {tasks.filter((task) => !task.completed).length}
-            </Badge>
-          </h1>
-        </div>
-        <TaskFormTrigger variant="default" />
-      </div>
-      <WorkspaceSavedViews
-        scope="tasks"
-        state={view}
-        selected={selectedView}
-        onApply={apply}
+    <AppPage>
+      <PageHeader
+        eyebrow="Follow-ups"
+        title="Tasks"
+        count={tasks.filter((task) => !task.completed).length}
+        actions={<TaskFormTrigger variant="default" />}
       />
+      <PageToolbar aria-label="View controls">
+        <WorkspaceSavedViews
+          scope="tasks"
+          state={view}
+          selected={selectedView}
+          onApply={apply}
+        />
+      </PageToolbar>
       <DataTable
         table={table}
         label="Tasks"
@@ -165,9 +159,9 @@ export const TasksWorkspace = () => {
         }}
         toolbar={
           <>
-            <Input
+            <SearchInput
               className="max-w-sm"
-              aria-label="Search tasks"
+              label="Search tasks"
               placeholder="Search tasks…"
               value={view.query}
               onChange={(event) => update("query", event.target.value)}
@@ -217,6 +211,6 @@ export const TasksWorkspace = () => {
       {selected && (
         <TaskEditor key={selected.id} task={selected} onClose={() => edit()} />
       )}
-    </MotionFadeUp>
+    </AppPage>
   )
 }

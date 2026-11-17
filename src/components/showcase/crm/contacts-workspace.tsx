@@ -1,6 +1,8 @@
 "use client"
 
-import { MotionFadeUp } from "@/components/ui/motion"
+import { AppPage } from "@/components/blocks/app-page"
+import { PageToolbar } from "@/components/blocks/page-toolbar"
+import { PageHeader } from "@/components/blocks/page-header"
 import { useCallback, useMemo } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import type { ColumnDef } from "@tanstack/react-table"
@@ -17,7 +19,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty"
-import { Input } from "@/components/ui/input"
+import { SearchInput } from "@/components/ui/search-input"
 import { Label } from "@/components/ui/label"
 import { SelectControl } from "@/components/ui/select-control"
 import { formatMoney } from "@/lib/money-format"
@@ -123,32 +125,23 @@ export const ContactsWorkspace = () => {
   const filter = (key: string, value: string) =>
     update("filters", (current) => ({ ...current, [key]: value }))
   return (
-    <MotionFadeUp data-slot="workspace-page" className="workspace-stack">
-      <div className="workspace-heading">
-        <div>
-          <p className="workspace-eyebrow">Relationships</p>
-          <h1 className="naum-page-title flex items-center gap-3">
-            Contacts
-            <Badge
-              variant="secondary"
-              className="crm-accent"
-              data-tone="lavender"
-            >
-              {
-                contacts.filter((contact) => contact.stage !== "Archived")
-                  .length
-              }
-            </Badge>
-          </h1>
-        </div>
-        <ContactForm />
-      </div>
-      <WorkspaceSavedViews
-        scope="contacts"
-        state={view}
-        selected={selectedView}
-        onApply={apply}
+    <AppPage>
+      <PageHeader
+        eyebrow="Relationships"
+        title="Contacts"
+        count={
+          contacts.filter((contact) => contact.stage !== "Archived").length
+        }
+        actions={<ContactForm />}
       />
+      <PageToolbar aria-label="View controls">
+        <WorkspaceSavedViews
+          scope="contacts"
+          state={view}
+          selected={selectedView}
+          onApply={apply}
+        />
+      </PageToolbar>
       <DataTable
         table={table}
         label="Contacts"
@@ -169,9 +162,9 @@ export const ContactsWorkspace = () => {
         }}
         toolbar={
           <>
-            <Input
+            <SearchInput
               className="max-w-sm"
-              aria-label="Search contacts"
+              label="Search contacts"
               placeholder="Search contacts…"
               value={view.query}
               onChange={(event) => update("query", event.target.value)}
@@ -243,6 +236,6 @@ export const ContactsWorkspace = () => {
         )}
         onClose={() => openContact()}
       />
-    </MotionFadeUp>
+    </AppPage>
   )
 }

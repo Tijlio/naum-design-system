@@ -39,16 +39,6 @@
   .calendar-board {
     min-width: 0;
   }
-  .calendar-toolbar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: --spacing(3);
-    align-items: center;
-    justify-content: space-between;
-    padding: --spacing(4);
-    border-bottom: 1px solid var(--border);
-    background: var(--surface-frosted);
-  }
   .calendar-color-dot {
     height: --spacing(2);
     width: --spacing(2);
@@ -258,9 +248,6 @@
     }
   }
   @media (width < 48rem) {
-    .calendar-toolbar {
-      padding: --spacing(3);
-    }
     .calendar-month-headings,
     .calendar-month-days {
       min-width: 0;

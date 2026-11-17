@@ -1,5 +1,8 @@
 "use client"
 
+import { AppPage } from "@/components/blocks/app-page"
+import { PageToolbar } from "@/components/blocks/page-toolbar"
+import { PageHeader } from "@/components/blocks/page-header"
 import { useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import {
@@ -86,20 +89,17 @@ export const CalendarWorkspace = () => {
       router.replace("/showcase/calendar", { scroll: false })
   }
   return (
-    <MotionFadeUp
-      data-slot="workspace-page"
-      className="workspace-stack calendar-workspace"
-    >
-      <div className="workspace-heading">
-        <div>
-          <p className="workspace-eyebrow">Your week, at a glance</p>
-          <h1 className="naum-page-title">Calendar</h1>
-        </div>
-        <Button onClick={() => create(date, 9)}>
-          <Plus />
-          New appointment
-        </Button>
-      </div>
+    <AppPage className="calendar-workspace">
+      <PageHeader
+        eyebrow="Your week, at a glance"
+        title="Calendar"
+        actions={
+          <Button onClick={() => create(date, 9)}>
+            <Plus />
+            New appointment
+          </Button>
+        }
+      />
       <div className="calendar-workspace-layout">
         <aside className="calendar-sidebar" aria-label="Calendar controls">
           <Card variant="frosted" size="sm">
@@ -150,51 +150,51 @@ export const CalendarWorkspace = () => {
           </Card>
         </aside>
         <Card className="calendar-board gap-0 py-0">
-          <div className="calendar-toolbar">
-            <div className="flex flex-wrap items-center gap-3">
+          <PageToolbar
+            variant="inset"
+            aria-label="Calendar navigation"
+            className="border-b bg-surface-frosted"
+            actions={
+              <>
+                <Label htmlFor="calendar-view" className="sr-only">
+                  Calendar view
+                </Label>
+                <SelectControl
+                  id="calendar-view"
+                  value={view}
+                  items={VIEWS.map((view) => ({ value: view, label: view }))}
+                  onValueChange={(view) => {
+                    if (view) setChosenView(view)
+                  }}
+                />
+              </>
+            }
+          >
+            <Button variant="outline" onClick={() => setDate(new Date())}>
+              Today
+            </Button>
+            <ButtonGroup>
               <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setDate(new Date())}
+                variant="ghost"
+                size="icon"
+                aria-label="Previous period"
+                onClick={() => navigate(-1)}
               >
-                Today
+                <ChevronLeft />
               </Button>
-              <ButtonGroup>
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  aria-label="Previous period"
-                  onClick={() => navigate(-1)}
-                >
-                  <ChevronLeft />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  aria-label="Next period"
-                  onClick={() => navigate(1)}
-                >
-                  <ChevronRight />
-                </Button>
-              </ButtonGroup>
-              <h2 className="font-medium" aria-live="polite">
-                {format(date, "MMMM yyyy")}
-              </h2>
-            </div>
-            <div className="flex items-center gap-2">
-              <Label htmlFor="calendar-view" className="sr-only">
-                Calendar view
-              </Label>
-              <SelectControl
-                id="calendar-view"
-                value={view}
-                items={VIEWS.map((view) => ({ value: view, label: view }))}
-                onValueChange={(view) => {
-                  if (view) setChosenView(view)
-                }}
-              />
-            </div>
-          </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="Next period"
+                onClick={() => navigate(1)}
+              >
+                <ChevronRight />
+              </Button>
+            </ButtonGroup>
+            <h2 className="font-medium" aria-live="polite">
+              {format(date, "MMMM yyyy")}
+            </h2>
+          </PageToolbar>
           <CardContent className="px-0">
             <MotionPresence mode="wait" initial={false}>
               <MotionFadeUp
@@ -283,6 +283,6 @@ export const CalendarWorkspace = () => {
           onSaved={(appointment) => setDate(parseISO(appointment.start))}
         />
       )}
-    </MotionFadeUp>
+    </AppPage>
   )
 }

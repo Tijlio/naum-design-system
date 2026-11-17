@@ -12,7 +12,7 @@ test("contacts and notes survive reload and reset preserves the theme", async ({
   await dialog.getByLabel("Company").fill("Ada Studio")
   await dialog.getByRole("button", { name: "Add contact", exact: true }).click()
   await page
-    .getByRole("textbox", { name: "Search contacts" })
+    .getByRole("searchbox", { name: "Search contacts" })
     .fill("Ada Rivers")
   await page.getByRole("button", { name: /Ada Rivers/ }).click()
   const details = page.getByRole("dialog")

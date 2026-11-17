@@ -134,7 +134,7 @@ Use unique or locally scoped `layoutId` values for pills when multiple independe
 
 For application navigation, use one active pill ID per navigation instance across all route depths. Navigation buttons allow the pill to travel beyond their own bounds; only label text is truncated. The `naum-navigation-popup` utility uses opacity/scale around the popup anchor, rather than direction-dependent slide keyframes.
 
-Showcase page entrances put one MotionFadeUp on the loaded page root, including its heading, controls and content. This boundary mounts with the actual view after any Suspense fallback; query-only updates preserve the mounted page. Avoid separate heading fades or a second vertical entrance on nested metric cards. Calendar view switches crossfade at y=0; drag/reorder interactions keep their existing layout motion.
+AppPage puts one MotionFadeUp on the loaded page root, including its PageHeader, PageToolbar and content. It owns the shared 24px vertical gap; PageToolbar owns 12px control gaps and its optional 24px inset padding. SearchInput supplies the same label, icon, sizing and state treatment for ordinary query fields. This boundary mounts with the actual view after any Suspense fallback; query-only updates preserve the mounted page. Avoid separate heading fades or a second vertical entrance on nested metric cards. Calendar view switches crossfade at y=0; drag/reorder interactions keep their existing layout motion.
 
 Recharts animation is separate from MotionConfig. The examples use `useReducedMotionConfig()` and `isAnimationActive={reducedMotion === false}`; use the same contract for application-owned series.
 

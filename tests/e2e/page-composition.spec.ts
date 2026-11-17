@@ -23,9 +23,7 @@ for (const entry of [
     await example
       .getByRole("searchbox", { name: "Search demo contacts" })
       .fill("Emma")
-    await expect(example.getByRole("status")).toContainText(
-      "1 matching contacts",
-    )
+    await expect(example.getByRole("status")).toHaveText("1 matching contact")
     await expect(example.getByRole("list")).not.toContainText("Oliver")
     await chooseOption(page, "Toolbar padding", "Inset")
     await expect(page.getByLabel("Usage")).toContainText('variant="inset"')

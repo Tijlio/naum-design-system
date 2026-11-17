@@ -54,7 +54,7 @@ for (const scene of SCENES) {
         await page.getByRole("button", { name: "Toggle Sidebar" }).click()
       if (scene === "contacts-empty")
         await page
-          .getByRole("textbox", { name: "Search contacts" })
+          .getByRole("searchbox", { name: "Search contacts" })
           .fill("No matching contact")
       if (scene === "relationship-menu")
         await page

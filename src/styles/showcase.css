@@ -4,18 +4,6 @@
     flex-direction: column;
     gap: --spacing(6);
   }
-  .workspace-heading {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: --spacing(4);
-  }
-  .workspace-eyebrow {
-    color: var(--muted-foreground);
-    font-size: var(--text-xs);
-    margin-bottom: --spacing(2);
-  }
   .workspace-metrics {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));

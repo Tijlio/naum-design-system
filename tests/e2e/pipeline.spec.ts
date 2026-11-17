@@ -112,7 +112,7 @@ test("pipeline and editor share Naum surfaces in both themes without overflow", 
         .getByRole("button", { name: "Toggle light or dark theme" })
         .click()
     await expect(
-      page.getByRole("heading", { name: "Pipeline", exact: true }),
+      page.getByRole("heading", { name: /^Pipeline/, exact: false }),
     ).toBeVisible()
     expect(
       (
@@ -149,7 +149,7 @@ test("pipeline and editor share Naum surfaces in both themes without overflow", 
     await dialog.getByRole("button", { name: "Cancel", exact: true }).click()
   }
   await page
-    .getByRole("textbox", { name: "Search opportunities" })
+    .getByRole("searchbox", { name: "Search opportunities" })
     .fill("No matches")
   await expect(
     page.getByText("No matching opportunities", { exact: true }),
