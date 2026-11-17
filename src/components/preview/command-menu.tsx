@@ -60,7 +60,8 @@ export function CommandMenu({
             <CommandItem
               onSelect={() => {
                 toast.success("Action triggered from Command Palette", {
-                  description: "CommandDialog + Sonner are synced via next-themes.",
+                  description:
+                    "CommandDialog + Sonner are synced via next-themes.",
                 })
                 onOpenChange(false)
               }}

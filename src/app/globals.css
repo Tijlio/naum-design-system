@@ -159,36 +159,60 @@
 
 @utility naum-mesh-lime {
   background:
-    radial-gradient(circle at 85% 90%, oklch(0.84 0.16 95 / 85%), transparent 60%),
+    radial-gradient(
+      circle at 85% 90%,
+      oklch(0.84 0.16 95 / 85%),
+      transparent 60%
+    ),
     linear-gradient(135deg, oklch(0.58 0.12 135) 0%, oklch(0.75 0.15 100) 100%);
 }
 
 @utility naum-mesh-coral {
   background:
-    radial-gradient(circle at 85% 90%, oklch(0.82 0.12 55 / 85%), transparent 60%),
+    radial-gradient(
+      circle at 85% 90%,
+      oklch(0.82 0.12 55 / 85%),
+      transparent 60%
+    ),
     linear-gradient(135deg, oklch(0.66 0.19 25) 0%, oklch(0.77 0.14 48) 100%);
 }
 
 @utility naum-mesh-indigo {
   background:
-    radial-gradient(circle at 85% 85%, oklch(0.82 0.08 220 / 85%), transparent 60%),
+    radial-gradient(
+      circle at 85% 85%,
+      oklch(0.82 0.08 220 / 85%),
+      transparent 60%
+    ),
     linear-gradient(135deg, oklch(0.68 0.13 265) 0%, oklch(0.78 0.11 310) 100%);
 }
 
 @utility naum-mesh-amber {
   background:
-    radial-gradient(circle at 80% 95%, oklch(0.86 0.16 88 / 85%), transparent 58%),
+    radial-gradient(
+      circle at 80% 95%,
+      oklch(0.86 0.16 88 / 85%),
+      transparent 58%
+    ),
     linear-gradient(135deg, oklch(0.75 0.1 65) 0%, oklch(0.78 0.16 78) 100%);
 }
 
 @utility naum-mesh-rose {
   background:
-    radial-gradient(circle at 80% 85%, oklch(0.72 0.2 350 / 85%), transparent 60%),
+    radial-gradient(
+      circle at 80% 85%,
+      oklch(0.72 0.2 350 / 85%),
+      transparent 60%
+    ),
     linear-gradient(135deg, oklch(0.76 0.14 10) 0%, oklch(0.68 0.2 345) 100%);
 }
 
 @utility naum-mesh-mint {
   background:
-    radial-gradient(circle at 85% 90%, oklch(0.84 0.12 145 / 85%), transparent 60%),
+    radial-gradient(
+      circle at 85% 90%,
+      oklch(0.84 0.12 145 / 85%),
+      transparent 60%
+    ),
     linear-gradient(135deg, oklch(0.76 0.09 195) 0%, oklch(0.8 0.12 155) 100%);
 }

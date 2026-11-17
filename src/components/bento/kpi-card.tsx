@@ -81,8 +81,16 @@ function KpiChart({
       >
         <defs>
           <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="var(--color-thisWeek)" stopOpacity={0.32} />
-            <stop offset="95%" stopColor="var(--color-thisWeek)" stopOpacity={0.0} />
+            <stop
+              offset="5%"
+              stopColor="var(--color-thisWeek)"
+              stopOpacity={0.32}
+            />
+            <stop
+              offset="95%"
+              stopColor="var(--color-thisWeek)"
+              stopOpacity={0.0}
+            />
           </linearGradient>
         </defs>
         {commonGrid}

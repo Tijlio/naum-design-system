@@ -15,10 +15,7 @@ import { OverlaysCard } from "@/components/preview/overlays-card"
 import { PreviewHeader } from "@/components/preview/preview-header"
 import { SurfacesCard } from "@/components/preview/surfaces-card"
 import { AmbientBackdrop } from "@/components/ui/ambient-backdrop"
-import {
-  MotionFadeUp,
-  MotionProvider,
-} from "@/components/ui/motion"
+import { MotionFadeUp, MotionProvider } from "@/components/ui/motion"
 
 export default function PreviewPage() {
   const [commandOpen, setCommandOpen] = React.useState(false)

@@ -22,10 +22,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import {
-  NativeSelect,
-  NativeSelectOption,
-} from "@/components/ui/native-select"
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select"
 
 const FRAMEWORKS = ["Next.js", "Vite", "Remix", "Astro", "TanStack Start"]
 
@@ -66,7 +63,9 @@ export function AdvancedFormsCard() {
           </Field>
 
           <Field>
-            <FieldLabel htmlFor="native-currency">Currency (NativeSelect)</FieldLabel>
+            <FieldLabel htmlFor="native-currency">
+              Currency (NativeSelect)
+            </FieldLabel>
             <NativeSelect id="native-currency" defaultValue="EUR">
               <NativeSelectOption value="EUR">EUR (€)</NativeSelectOption>
               <NativeSelectOption value="USD">USD ($)</NativeSelectOption>

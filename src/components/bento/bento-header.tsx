@@ -17,9 +17,18 @@ const NAV_SECTIONS = [
   {
     label: "Finance",
     items: [
-      { title: "General Ledger", description: "Accounts, journals & trial balance" },
-      { title: "Monthly Closing", description: "Period checks and reconciliations" },
-      { title: "Financial Reports", description: "P&L, balance sheet & exports" },
+      {
+        title: "General Ledger",
+        description: "Accounts, journals & trial balance",
+      },
+      {
+        title: "Monthly Closing",
+        description: "Period checks and reconciliations",
+      },
+      {
+        title: "Financial Reports",
+        description: "P&L, balance sheet & exports",
+      },
     ],
   },
   {
@@ -47,7 +56,10 @@ const NAV_SECTIONS = [
   {
     label: "Payroll",
     items: [
-      { title: "Time & Attendance", description: "Daily schedules & exceptions" },
+      {
+        title: "Time & Attendance",
+        description: "Daily schedules & exceptions",
+      },
       { title: "Payroll Export", description: "Validated monthly batches" },
     ],
   },

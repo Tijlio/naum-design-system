@@ -19,8 +19,7 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         glass:
           "naum-glass-card rounded-full text-foreground duration-300 hover:border-foreground/20 hover:brightness-110",
-        glow:
-          "rounded-full border-white/20 bg-linear-to-r from-indigo-500 via-purple-500 to-cyan-500 text-white shadow-[0_0_25px_rgba(99,102,241,0.4)] duration-300 hover:shadow-[0_0_35px_rgba(99,102,241,0.6)]",
+        glow: "rounded-full border-white/20 bg-linear-to-r from-indigo-500 via-purple-500 to-cyan-500 text-white shadow-[0_0_25px_rgba(99,102,241,0.4)] duration-300 hover:shadow-[0_0_35px_rgba(99,102,241,0.6)]",
       },
       size: {
         default:
@@ -38,7 +37,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 )
 
 function Button({

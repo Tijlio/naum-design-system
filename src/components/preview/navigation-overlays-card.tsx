@@ -54,7 +54,9 @@ export function NavigationOverlaysCard() {
   return (
     <Card className="md:col-span-2">
       <CardHeader>
-        <CardTitle>Navigation, Menubar, HoverCard, Drawer &amp; ContextMenu</CardTitle>
+        <CardTitle>
+          Navigation, Menubar, HoverCard, Drawer &amp; ContextMenu
+        </CardTitle>
         <CardDescription>
           Interactive menus and secondary overlays
         </CardDescription>
@@ -127,14 +129,14 @@ export function NavigationOverlaysCard() {
 
         <div className="flex flex-wrap items-center gap-3">
           <HoverCard>
-            <HoverCardTrigger
-              render={<Button variant="glass" size="sm" />}
-            >
+            <HoverCardTrigger render={<Button variant="glass" size="sm" />}>
               <Sparkles className="size-3.5" />
               HoverCard
             </HoverCardTrigger>
             <HoverCardContent className="w-64 rounded-2xl text-xs">
-              <div className="font-medium text-foreground">Naum Design System</div>
+              <div className="font-medium text-foreground">
+                Naum Design System
+              </div>
               <p className="mt-1 text-muted-foreground">
                 Built with Base UI, Tailwind v4 oklch tokens and Motion.
               </p>

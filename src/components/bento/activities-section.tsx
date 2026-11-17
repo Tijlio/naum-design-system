@@ -26,8 +26,19 @@ function ActivityMotif({ motif }: { motif: ActivityMotifKind }) {
   switch (motif) {
     case "wave":
       return (
-        <svg viewBox="0 0 120 40" className="h-10 w-full stroke-white/70" fill="none">
-          <line x1="8" y1="20" x2="112" y2="20" strokeDasharray="2 3" strokeWidth="1" />
+        <svg
+          viewBox="0 0 120 40"
+          className="h-10 w-full stroke-white/70"
+          fill="none"
+        >
+          <line
+            x1="8"
+            y1="20"
+            x2="112"
+            y2="20"
+            strokeDasharray="2 3"
+            strokeWidth="1"
+          />
           <MotionDrawPath
             d="M 22 20 L 34 20 L 40 12 L 46 28 L 52 6 L 58 34 L 64 14 L 70 24 L 76 20 L 98 20"
             strokeWidth="1.2"
@@ -36,16 +47,35 @@ function ActivityMotif({ motif }: { motif: ActivityMotifKind }) {
       )
     case "arc":
       return (
-        <svg viewBox="0 0 120 40" className="h-10 w-full stroke-white/70" fill="none">
-          <path d="M 20 34 A 40 40 0 0 1 100 34" strokeWidth="1" strokeDasharray="2 3" />
+        <svg
+          viewBox="0 0 120 40"
+          className="h-10 w-full stroke-white/70"
+          fill="none"
+        >
+          <path
+            d="M 20 34 A 40 40 0 0 1 100 34"
+            strokeWidth="1"
+            strokeDasharray="2 3"
+          />
           <MotionDrawPath d="M 32 34 A 28 28 0 0 1 88 34" strokeWidth="1.1" />
           <line x1="16" y1="34" x2="104" y2="34" strokeWidth="1" />
         </svg>
       )
     case "target":
       return (
-        <svg viewBox="0 0 120 40" className="h-10 w-full stroke-white/70" fill="none">
-          <line x1="14" y1="20" x2="106" y2="20" strokeWidth="1" strokeDasharray="2 3" />
+        <svg
+          viewBox="0 0 120 40"
+          className="h-10 w-full stroke-white/70"
+          fill="none"
+        >
+          <line
+            x1="14"
+            y1="20"
+            x2="106"
+            y2="20"
+            strokeWidth="1"
+            strokeDasharray="2 3"
+          />
           <circle cx="60" cy="20" r="14" strokeWidth="1" />
           <circle cx="60" cy="20" r="6" strokeWidth="1.2" />
           <circle cx="60" cy="20" r="1.5" fill="white" />
@@ -53,7 +83,11 @@ function ActivityMotif({ motif }: { motif: ActivityMotifKind }) {
       )
     case "rings":
       return (
-        <svg viewBox="0 0 120 40" className="h-10 w-full stroke-white/70" fill="none">
+        <svg
+          viewBox="0 0 120 40"
+          className="h-10 w-full stroke-white/70"
+          fill="none"
+        >
           <circle cx="46" cy="20" r="13" strokeWidth="1" />
           <circle cx="60" cy="20" r="13" strokeWidth="1" />
           <circle cx="74" cy="20" r="13" strokeWidth="1" />
@@ -61,7 +95,11 @@ function ActivityMotif({ motif }: { motif: ActivityMotifKind }) {
       )
     case "infinity":
       return (
-        <svg viewBox="0 0 120 40" className="h-10 w-full stroke-white/70" fill="none">
+        <svg
+          viewBox="0 0 120 40"
+          className="h-10 w-full stroke-white/70"
+          fill="none"
+        >
           <MotionDrawPath
             d="M 40 20 C 40 10, 54 10, 60 20 C 66 30, 80 30, 80 20 C 80 10, 66 10, 60 20 C 54 30, 40 30, 40 20 Z"
             strokeWidth="1.1"
@@ -70,7 +108,11 @@ function ActivityMotif({ motif }: { motif: ActivityMotifKind }) {
       )
     case "orbit":
       return (
-        <svg viewBox="0 0 120 40" className="h-10 w-full stroke-white/70" fill="none">
+        <svg
+          viewBox="0 0 120 40"
+          className="h-10 w-full stroke-white/70"
+          fill="none"
+        >
           <ellipse cx="60" cy="20" rx="28" ry="11" strokeWidth="1" />
           <circle cx="60" cy="20" r="2.5" fill="white" />
           <circle cx="84" cy="14" r="2" fill="white" />

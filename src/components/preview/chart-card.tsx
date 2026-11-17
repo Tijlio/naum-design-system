@@ -60,7 +60,13 @@ export function ChartCard() {
                   stopOpacity={0.02}
                 />
               </linearGradient>
-              <filter id="naum-chart-glow" x="-10%" y="-10%" width="120%" height="120%">
+              <filter
+                id="naum-chart-glow"
+                x="-10%"
+                y="-10%"
+                width="120%"
+                height="120%"
+              >
                 <feGaussianBlur stdDeviation="3.5" result="blur" />
                 <feMerge>
                   <feMergeNode in="blur" />

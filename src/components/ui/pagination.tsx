@@ -108,12 +108,11 @@ function PaginationEllipsis({
       data-slot="pagination-ellipsis"
       className={cn(
         "flex size-9 items-center justify-center [&_svg:not([class*='size-'])]:size-4",
-        className
+        className,
       )}
       {...props}
     >
-      <MoreHorizontal
-      />
+      <MoreHorizontal />
       <span className="sr-only">More pages</span>
     </span>
   )

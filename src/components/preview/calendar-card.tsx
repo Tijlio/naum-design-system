@@ -12,14 +12,16 @@ import {
 
 export function CalendarCard() {
   const [date, setDate] = React.useState<Date | undefined>(
-    new Date(2026, 10, 17)
+    new Date(2026, 10, 17),
   )
 
   return (
     <Card className="items-center">
       <CardHeader className="w-full">
         <CardTitle>Calendar</CardTitle>
-        <CardDescription>Date selection styled with theme tokens</CardDescription>
+        <CardDescription>
+          Date selection styled with theme tokens
+        </CardDescription>
       </CardHeader>
       <CardContent className="flex justify-center">
         <Calendar

@@ -24,7 +24,7 @@ const cardVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 )
 
 function Card({

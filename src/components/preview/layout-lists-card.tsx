@@ -57,7 +57,8 @@ export function LayoutListsCard() {
     <Card className="md:col-span-2 xl:col-span-3">
       <CardHeader>
         <CardTitle>
-          Carousel, Resizable, ScrollArea, Collapsible, AspectRatio, Item &amp; Empty
+          Carousel, Resizable, ScrollArea, Collapsible, AspectRatio, Item &amp;
+          Empty
         </CardTitle>
         <CardDescription>
           Layout containers, list items and empty states
@@ -116,18 +117,21 @@ export function LayoutListsCard() {
 
           <ScrollArea className="h-32 rounded-2xl border border-border p-2">
             <ItemGroup>
-              {["Theme tokens", "Glass surfaces", "Mesh gradients", "Motion"].map(
-                (name) => (
-                  <Item key={name} size="sm">
-                    <ItemContent>
-                      <ItemTitle className="text-xs">{name}</ItemTitle>
-                      <ItemDescription className="text-[11px]">
-                        Included in @naum/all
-                      </ItemDescription>
-                    </ItemContent>
-                  </Item>
-                )
-              )}
+              {[
+                "Theme tokens",
+                "Glass surfaces",
+                "Mesh gradients",
+                "Motion",
+              ].map((name) => (
+                <Item key={name} size="sm">
+                  <ItemContent>
+                    <ItemTitle className="text-xs">{name}</ItemTitle>
+                    <ItemDescription className="text-[11px]">
+                      Included in @naum/all
+                    </ItemDescription>
+                  </ItemContent>
+                </Item>
+              ))}
             </ItemGroup>
           </ScrollArea>
         </div>

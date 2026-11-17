@@ -97,12 +97,7 @@ export const KPI_CARDS: KpiCardItem[] = [
 ]
 
 export type ActivityMotifKind =
-  | "wave"
-  | "arc"
-  | "target"
-  | "rings"
-  | "infinity"
-  | "orbit"
+  "wave" | "arc" | "target" | "rings" | "infinity" | "orbit"
 
 export interface ActivityCardItem {
   title: string

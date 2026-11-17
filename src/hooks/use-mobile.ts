@@ -10,6 +10,6 @@ export function useIsMobile() {
       return () => mql.removeEventListener("change", onStoreChange)
     },
     () => window.innerWidth < MOBILE_BREAKPOINT,
-    () => false
+    () => false,
   )
 }
