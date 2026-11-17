@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 import { parseISO } from "date-fns"
 import {
+  getEventDayBounds,
   layoutDayEvents,
   occursOnDay,
   resizeAppointment,
@@ -65,4 +66,43 @@ it("snaps resizing to quarters and keeps at least fifteen minutes", () => {
   expect(resizeAppointment(source, "end", 30).end).toBe("2026-11-17T11:00")
   expect(resizeAppointment(source, "end", -120).end).toBe("2026-11-17T09:45")
   expect(resizeAppointment(source, "start", 120).start).toBe("2026-11-17T10:15")
+})
+
+it("shares clipped bounds between overnight layout and resize previews", () => {
+  const overnight = event("night", "2026-11-16T23:00", "2026-11-17T02:00")
+  expect(getEventDayBounds(overnight, day)).toEqual({
+    start: 0,
+    end: 120,
+    top: 0,
+    height: 128,
+  })
+  const shortened = resizeAppointment(overnight, "end", -60)
+  expect(getEventDayBounds(shortened, day)).toEqual({
+    start: 0,
+    end: 60,
+    top: 0,
+    height: 64,
+  })
+})
+
+it("keeps minimum-height quarter-hour cards from visually overlapping", () => {
+  const placed = layoutDayEvents(
+    [
+      event("first", "2026-11-17T09:00", "2026-11-17T09:15"),
+      event("second", "2026-11-17T09:15", "2026-11-17T09:30"),
+    ],
+    day,
+  )
+  expect(placed.map(({ column, columns }) => [column, columns])).toEqual([
+    [0, 2],
+    [1, 2],
+  ])
+})
+
+it("clips short cards at the end of the visible day", () => {
+  const bounds = getEventDayBounds(
+    event("late", "2026-11-17T23:45", "2026-11-18T00:00"),
+    day,
+  )
+  expect(bounds.top + bounds.height).toBe(24 * 64)
 })

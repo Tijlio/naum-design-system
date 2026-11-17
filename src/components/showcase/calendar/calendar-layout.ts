@@ -45,25 +45,42 @@ export type PlacedEvent = {
   columns: number
 }
 
-// Allocate lanes per connected overlap group; an event ending at 11:00 does not
-// overlap one starting at 11:00. Cross-midnight events are clipped to each day.
+export const getEventDayBounds = (event: Appointment, day: Date) => {
+  const start = Math.min(
+    1440,
+    Math.max(0, differenceInMinutes(parseISO(event.start), startOfDay(day))),
+  )
+  const end = Math.min(
+    1440,
+    differenceInMinutes(parseISO(event.end), startOfDay(day)),
+  )
+  return {
+    start,
+    end,
+    top: (start / 60) * HOUR_HEIGHT,
+    height: Math.min(
+      Math.max(28, ((end - start) / 60) * HOUR_HEIGHT),
+      ((1440 - start) / 60) * HOUR_HEIGHT,
+    ),
+  }
+}
+
+// Reserve lanes for the drawn bounds, including minimum card height, so short
+// cards cannot collide. Cross-midnight events are clipped to each visible day.
 export const layoutDayEvents = (
   events: Appointment[],
   day: Date,
 ): PlacedEvent[] => {
   const timed = events
     .filter((event) => !event.allDay && occursOnDay(event, day))
-    .map((event) => ({
-      event,
-      start: Math.max(
-        0,
-        differenceInMinutes(parseISO(event.start), startOfDay(day)),
-      ),
-      end: Math.min(
-        1440,
-        differenceInMinutes(parseISO(event.end), startOfDay(day)),
-      ),
-    }))
+    .map((event) => {
+      const bounds = getEventDayBounds(event, day)
+      return {
+        event,
+        ...bounds,
+        layoutEnd: bounds.start + (bounds.height / HOUR_HEIGHT) * 60,
+      }
+    })
     .sort((a, b) => a.start - b.start || b.end - a.end)
   const result: PlacedEvent[] = []
   let group: typeof timed = []
@@ -73,12 +90,12 @@ export const layoutDayEvents = (
     const placed = group.map((entry) => {
       const freeLane = lanes.findIndex((end) => end <= entry.start)
       const column = freeLane < 0 ? lanes.length : freeLane
-      lanes[column] = entry.end
+      lanes[column] = entry.layoutEnd
       return {
         event: entry.event,
         column,
-        top: (entry.start / 60) * HOUR_HEIGHT,
-        height: Math.max(28, ((entry.end - entry.start) / 60) * HOUR_HEIGHT),
+        top: entry.top,
+        height: entry.height,
         columns: 1,
       }
     })
@@ -91,7 +108,7 @@ export const layoutDayEvents = (
       groupEnd = -1
     }
     group.push(entry)
-    groupEnd = Math.max(groupEnd, entry.end)
+    groupEnd = Math.max(groupEnd, entry.layoutEnd)
   }
   if (group.length) flush()
   return result

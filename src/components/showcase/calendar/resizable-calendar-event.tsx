@@ -7,13 +7,13 @@ import {
   type PointerEvent,
   type KeyboardEvent,
 } from "react"
-import { differenceInMinutes, parseISO, startOfDay } from "date-fns"
 import { GripHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import type { Appointment } from "../showcase-data"
 import { AppointmentChip } from "./appointment-chip"
 import {
   HOUR_HEIGHT,
+  getEventDayBounds,
   resizeAppointment,
   type PlacedEvent,
   type ResizeEdge,
@@ -43,26 +43,7 @@ export const ResizableCalendarEvent = ({
   const gesture = useRef<Gesture | null>(null)
   const [preview, setPreview] = useState<Appointment | null>(null)
   const shown = preview ?? placement.event
-  const top = preview
-    ? (Math.max(
-        0,
-        differenceInMinutes(parseISO(preview.start), startOfDay(day)),
-      ) /
-        60) *
-      HOUR_HEIGHT
-    : placement.top
-  const height = preview
-    ? Math.max(
-        28,
-        (Math.min(
-          1440,
-          differenceInMinutes(parseISO(preview.end), startOfDay(day)),
-        ) /
-          60) *
-          HOUR_HEIGHT -
-          top,
-      )
-    : placement.height
+  const { top, height } = preview ? getEventDayBounds(preview, day) : placement
   const proposal = (event: PointerEvent<HTMLElement>) => {
     const current = gesture.current
     if (!current) return null
