@@ -42,6 +42,7 @@ The font token uses `--font-naum`, falling back to Plus Jakarta Sans when availa
 
 - [Component catalog](docs/components.md): every registry item and its exports.
 - [Integration and component contracts](docs/design-system.md): providers, variants, forms, motion, accessibility and tokens.
+- [Application showcases](docs/showcases.md): CRM, calendar, search and demo interactions.
 - [Maintenance and releases](docs/maintenance.md): generation, tests, visual baselines and versioned distribution.
 
 ## Development and checks

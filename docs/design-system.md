@@ -112,15 +112,21 @@ const regions = [{ value: "eu-west", label: "EU West" }]
 </Select>
 ```
 
+`SelectControl` composes the shared Select parts for a labeled string option list. Supply `items`, a controlled `value`/`onValueChange` pair or `defaultValue`, and optionally `name` for form submission. It forwards trigger labeling, invalid and disabled states. Use the compound Select API when the popup needs custom content.
+
+`DateTimePicker` composes Calendar, Popover and SelectControl. Its controlled value is a local ISO date/time string (`yyyy-MM-ddTHH:mm`); `dateOnly` hides the time controls and emits midnight for the chosen date. Supply an accessible `label` and connect any external Label with `id`. An optional `name` adds hidden form transport. Validation and timezone conversion belong to the consuming form.
+
 Label `ComboboxInput` via its own `id`. Its internal open/clear buttons have overridable default accessible names. A scalar Slider value renders one thumb; an array renders one per value. Name a single Slider with `aria-label`/`aria-labelledby`; use `getAriaLabel(index)` for distinct range-thumb names. Thumb indices are supplied for SSR.
 
 Checkbox, Switch, Select and Combobox support the underlying controlled and uncontrolled contracts. Do not switch an instance between those modes. Use native `disabled` and `readOnly` props where supported rather than recreating their behavior in screen code.
 
 ## Motion
 
-`MotionProvider` defaults to `reducedMotion="user"`. Wrap animated content in it; use `reducedMotion="always"` to enforce reduced motion. `MotionFadeUp`, `MotionStagger`, `MotionStaggerItem`, `MotionDrawPath` and `MotionPill` also honor that configured policy for their custom opacity, stagger and SVG drawing transitions.
+`MotionProvider` defaults to `reducedMotion="user"`. Wrap animated content in it; use `reducedMotion="always"` to enforce reduced motion. `MotionFadeUp`, `MotionStagger`, `MotionStaggerItem`, `MotionDrawPath`, `MotionPill` and `MotionExpand` also honor that configured policy for their custom opacity, stagger and SVG drawing transitions.
 
 The primitives forward the corresponding `HTMLMotionProps`/`SVGMotionProps`, including IDs, ARIA attributes, refs, styles and handlers. Defaults are applied first; explicitly supplied motion props such as `initial`, `animate`, `variants` and `transition` override them. Consumers overriding animation behavior must preserve the motion policy.
+
+`MotionPresence` exposes the presence boundary for enter/exit animations. Use `MotionExpand axis="x"` for horizontal reveals and `axis="y"` for vertical reveals. Its default overflow clipping can be overridden when a revealed surface needs to show a popup.
 
 Use unique or locally scoped `layoutId` values for pills when multiple independent instances appear together. CSS motion uses `ease-naum` and the shared duration tokens. The theme reduces CSS transitions and animations under the system preference. Hover/press movement is guarded by motion preference.
 

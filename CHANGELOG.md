@@ -2,7 +2,15 @@
 
 ## Unreleased
 
-- Distribute all 57 UI components, the theme provider, mobile hook and shared utilities through the Naum registry.
+- Add shared Naum date/time and select controls; replace browser-native showcase pickers.
+- Resize timed appointments by pointer or keyboard, with 15-minute snapping, cancellation and undo.
+
+- Add CRM overview, interactive contacts and a week/day/month/agenda calendar showcase with shared in-memory data.
+- Add expanding workspace search, `MotionExpand`/`MotionPresence` and an inline CommandInput variant.
+- Simplify activity statistics, clarify their periods and center decorative motifs.
+- Cover showcase interactions, calendar event layout, accessibility and responsive presentations with tests.
+
+- Distribute all 59 UI components, the theme provider, mobile hook and shared utilities through the Naum registry.
 - Generate the theme and component catalog from their sources. Resolve component dependencies within Naum and pin installed npm dependency versions.
 - Add a configurable registry ref and a manual, versioned release preparation workflow. `main` is the development channel.
 - Share popup surfaces, shadows, CSS easing/durations and card hover styling. Preserve destructive menu-item styling.
