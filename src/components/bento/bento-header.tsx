@@ -1,45 +1,96 @@
 "use client"
 
-import * as React from "react"
 import Link from "next/link"
-import { ArrowUpRight, Bell, ChevronDown, Mail, Search } from "lucide-react"
+import { ArrowUpRight, Bell, Mail, Search } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
-import { MotionPill } from "@/components/ui/motion"
-import { NAV_PILLS } from "./bento-data"
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu"
+
+const NAV_SECTIONS = [
+  {
+    label: "Finance",
+    items: [
+      { title: "General Ledger", description: "Accounts, journals & trial balance" },
+      { title: "Monthly Closing", description: "Period checks and reconciliations" },
+      { title: "Financial Reports", description: "P&L, balance sheet & exports" },
+    ],
+  },
+  {
+    label: "Cash Management",
+    items: [
+      { title: "Bank Accounts", description: "Live balances & feeds" },
+      { title: "Payment Runs", description: "Scheduled SEPA batches" },
+    ],
+  },
+  {
+    label: "Sales",
+    items: [
+      { title: "Sales Quotes", description: "Open proposals & conversion" },
+      { title: "Sales Orders", description: "Active fulfillment pipeline" },
+      { title: "Sales Invoices", description: "Issued & overdue receivables" },
+    ],
+  },
+  {
+    label: "Purchasing",
+    items: [
+      { title: "Purchase Orders", description: "Supplier orders & approvals" },
+      { title: "Vendor Bills", description: "Upcoming payables" },
+    ],
+  },
+  {
+    label: "Payroll",
+    items: [
+      { title: "Time & Attendance", description: "Daily schedules & exceptions" },
+      { title: "Payroll Export", description: "Validated monthly batches" },
+    ],
+  },
+] as const
 
 export function BentoHeader() {
-  const [activeTopPill, setActiveTopPill] = React.useState<string>("Finance")
-
   return (
     <header className="flex flex-wrap items-center justify-between gap-3">
       <div className="flex flex-wrap items-center gap-3">
-        <span className="text-sm font-medium tracking-tight text-foreground/80">
+        <span className="text-sm font-medium tracking-tight text-foreground/85">
           Naum Inc.
         </span>
-        <div className="flex flex-wrap items-center gap-1.5">
-          {NAV_PILLS.map((label) => {
-            const selected = activeTopPill === label
-            return (
-              <Button
-                key={label}
-                variant="ghost"
-                size="sm"
-                onClick={() => setActiveTopPill(label)}
-                className="relative h-8 rounded-full px-3 text-xs font-normal text-foreground/80 hover:bg-transparent hover:text-foreground"
-              >
-                {selected && (
-                  <MotionPill
-                    layoutId="naum-top-pill"
-                    className="bg-card shadow-xs ring-1 ring-foreground/5"
-                  />
-                )}
-                {label}
-                <ChevronDown className="size-3.5 opacity-60" />
-              </Button>
-            )
-          })}
-        </div>
+
+        <NavigationMenu>
+          <NavigationMenuList className="flex-wrap justify-start gap-1">
+            {NAV_SECTIONS.map((section) => (
+              <NavigationMenuItem key={section.label}>
+                <NavigationMenuTrigger className="h-8 rounded-full bg-transparent px-3 py-1 text-xs font-normal text-foreground/80 hover:bg-card/70 hover:text-foreground data-popup-open:bg-card data-popup-open:text-foreground data-popup-open:shadow-xs data-popup-open:ring-1 data-popup-open:ring-foreground/5">
+                  {section.label}
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid w-64 gap-1 p-1">
+                    {section.items.map((item) => (
+                      <li key={item.title}>
+                        <NavigationMenuLink
+                          href="#"
+                          className="block rounded-2xl px-3 py-2 transition-colors hover:bg-muted/70"
+                        >
+                          <div className="text-xs font-medium text-foreground">
+                            {item.title}
+                          </div>
+                          <div className="text-[11px] text-muted-foreground">
+                            {item.description}
+                          </div>
+                        </NavigationMenuLink>
+                      </li>
+                    ))}
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            ))}
+          </NavigationMenuList>
+        </NavigationMenu>
       </div>
 
       <div className="flex items-center gap-1.5">

@@ -55,7 +55,7 @@ function NavigationMenuItem({
 }
 
 const navigationMenuTriggerStyle = cva(
-  "group/navigation-menu-trigger inline-flex h-9 w-max items-center justify-center rounded-2xl px-4.5 py-2.5 text-sm font-medium transition-all outline-none hover:bg-muted focus:bg-muted focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-popup-open:bg-muted/50 data-popup-open:hover:bg-muted data-open:bg-muted/50 data-open:hover:bg-muted data-open:focus:bg-muted"
+  "group/navigation-menu-trigger inline-flex h-9 w-max cursor-pointer items-center justify-center rounded-full px-4 py-2 text-sm font-medium transition-all outline-none hover:bg-muted focus:bg-muted focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-popup-open:bg-muted/60 data-popup-open:hover:bg-muted data-open:bg-muted/60 data-open:hover:bg-muted data-open:focus:bg-muted"
 )
 
 function NavigationMenuTrigger({
@@ -112,7 +112,7 @@ function NavigationMenuPositioner({
         )}
         {...props}
       >
-        <NavigationMenuPrimitive.Popup className="data-[ending-style]:easing-[ease] xs:w-(--popup-width) relative h-(--popup-height) w-(--popup-width) origin-(--transform-origin) rounded-2xl bg-popover text-popover-foreground shadow ring-1 ring-foreground/5 transition-[opacity,transform,width,height,scale,translate] duration-[0.35s] ease-[cubic-bezier(0.22,1,0.36,1)] outline-none data-ending-style:scale-90 data-ending-style:opacity-0 data-ending-style:duration-150 data-starting-style:scale-90 data-starting-style:opacity-0">
+        <NavigationMenuPrimitive.Popup className="data-[ending-style]:easing-[ease] xs:w-(--popup-width) relative h-(--popup-height) w-(--popup-width) origin-(--transform-origin) rounded-3xl bg-popover/85 text-popover-foreground shadow-xl ring-1 ring-foreground/6 backdrop-blur-2xl transition-[opacity,transform,width,height,scale,translate] duration-[0.3s] ease-[cubic-bezier(0.22,1,0.36,1)] outline-none data-ending-style:scale-95 data-ending-style:opacity-0 data-ending-style:duration-150 data-starting-style:scale-95 data-starting-style:opacity-0">
           <NavigationMenuPrimitive.Viewport className="relative size-full overflow-hidden" />
         </NavigationMenuPrimitive.Popup>
       </NavigationMenuPrimitive.Positioner>
