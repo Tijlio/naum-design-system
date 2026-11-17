@@ -1,7 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowUpRight, Bell, Mail, Search } from "lucide-react"
+import { ArrowUpRight, Bell, Mail } from "lucide-react"
+import { SiteSearch } from "@/components/search/site-search"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
 import {
@@ -105,7 +106,7 @@ export function BentoHeader() {
         </NavigationMenu>
       </div>
 
-      <div className="flex items-center gap-1.5">
+      <div className="flex flex-wrap items-center gap-1.5">
         <Button
           variant="glass"
           size="icon-sm"
@@ -122,14 +123,7 @@ export function BentoHeader() {
         >
           <Bell className="size-3.5" />
         </Button>
-        <Button
-          variant="glass"
-          size="icon-sm"
-          className="rounded-full"
-          aria-label="Search"
-        >
-          <Search className="size-3.5" />
-        </Button>
+        <SiteSearch />
         <ThemeToggle className="ml-1 h-8 px-3 text-xs font-normal" />
         <Button
           variant="glass"

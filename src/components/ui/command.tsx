@@ -65,14 +65,28 @@ function CommandDialog({
 
 function CommandInput({
   className,
+  variant = "default",
   ...props
-}: React.ComponentProps<typeof CommandPrimitive.Input>) {
+}: React.ComponentProps<typeof CommandPrimitive.Input> & {
+  variant?: "default" | "inline"
+}) {
   return (
     <div
       data-slot="command-input-wrapper"
-      className="mb-2 border-b border-border/60 pb-2"
+      className={
+        variant === "inline"
+          ? "min-w-0 flex-1"
+          : "mb-2 border-b border-border/60 pb-2"
+      }
     >
-      <InputGroup className="h-9 rounded-xl! border-transparent bg-transparent shadow-none ring-0 focus-within:ring-0">
+      <InputGroup
+        className={cn(
+          "h-9 border-transparent shadow-none ring-0 focus-within:ring-0",
+          variant === "inline"
+            ? "naum-glass-card rounded-full"
+            : "rounded-xl! bg-transparent",
+        )}
+      >
         <CommandPrimitive.Input
           data-slot="command-input"
           className={cn(

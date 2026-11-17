@@ -3,6 +3,7 @@
 import * as React from "react"
 import {
   motion,
+  AnimatePresence,
   MotionConfig,
   useReducedMotionConfig,
   type HTMLMotionProps,
@@ -11,6 +12,27 @@ import {
 import { cn } from "@/lib/utils"
 
 const EASE_OUT_EXPO = [0.22, 1, 0.36, 1] as const
+
+export const MotionPresence = AnimatePresence
+
+export const MotionExpand = ({
+  axis = "y",
+  className,
+  ...props
+}: HTMLMotionProps<"div"> & { axis?: "x" | "y" }) => {
+  const reducedMotion = useReducedMotionConfig()
+  const dimension = axis === "x" ? "width" : "height"
+  return (
+    <motion.div
+      initial={reducedMotion ? false : { [dimension]: 0, opacity: 0 }}
+      animate={{ [dimension]: "auto", opacity: 1 }}
+      exit={{ [dimension]: 0, opacity: 0 }}
+      transition={{ duration: reducedMotion ? 0 : 0.22, ease: EASE_OUT_EXPO }}
+      className={cn("overflow-hidden", className)}
+      {...props}
+    />
+  )
+}
 
 export const MotionProvider = (
   props: React.ComponentProps<typeof MotionConfig>,
