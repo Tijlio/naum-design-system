@@ -29,12 +29,12 @@
   }
   .calendar-workspace-layout {
     display: grid;
-    grid-template-columns: 14rem minmax(0, 1fr);
+    grid-template-columns: 16rem minmax(0, 1fr);
     gap: --spacing(6);
     align-items: start;
   }
   .calendar-sidebar {
-    padding-top: --spacing(3);
+    min-width: 0;
   }
   .calendar-board {
     min-width: 0;
@@ -47,6 +47,7 @@
     justify-content: space-between;
     padding: --spacing(4);
     border-bottom: 1px solid var(--border);
+    background: var(--surface-frosted);
   }
   .calendar-color-dot {
     height: --spacing(2);
@@ -230,13 +231,13 @@
     .calendar-workspace-layout {
       grid-template-columns: minmax(0, 1fr);
     }
-    .calendar-sidebar {
+    .calendar-sidebar-content {
       display: flex;
       flex-wrap: wrap;
       gap: --spacing(6);
       align-items: start;
     }
-    .calendar-sidebar > .rdp-root {
+    .calendar-sidebar-content > .rdp-root {
       display: none;
     }
     .calendar-sidebar fieldset {
@@ -274,5 +275,19 @@
     .calendar-month-cell .calendar-event {
       padding: --spacing(1);
     }
+  }
+}
+
+@layer utilities {
+  .calendar-event {
+    background-image: linear-gradient(
+      120deg,
+      var(--card),
+      var(--event-background)
+    );
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--event-foreground);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--naum-shadow-card);
   }
 }

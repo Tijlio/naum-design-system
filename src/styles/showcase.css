@@ -197,6 +197,43 @@
 }
 
 @layer utilities {
+  .workspace-overlay {
+    background:
+      radial-gradient(
+        at 0% 0%,
+        color-mix(in oklch, var(--chart-1) 10%, transparent),
+        transparent 55%
+      ),
+      var(--background);
+    color: var(--foreground);
+    box-shadow: var(--naum-shadow-toast);
+  }
+  [data-slot="dialog-content"].workspace-overlay {
+    max-height: calc(100dvh - --spacing(8));
+    overflow-y: auto;
+  }
+  .workspace-overlay-heading {
+    padding-right: --spacing(8);
+  }
+  .workspace-overlay-heading [data-slot="dialog-title"] {
+    font-size: var(--text-xl);
+    font-weight: 400;
+    letter-spacing: -0.025em;
+  }
+  .workspace-detail-sheet[data-side="right"] {
+    inset-block: --spacing(3);
+    right: --spacing(3);
+    height: auto;
+    width: calc(100% - --spacing(6));
+    max-width: 32rem;
+    border: 0;
+    border-radius: var(--radius-3xl);
+  }
+  .workspace-detail-sheet > [data-slot="sheet-close"] {
+    top: --spacing(7);
+    right: --spacing(7);
+    color: white;
+  }
   .crm-accent {
     --crm-accent-color: var(--chart-1);
     background: color-mix(in oklch, var(--crm-accent-color) 14%, var(--card));

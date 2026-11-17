@@ -101,46 +101,52 @@ export const CalendarWorkspace = () => {
       </MotionFadeUp>
       <div className="calendar-workspace-layout">
         <aside className="calendar-sidebar" aria-label="Calendar controls">
-          <Calendar
-            today={today}
-            mode="single"
-            selected={date}
-            month={date}
-            onMonthChange={setDate}
-            onSelect={(value) => {
-              if (value) setDate(value)
-            }}
-            weekStartsOn={1}
-            className="w-full bg-transparent p-0"
-          />
-          <fieldset className="mt-6 space-y-4">
-            <legend className="mb-4 text-sm font-medium">My calendars</legend>
-            {CALENDARS.map((calendar) => (
-              <div className="flex items-center gap-3" key={calendar}>
-                <Checkbox
-                  id={`calendar-${calendar}`}
-                  checked={enabledCalendars.includes(calendar)}
-                  onCheckedChange={(checked) =>
-                    setEnabledCalendars((current) =>
-                      checked
-                        ? [...current, calendar]
-                        : current.filter((value) => value !== calendar),
-                    )
-                  }
-                />
-                <Label
-                  htmlFor={`calendar-${calendar}`}
-                  className="text-sm font-normal"
-                >
-                  <span
-                    className="calendar-color-dot"
-                    data-calendar={calendar}
-                  />
-                  {calendar}
-                </Label>
-              </div>
-            ))}
-          </fieldset>
+          <Card variant="frosted" size="sm">
+            <CardContent className="calendar-sidebar-content">
+              <Calendar
+                today={today}
+                mode="single"
+                selected={date}
+                month={date}
+                onMonthChange={setDate}
+                onSelect={(value) => {
+                  if (value) setDate(value)
+                }}
+                weekStartsOn={1}
+                className="w-full bg-transparent p-0"
+              />
+              <fieldset className="mt-6 space-y-4">
+                <legend className="mb-4 text-sm font-medium">
+                  My calendars
+                </legend>
+                {CALENDARS.map((calendar) => (
+                  <div className="flex items-center gap-3" key={calendar}>
+                    <Checkbox
+                      id={`calendar-${calendar}`}
+                      checked={enabledCalendars.includes(calendar)}
+                      onCheckedChange={(checked) =>
+                        setEnabledCalendars((current) =>
+                          checked
+                            ? [...current, calendar]
+                            : current.filter((value) => value !== calendar),
+                        )
+                      }
+                    />
+                    <Label
+                      htmlFor={`calendar-${calendar}`}
+                      className="text-sm font-normal"
+                    >
+                      <span
+                        className="calendar-color-dot"
+                        data-calendar={calendar}
+                      />
+                      {calendar}
+                    </Label>
+                  </div>
+                ))}
+              </fieldset>
+            </CardContent>
+          </Card>
         </aside>
         <Card className="calendar-board gap-0 py-0">
           <div className="calendar-toolbar">

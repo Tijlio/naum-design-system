@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Reuse Bento KPI typography, default Card surfaces and the amber InsightCard in CRM; extend the same surfaces to contact details, forms and calendar controls/events. Cover opened panels and forms with light/dark browser and screenshot checks.
+
 - Carry Bento mesh cards, glass surfaces, ambient depth and animated sidebar navigation into the application showcase. Keep contact totals compact, search out of document flow, and resize grips inside appointment cards.
 
 - Add shared Naum date/time and select controls; replace browser-native showcase pickers.

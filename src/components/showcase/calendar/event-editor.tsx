@@ -4,6 +4,7 @@ import { useState } from "react"
 import { addDays, addHours, format, isValid, parseISO } from "date-fns"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
   Dialog,
@@ -49,8 +50,8 @@ export const EventEditor = ({
         if (!open) onClose()
       }}
     >
-      <DialogContent className="max-h-[90dvh] overflow-y-auto">
-        <DialogHeader>
+      <DialogContent className="workspace-overlay sm:max-w-xl">
+        <DialogHeader className="workspace-overlay-heading">
           <DialogTitle>
             {appointment ? "Edit appointment" : "New appointment"}
           </DialogTitle>
@@ -112,114 +113,118 @@ export const EventEditor = ({
             onClose()
           }}
         >
-          <div className="workspace-field">
-            <Label htmlFor="event-title">Title</Label>
-            <Input
-              id="event-title"
-              name="title"
-              required
-              maxLength={120}
-              defaultValue={appointment?.title}
-              autoFocus
-            />
-          </div>
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id="event-all-day"
-              checked={allDay}
-              onCheckedChange={(checked) => {
-                setAllDay(checked)
-                setError("")
-              }}
-            />
-            <Label htmlFor="event-all-day">All day</Label>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="workspace-field">
-              <Label htmlFor="event-start">Start</Label>
-              <DateTimePicker
-                id="event-start"
-                label="Start"
-                value={start}
-                dateOnly={allDay}
-                onValueChange={(value) => {
-                  setStart(value)
-                  setError("")
-                }}
-              />
-            </div>
-            <div className="workspace-field">
-              <Label htmlFor="event-end">End</Label>
-              <DateTimePicker
-                id="event-end"
-                label="End"
-                value={end}
-                dateOnly={allDay}
-                aria-invalid={Boolean(error)}
-                aria-describedby={error ? "event-time-error" : undefined}
-                onValueChange={(value) => {
-                  setEnd(value)
-                  setError("")
-                }}
-              />
-            </div>
-          </div>
-          {error && (
-            <p
-              id="event-time-error"
-              role="alert"
-              className="text-sm text-destructive"
-            >
-              {error}
-            </p>
-          )}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="workspace-field">
-              <Label htmlFor="event-calendar">Calendar</Label>
-              <SelectControl
-                id="event-calendar"
-                name="calendar"
-                className="w-full"
-                defaultValue={appointment?.calendar ?? "Sales"}
-                items={CALENDARS.map((calendar) => ({
-                  value: calendar,
-                  label: calendar,
-                }))}
-              />
-            </div>
-            <div className="workspace-field">
-              <Label htmlFor="event-contact">Contact</Label>
-              <SelectControl
-                id="event-contact"
-                name="contact"
-                className="w-full"
-                defaultValue={appointment?.contactId ?? ""}
-                items={[
-                  { value: "", label: "No contact" },
-                  ...contacts
-                    .filter(
-                      (contact) =>
-                        contact.stage !== "Archived" ||
-                        contact.id === appointment?.contactId,
-                    )
-                    .map((contact) => ({
-                      value: contact.id,
-                      label: contact.name,
-                    })),
-                ]}
-              />
-            </div>
-          </div>
-          <div className="workspace-field">
-            <Label htmlFor="event-description">Description</Label>
-            <Textarea
-              id="event-description"
-              name="description"
-              maxLength={2000}
-              defaultValue={appointment?.description}
-              rows={2}
-            />
-          </div>
+          <Card size="sm">
+            <CardContent className="workspace-form">
+              <div className="workspace-field">
+                <Label htmlFor="event-title">Title</Label>
+                <Input
+                  id="event-title"
+                  name="title"
+                  required
+                  maxLength={120}
+                  defaultValue={appointment?.title}
+                  autoFocus
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <Checkbox
+                  id="event-all-day"
+                  checked={allDay}
+                  onCheckedChange={(checked) => {
+                    setAllDay(checked)
+                    setError("")
+                  }}
+                />
+                <Label htmlFor="event-all-day">All day</Label>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="workspace-field">
+                  <Label htmlFor="event-start">Start</Label>
+                  <DateTimePicker
+                    id="event-start"
+                    label="Start"
+                    value={start}
+                    dateOnly={allDay}
+                    onValueChange={(value) => {
+                      setStart(value)
+                      setError("")
+                    }}
+                  />
+                </div>
+                <div className="workspace-field">
+                  <Label htmlFor="event-end">End</Label>
+                  <DateTimePicker
+                    id="event-end"
+                    label="End"
+                    value={end}
+                    dateOnly={allDay}
+                    aria-invalid={Boolean(error)}
+                    aria-describedby={error ? "event-time-error" : undefined}
+                    onValueChange={(value) => {
+                      setEnd(value)
+                      setError("")
+                    }}
+                  />
+                </div>
+              </div>
+              {error && (
+                <p
+                  id="event-time-error"
+                  role="alert"
+                  className="text-sm text-destructive"
+                >
+                  {error}
+                </p>
+              )}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="workspace-field">
+                  <Label htmlFor="event-calendar">Calendar</Label>
+                  <SelectControl
+                    id="event-calendar"
+                    name="calendar"
+                    className="w-full"
+                    defaultValue={appointment?.calendar ?? "Sales"}
+                    items={CALENDARS.map((calendar) => ({
+                      value: calendar,
+                      label: calendar,
+                    }))}
+                  />
+                </div>
+                <div className="workspace-field">
+                  <Label htmlFor="event-contact">Contact</Label>
+                  <SelectControl
+                    id="event-contact"
+                    name="contact"
+                    className="w-full"
+                    defaultValue={appointment?.contactId ?? ""}
+                    items={[
+                      { value: "", label: "No contact" },
+                      ...contacts
+                        .filter(
+                          (contact) =>
+                            contact.stage !== "Archived" ||
+                            contact.id === appointment?.contactId,
+                        )
+                        .map((contact) => ({
+                          value: contact.id,
+                          label: contact.name,
+                        })),
+                    ]}
+                  />
+                </div>
+              </div>
+              <div className="workspace-field">
+                <Label htmlFor="event-description">Description</Label>
+                <Textarea
+                  id="event-description"
+                  name="description"
+                  maxLength={2000}
+                  defaultValue={appointment?.description}
+                  rows={2}
+                />
+              </div>
+            </CardContent>
+          </Card>
           <div className="flex flex-wrap items-center justify-between gap-2">
             {appointment ? (
               <Button
