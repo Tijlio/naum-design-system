@@ -27,7 +27,7 @@ export const RevenueChart = () => {
   const gradient = useId().replace(/:/g, "")
   const reducedMotion = useReducedMotionConfig()
   return (
-    <Card variant="glass" className="lg:col-span-2">
+    <Card variant="default" className="lg:col-span-2">
       <CardHeader>
         <CardTitle>
           <h2>Revenue over time</h2>

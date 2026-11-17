@@ -77,7 +77,7 @@ export const ContactsWorkspace = () => {
     visible.length > 0 &&
     visible.every((contact) => selected.includes(contact.id))
   return (
-    <div className="workspace-stack crm-workspace">
+    <div className="workspace-stack">
       <MotionFadeUp>
         <div className="workspace-heading">
           <div>
@@ -99,7 +99,7 @@ export const ContactsWorkspace = () => {
           <ContactForm />
         </div>
       </MotionFadeUp>
-      <Card variant="glass" className="gap-0">
+      <Card variant="default" className="gap-0">
         <div className="workspace-table-toolbar">
           <InputGroup className="max-w-sm">
             <InputGroupAddon>

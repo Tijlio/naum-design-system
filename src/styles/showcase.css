@@ -61,24 +61,6 @@
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: --spacing(4);
   }
-  .workspace-metric-value {
-    font-size: var(--text-3xl);
-    letter-spacing: -0.05em;
-    font-weight: 400;
-    font-variant-numeric: tabular-nums;
-  }
-  .crm-workspace {
-    --crm-metric-ink: oklch(0.21 0.025 265);
-  }
-  .crm-metric-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: --spacing(8);
-    height: --spacing(8);
-    border-radius: 50%;
-    background: oklch(1 0 0 / 25%);
-  }
   .crm-conversations {
     background-image: radial-gradient(
       at 100% 0%,
@@ -158,9 +140,6 @@
       padding: --spacing(3) --spacing(4);
     }
     .workspace-title {
-      font-size: var(--text-2xl);
-    }
-    .workspace-metric-value {
       font-size: var(--text-2xl);
     }
   }

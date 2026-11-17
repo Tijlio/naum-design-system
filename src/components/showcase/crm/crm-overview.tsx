@@ -1,14 +1,9 @@
 "use client"
 
 import Link from "next/link"
-import {
-  ArrowUpRight,
-  ArrowRight,
-  CalendarDays,
-  TrendingUp,
-  Users,
-  Trophy,
-} from "lucide-react"
+import { ArrowUpRight, ArrowRight, CalendarDays } from "lucide-react"
+import { InsightCard } from "@/components/bento/insight-card"
+import { BentoMetricValue } from "@/components/bento/metric-value"
 import { format, parseISO } from "date-fns"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -37,6 +32,7 @@ import {
 import { DEALS, DEMO_DATE, formatMoney } from "../showcase-data"
 import { useShowcase } from "../showcase-provider"
 import { RevenueChart } from "./revenue-chart"
+import { MetricBreakdown } from "./metric-breakdown"
 
 export const CrmOverview = () => {
   const { contacts, appointments } = useShowcase()
@@ -47,15 +43,25 @@ export const CrmOverview = () => {
       label: "Pipeline value",
       value: formatMoney(openDeals.reduce((sum, deal) => sum + deal.value, 0)),
       detail: `${openDeals.length} open opportunities`,
-      mesh: "naum-mesh-lime",
-      icon: TrendingUp,
+      breakdown: openDeals.map((deal) => ({
+        label: deal.title,
+        value: deal.value,
+      })),
+      breakdownLabel: "Pipeline value by opportunity, in euros",
+      color: "var(--chart-3)",
+      currency: true,
     },
     {
       label: "Active contacts",
       value: String(active.length),
       detail: `${active.filter((contact) => contact.stage === "Lead").length} leads to follow up`,
-      mesh: "naum-mesh-indigo",
-      icon: Users,
+      breakdown: ["Lead", "Customer", "Partner"].map((stage) => ({
+        label: stage,
+        value: active.filter((contact) => contact.stage === stage).length,
+      })),
+      breakdownLabel: "Active contacts by relationship",
+      color: "var(--chart-1)",
+      currency: false,
     },
     {
       label: "Won this month",
@@ -66,22 +72,19 @@ export const CrmOverview = () => {
         ),
       ),
       detail: "November 2026",
-      mesh: "naum-mesh-coral",
-      icon: Trophy,
-    },
-    {
-      label: "Appointments",
-      value: String(
-        appointments.filter((event) => event.start.slice(0, 10) === DEMO_DATE)
-          .length,
-      ),
-      detail: "Tuesday, 17 November",
-      mesh: "naum-mesh-mint",
-      icon: CalendarDays,
+      breakdown: ["Won", "Open"].map((stage) => ({
+        label: stage,
+        value: DEALS.filter((deal) =>
+          stage === "Won" ? deal.stage === "Won" : deal.stage !== "Won",
+        ).reduce((sum, deal) => sum + deal.value, 0),
+      })),
+      breakdownLabel: "Won versus open opportunity value, in euros",
+      color: "var(--chart-5)",
+      currency: true,
     },
   ]
   return (
-    <div className="workspace-stack crm-workspace">
+    <div className="workspace-stack">
       <MotionFadeUp>
         <div className="workspace-heading">
           <div>
@@ -98,27 +101,73 @@ export const CrmOverview = () => {
         </div>
       </MotionFadeUp>
       <MotionStagger className="workspace-metrics">
-        {metrics.map(({ icon: Icon, ...metric }) => (
+        {metrics.map((metric) => (
           <MotionStaggerItem key={metric.label}>
             <Card
-              variant="mesh"
-              className={`crm-metric ${metric.mesh} h-full text-(--crm-metric-ink) naum-card-lift [&_[data-slot=card-description]]:text-inherit`}
+              variant="default"
+              className="h-full justify-between naum-card-lift"
             >
               <CardHeader>
-                <CardDescription>{metric.label}</CardDescription>
+                <CardTitle className="text-sm font-normal text-muted-foreground">
+                  {metric.label}
+                </CardTitle>
                 <CardAction>
-                  <span className="crm-metric-icon">
-                    <Icon className="size-4" aria-hidden="true" />
-                  </span>
+                  <Button
+                    variant="secondary"
+                    size="icon-sm"
+                    nativeButton={false}
+                    aria-label={`Open ${metric.label}`}
+                    render={<Link href="/showcase/crm/contacts" />}
+                  >
+                    <ArrowUpRight className="size-3.5" />
+                  </Button>
                 </CardAction>
               </CardHeader>
               <CardContent className="space-y-3">
-                <p className="workspace-metric-value">{metric.value}</p>
-                <p className="text-xs">{metric.detail}</p>
+                <p>
+                  <BentoMetricValue
+                    value={metric.value.replace("€", "")}
+                    currency={metric.value.startsWith("€") ? "€" : undefined}
+                  />
+                </p>
+                <MetricBreakdown
+                  data={metric.breakdown}
+                  label={metric.breakdownLabel}
+                  color={metric.color}
+                  currency={metric.currency}
+                />
+                <p className="text-xs text-muted-foreground">{metric.detail}</p>
               </CardContent>
             </Card>
           </MotionStaggerItem>
         ))}
+        <MotionStaggerItem>
+          <InsightCard
+            title="Appointments"
+            action={
+              <Button
+                variant="mesh"
+                size="icon-sm"
+                nativeButton={false}
+                aria-label="Open appointments"
+                render={<Link href="/showcase/calendar" />}
+              >
+                <ArrowUpRight className="size-3.5" />
+              </Button>
+            }
+          >
+            <div className="space-y-1">
+              <p className="text-xs text-white/85">Tuesday, 17 November</p>
+              <p className="text-3xl font-normal tracking-tight tabular-nums">
+                {
+                  appointments.filter(
+                    (event) => event.start.slice(0, 10) === DEMO_DATE,
+                  ).length
+                }
+              </p>
+            </div>
+          </InsightCard>
+        </MotionStaggerItem>
       </MotionStagger>
       <div className="grid gap-5 lg:grid-cols-3">
         <RevenueChart />
@@ -164,7 +213,7 @@ export const CrmOverview = () => {
         </Card>
       </div>
       <div className="grid gap-5 lg:grid-cols-3">
-        <Card variant="glass" className="lg:col-span-2">
+        <Card variant="default" className="lg:col-span-2">
           <CardHeader>
             <CardTitle>
               <h2>Open opportunities</h2>

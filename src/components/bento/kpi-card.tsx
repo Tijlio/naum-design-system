@@ -32,6 +32,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart"
 import type { KpiCardItem } from "./bento-data"
+import { BentoMetricValue } from "./metric-value"
 
 function KpiChart({
   kpi,
@@ -225,11 +226,7 @@ export function KpiCard({ kpi }: { kpi: KpiCardItem }) {
 
       <CardContent className="flex flex-col gap-4">
         <div className="flex items-center gap-2">
-          <span className="text-3xl font-normal tracking-tight tabular-nums">
-            <span className="mr-1 text-lg text-muted-foreground">$</span>
-            {kpi.major}
-            <span className="text-muted-foreground">{kpi.minor}</span>
-          </span>
+          <BentoMetricValue value={`${kpi.major}${kpi.minor}`} currency="$" />
           <span
             className={
               kpi.trend === "up"
