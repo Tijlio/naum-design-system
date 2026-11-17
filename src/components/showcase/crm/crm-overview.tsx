@@ -23,11 +23,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import {
-  MotionFadeUp,
-  MotionStagger,
-  MotionStaggerItem,
-} from "@/components/ui/motion"
+import { MotionFadeUp } from "@/components/ui/motion"
 import { formatMoney, formatMoneyParts } from "@/lib/money-format"
 import { useShowcase } from "../showcase-provider"
 import { ContactAvatar } from "./contact-avatar"
@@ -41,25 +37,23 @@ export const CrmOverview = () => {
   const { openDeals, metrics, appointmentCount, upcoming, recentContacts } =
     getCrmOverview(contacts, appointments, deals)
   return (
-    <div className="workspace-stack">
-      <MotionFadeUp>
-        <div className="workspace-heading">
-          <div>
-            <p className="workspace-eyebrow">Tuesday, 17 November 2026</p>
-            <h1 className="naum-page-title">Good morning, Alex</h1>
-          </div>
-          <Button
-            nativeButton={false}
-            render={<Link href="/showcase/crm/contacts" />}
-          >
-            View contacts
-            <ArrowUpRight />
-          </Button>
+    <MotionFadeUp data-slot="workspace-page" className="workspace-stack">
+      <div className="workspace-heading">
+        <div>
+          <p className="workspace-eyebrow">Tuesday, 17 November 2026</p>
+          <h1 className="naum-page-title">Good morning, Alex</h1>
         </div>
-      </MotionFadeUp>
-      <MotionStagger className="workspace-metrics">
+        <Button
+          nativeButton={false}
+          render={<Link href="/showcase/crm/contacts" />}
+        >
+          View contacts
+          <ArrowUpRight />
+        </Button>
+      </div>
+      <div className="workspace-metrics">
         {metrics.map((metric) => (
-          <MotionStaggerItem key={metric.label}>
+          <div key={metric.label}>
             <BentoStatCard
               title={metric.label}
               value={
@@ -96,9 +90,9 @@ export const CrmOverview = () => {
               />
               <p className="text-xs text-muted-foreground">{metric.detail}</p>
             </BentoStatCard>
-          </MotionStaggerItem>
+          </div>
         ))}
-        <MotionStaggerItem>
+        <div>
           <InsightCard
             title="Appointments"
             action={
@@ -120,8 +114,8 @@ export const CrmOverview = () => {
               </p>
             </div>
           </InsightCard>
-        </MotionStaggerItem>
-      </MotionStagger>
+        </div>
+      </div>
       <div className="grid gap-5 lg:grid-cols-3">
         <RevenueChart />
         <Card variant="frosted" className="crm-conversations">
@@ -247,6 +241,6 @@ export const CrmOverview = () => {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </MotionFadeUp>
   )
 }

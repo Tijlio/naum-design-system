@@ -112,19 +112,17 @@ export const PipelineWorkspace = () => {
   }
   const canCreate = contacts.some((contact) => contact.stage !== "Archived")
   return (
-    <div className="workspace-stack">
-      <MotionFadeUp>
-        <div className="workspace-heading">
-          <div>
-            <p className="workspace-eyebrow">Opportunities</p>
-            <h1 className="naum-page-title">Pipeline</h1>
-          </div>
-          <Button onClick={() => setCreateOpen(true)} disabled={!canCreate}>
-            <Plus />
-            New opportunity
-          </Button>
+    <MotionFadeUp data-slot="workspace-page" className="workspace-stack">
+      <div className="workspace-heading">
+        <div>
+          <p className="workspace-eyebrow">Opportunities</p>
+          <h1 className="naum-page-title">Pipeline</h1>
         </div>
-      </MotionFadeUp>
+        <Button onClick={() => setCreateOpen(true)} disabled={!canCreate}>
+          <Plus />
+          New opportunity
+        </Button>
+      </div>
       <Tabs
         value={layout}
         className="gap-4"
@@ -300,6 +298,6 @@ export const PipelineWorkspace = () => {
           onClose={closeEditor}
         />
       )}
-    </div>
+    </MotionFadeUp>
   )
 }

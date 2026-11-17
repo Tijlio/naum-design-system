@@ -1,5 +1,6 @@
 "use client"
 
+import { MotionFadeUp } from "@/components/ui/motion"
 import { useCallback, useMemo } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import type { ColumnDef } from "@tanstack/react-table"
@@ -19,7 +20,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { SelectControl } from "@/components/ui/select-control"
-import { MotionFadeUp } from "@/components/ui/motion"
 import { formatMoney } from "@/lib/money-format"
 import { CONTACT_STAGES, type Contact } from "../showcase-data"
 import { useShowcase } from "../showcase-provider"
@@ -123,28 +123,26 @@ export const ContactsWorkspace = () => {
   const filter = (key: string, value: string) =>
     update("filters", (current) => ({ ...current, [key]: value }))
   return (
-    <div className="workspace-stack">
-      <MotionFadeUp>
-        <div className="workspace-heading">
-          <div>
-            <p className="workspace-eyebrow">Relationships</p>
-            <h1 className="naum-page-title flex items-center gap-3">
-              Contacts
-              <Badge
-                variant="secondary"
-                className="crm-accent"
-                data-tone="lavender"
-              >
-                {
-                  contacts.filter((contact) => contact.stage !== "Archived")
-                    .length
-                }
-              </Badge>
-            </h1>
-          </div>
-          <ContactForm />
+    <MotionFadeUp data-slot="workspace-page" className="workspace-stack">
+      <div className="workspace-heading">
+        <div>
+          <p className="workspace-eyebrow">Relationships</p>
+          <h1 className="naum-page-title flex items-center gap-3">
+            Contacts
+            <Badge
+              variant="secondary"
+              className="crm-accent"
+              data-tone="lavender"
+            >
+              {
+                contacts.filter((contact) => contact.stage !== "Archived")
+                  .length
+              }
+            </Badge>
+          </h1>
         </div>
-      </MotionFadeUp>
+        <ContactForm />
+      </div>
       <WorkspaceSavedViews
         scope="contacts"
         state={view}
@@ -245,6 +243,6 @@ export const ContactsWorkspace = () => {
         )}
         onClose={() => openContact()}
       />
-    </div>
+    </MotionFadeUp>
   )
 }

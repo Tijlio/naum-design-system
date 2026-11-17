@@ -1,5 +1,6 @@
 "use client"
 
+import { MotionFadeUp } from "@/components/ui/motion"
 import { useCallback, useMemo } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import type { ColumnDef } from "@tanstack/react-table"
@@ -12,7 +13,6 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { SelectControl } from "@/components/ui/select-control"
-import { MotionFadeUp } from "@/components/ui/motion"
 import { DEMO_DATE } from "../showcase-data"
 import { useShowcase } from "../showcase-provider"
 import { useWorkspaceTable } from "../use-workspace-table"
@@ -124,25 +124,23 @@ export const TasksWorkspace = () => {
   })
   const selected = tasks.find((task) => task.id === params.get("task"))
   return (
-    <div className="workspace-stack">
-      <MotionFadeUp>
-        <div className="workspace-heading">
-          <div>
-            <p className="workspace-eyebrow">Follow-ups</p>
-            <h1 className="naum-page-title flex items-center gap-3">
-              Tasks
-              <Badge
-                variant="secondary"
-                className="crm-accent"
-                data-tone="lavender"
-              >
-                {tasks.filter((task) => !task.completed).length}
-              </Badge>
-            </h1>
-          </div>
-          <TaskFormTrigger variant="default" />
+    <MotionFadeUp data-slot="workspace-page" className="workspace-stack">
+      <div className="workspace-heading">
+        <div>
+          <p className="workspace-eyebrow">Follow-ups</p>
+          <h1 className="naum-page-title flex items-center gap-3">
+            Tasks
+            <Badge
+              variant="secondary"
+              className="crm-accent"
+              data-tone="lavender"
+            >
+              {tasks.filter((task) => !task.completed).length}
+            </Badge>
+          </h1>
         </div>
-      </MotionFadeUp>
+        <TaskFormTrigger variant="default" />
+      </div>
       <WorkspaceSavedViews
         scope="tasks"
         state={view}
@@ -219,6 +217,6 @@ export const TasksWorkspace = () => {
       {selected && (
         <TaskEditor key={selected.id} task={selected} onClose={() => edit()} />
       )}
-    </div>
+    </MotionFadeUp>
   )
 }

@@ -86,19 +86,20 @@ export const CalendarWorkspace = () => {
       router.replace("/showcase/calendar", { scroll: false })
   }
   return (
-    <div className="workspace-stack calendar-workspace">
-      <MotionFadeUp>
-        <div className="workspace-heading">
-          <div>
-            <p className="workspace-eyebrow">Your week, at a glance</p>
-            <h1 className="naum-page-title">Calendar</h1>
-          </div>
-          <Button onClick={() => create(date, 9)}>
-            <Plus />
-            New appointment
-          </Button>
+    <MotionFadeUp
+      data-slot="workspace-page"
+      className="workspace-stack calendar-workspace"
+    >
+      <div className="workspace-heading">
+        <div>
+          <p className="workspace-eyebrow">Your week, at a glance</p>
+          <h1 className="naum-page-title">Calendar</h1>
         </div>
-      </MotionFadeUp>
+        <Button onClick={() => create(date, 9)}>
+          <Plus />
+          New appointment
+        </Button>
+      </div>
       <div className="calendar-workspace-layout">
         <aside className="calendar-sidebar" aria-label="Calendar controls">
           <Card variant="frosted" size="sm">
@@ -196,7 +197,11 @@ export const CalendarWorkspace = () => {
           </div>
           <CardContent className="px-0">
             <MotionPresence mode="wait" initial={false}>
-              <MotionFadeUp key={view} exit={{ opacity: 0 }}>
+              <MotionFadeUp
+                key={view}
+                initial={{ opacity: 0, y: 0 }}
+                exit={{ opacity: 0 }}
+              >
                 {view === "Month" ? (
                   <CalendarMonth
                     date={date}
@@ -278,6 +283,6 @@ export const CalendarWorkspace = () => {
           onSaved={(appointment) => setDate(parseISO(appointment.start))}
         />
       )}
-    </div>
+    </MotionFadeUp>
   )
 }
