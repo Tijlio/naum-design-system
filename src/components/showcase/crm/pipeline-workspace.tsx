@@ -52,6 +52,7 @@ export const PipelineWorkspace = () => {
     new URLSearchParams(params.toString()),
     "opportunities",
   )
+  const layout = params.get("layout") === "table" ? "table" : "board"
   const query = view.query
   const setQuery = (query: string) => {
     const url = new URL(window.location.href)
@@ -125,7 +126,8 @@ export const PipelineWorkspace = () => {
         </div>
       </MotionFadeUp>
       <Tabs
-        value={params.get("layout") === "table" ? "table" : "board"}
+        value={layout}
+        className="gap-4"
         onValueChange={(layout) => {
           const url = new URL(window.location.href)
           if (layout === "table") url.searchParams.set("layout", "table")
@@ -133,30 +135,34 @@ export const PipelineWorkspace = () => {
           window.history.replaceState(null, "", `${url.pathname}${url.search}`)
         }}
       >
-        <TabsList aria-label="Pipeline view">
-          <TabsTrigger value="board">Board</TabsTrigger>
-          <TabsTrigger value="table">Table</TabsTrigger>
-        </TabsList>
+        <div className="flex flex-wrap items-center gap-3">
+          <TabsList aria-label="Pipeline view">
+            <TabsTrigger value="board">Board</TabsTrigger>
+            <TabsTrigger value="table">Table</TabsTrigger>
+          </TabsList>
+          {layout === "board" && (
+            <div className="flex min-w-0 flex-1 basis-full items-center gap-3 sm:basis-auto">
+              <InputGroup className="max-w-sm">
+                <InputGroupAddon>
+                  <Search />
+                </InputGroupAddon>
+                <InputGroupInput
+                  aria-label="Search opportunities"
+                  placeholder="Search opportunities…"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                />
+              </InputGroup>
+              <Badge variant="outline">
+                {count} {count === 1 ? "opportunity" : "opportunities"}
+              </Badge>
+            </div>
+          )}
+        </div>
         <TabsContent value="table">
           <OpportunitiesTable onEdit={editDeal} />
         </TabsContent>
-        <TabsContent value="board" className="space-y-6">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <InputGroup className="max-w-sm">
-              <InputGroupAddon>
-                <Search />
-              </InputGroupAddon>
-              <InputGroupInput
-                aria-label="Search opportunities"
-                placeholder="Search opportunities…"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-              />
-            </InputGroup>
-            <Badge variant="outline">
-              {count} {count === 1 ? "opportunity" : "opportunities"}
-            </Badge>
-          </div>
+        <TabsContent value="board" className="space-y-4">
           {Object.keys(view.filters).length > 0 && (
             <div className="flex flex-wrap items-center gap-2">
               {Object.entries(view.filters).map(([key, value]) => (
