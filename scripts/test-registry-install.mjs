@@ -28,6 +28,8 @@ try {
   outputs = await createRegistry({ baseUrl })
   for (const item of [
     "command",
+    "data-table",
+    "data-table-views",
     "app-shell",
     "bento-stat-card",
     "bento-insight-card",

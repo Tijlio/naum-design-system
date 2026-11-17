@@ -93,6 +93,11 @@ export const createRegistry = async ({
       type: "registry:ui",
     }))
   entries.push(
+    {
+      name: "data-table-view",
+      path: "src/lib/data-table-view.ts",
+      type: "registry:lib",
+    },
     { name: "utils", path: "src/lib/utils.ts", type: "registry:lib" },
     {
       name: "use-mobile",

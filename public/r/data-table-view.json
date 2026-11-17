@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "data-table-view",
+  "title": "Naum Data Table View",
+  "description": "Naum data-table-view for React and Tailwind CSS v4.",
+  "dependencies": [
+    "@tanstack/react-table@8.21.3"
+  ],
+  "files": [
+    {
+      "path": "src/lib/data-table-view.ts",
+      "type": "registry:lib",
+      "content": "import type { SortingState, VisibilityState } from \"@tanstack/react-table\"\n\nexport type DataTableViewState = {\n  query: string\n  filters: Record<string, string>\n  sorting: SortingState\n  visibility: VisibilityState\n  pageSize: number\n}\nexport const DEFAULT_TABLE_VIEW: DataTableViewState = {\n  query: \"\",\n  filters: {},\n  sorting: [],\n  visibility: {},\n  pageSize: 6,\n}\nconst isRecord = (value: unknown): value is Record<string, unknown> =>\n  typeof value === \"object\" && value !== null && !Array.isArray(value)\nexport const isDataTableView = (value: unknown): value is DataTableViewState =>\n  isRecord(value) &&\n  typeof value.query === \"string\" &&\n  value.query.length <= 500 &&\n  isRecord(value.filters) &&\n  Object.entries(value.filters).every(\n    ([key, value]) =>\n      key.length <= 80 && typeof value === \"string\" && value.length <= 160,\n  ) &&\n  Array.isArray(value.sorting) &&\n  value.sorting.length <= 10 &&\n  value.sorting.every(\n    (sort) =>\n      isRecord(sort) &&\n      typeof sort.id === \"string\" &&\n      typeof sort.desc === \"boolean\",\n  ) &&\n  isRecord(value.visibility) &&\n  Object.values(value.visibility).every(\n    (value) => typeof value === \"boolean\",\n  ) &&\n  typeof value.pageSize === \"number\" &&\n  Number.isInteger(value.pageSize) &&\n  value.pageSize > 0 &&\n  value.pageSize <= 100\n"
+    }
+  ],
+  "type": "registry:lib"
+}

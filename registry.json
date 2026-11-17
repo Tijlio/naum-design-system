@@ -1388,6 +1388,21 @@
       "type": "registry:ui"
     },
     {
+      "name": "data-table-view",
+      "title": "Naum Data Table View",
+      "description": "Naum data-table-view for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@tanstack/react-table@8.21.3"
+      ],
+      "files": [
+        {
+          "path": "src/lib/data-table-view.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "type": "registry:lib"
+    },
+    {
       "name": "utils",
       "title": "Naum Utils",
       "description": "Naum utils for React and Tailwind CSS v4.",
@@ -1486,6 +1501,62 @@
           "path": "src/components/blocks/bento-stat-card.tsx",
           "type": "registry:component",
           "target": "@components/blocks/bento-stat-card.tsx"
+        }
+      ],
+      "type": "registry:block"
+    },
+    {
+      "name": "data-table-views",
+      "title": "Naum Data Table Views",
+      "description": "Naum data-table-views for React and Tailwind CSS v4.",
+      "dependencies": [
+        "lucide-react@1.74.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/button.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/dialog.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/input.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/label.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/select-control.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/blocks/data-table-views.tsx",
+          "type": "registry:component",
+          "target": "@components/blocks/data-table-views.tsx"
+        }
+      ],
+      "type": "registry:block"
+    },
+    {
+      "name": "data-table",
+      "title": "Naum Data Table",
+      "description": "Naum data-table for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@tanstack/react-table@8.21.3",
+        "lucide-react@1.74.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/button.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/card.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/checkbox.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/dropdown-menu.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/empty.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/label.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/motion.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/select-control.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/skeleton.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/table.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/use-mobile.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/blocks/data-table.tsx",
+          "type": "registry:component",
+          "target": "@components/blocks/data-table.tsx"
         }
       ],
       "type": "registry:block"
@@ -1624,12 +1695,15 @@
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/toggle-group.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/toggle.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/tooltip.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/data-table-view.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/use-mobile.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme-provider.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/app-navigation.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/app-shell.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/bento-stat-card.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/data-table-views.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/data-table.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/bento-insight-card.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/metric-value.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/metric-trend.json",

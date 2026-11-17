@@ -16,3 +16,9 @@ The Bento dashboard and CRM use `BentoStatCard`; the CRM/calendar shell uses `Ap
 `AppNavigation` requires SidebarProvider. Items contain stable `id`, `label`, `icon`, `render` and optional `active`. Brand and footer content should hide secondary text for `group-data-[collapsible=icon]`. The app shell owns one main landmark; its children should use sections/headings, not another main.
 
 Registry generation discovers block sources and registers alias-aware file targets. Clean consumer tests independently install the stat card, insight card and shell, and then the complete preset, checking TypeScript, CSS, alias rewriting and theme parity.
+
+## Data tables and saved views
+
+`data-table` installs `DataTable<T>`, a presentation block for a host-owned TanStack v8 table. Supply stable record IDs, the appropriate row models and typed column definitions. It supports sortable/grouped headers, visibility controls, page selection, pagination, bulk-action slots and loading/error/empty states. `mobileHiddenColumns` omits secondary fields from compact tables and their column picker; detail views should keep those fields accessible. Bulk actions receive only selected records that match the current filter. The block does not fetch, persist or interpret domain data.
+
+`data-table-views` installs the saved-view picker and save-name dialog. The host owns snapshots, URL integration and storage. Read-only presets cannot be changed or deleted. `data-table-view` supplies the serializable state type and runtime guard. Live examples in `/docs` demonstrate sorting, selection, filtering, loading/retry and named views.

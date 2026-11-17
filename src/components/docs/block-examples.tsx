@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { SelectControl } from "@/components/ui/select-control"
 import { Label } from "@/components/ui/label"
+import { DataTableExample } from "./data-table-example"
+import { SavedViewsExample } from "./saved-views-example"
 import { CodeSample } from "./code-sample"
 
 export const BlockExamples = ({ name }: { name: string }) => {
@@ -20,6 +22,8 @@ export const BlockExamples = ({ name }: { name: string }) => {
     { id: "contacts", label: "Contacts", icon: <Users /> },
     { id: "calendar", label: "Calendar", icon: <CalendarDays /> },
   ]
+  if (name === "data-table") return <DataTableExample />
+  if (name === "data-table-views") return <SavedViewsExample />
   const code =
     name === "bento-stat-card"
       ? `import { BentoStatCard } from "@/components/blocks/bento-stat-card"\n\n<BentoStatCard title="Revenue" value={{ currency: "€", major: "24", minor: ",500" }}\n  trend={{ direction: "${direction}", label: "Compared with last month" }}>\n  <p>Last 30 days</p>\n</BentoStatCard>`
