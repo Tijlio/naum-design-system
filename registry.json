@@ -1,0 +1,131 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "naum-design-system",
+  "homepage": "https://github.com/Tijlio/naum-design-system",
+  "items": [
+    {
+      "name": "theme",
+      "type": "registry:style",
+      "title": "Naum Theme & Surfaces",
+      "description": "OKLCH light & dark tokens, naum-glass-card and naum-mesh-* utilities for Tailwind v4.",
+      "dependencies": ["tw-animate-css"],
+      "cssVars": {
+        "light": {
+          "background": "oklch(0.93 0.004 260)",
+          "foreground": "oklch(0.14 0.025 262)",
+          "card": "oklch(1 0 0 / 92%)",
+          "card-foreground": "oklch(0.14 0.025 262)",
+          "surface-frosted": "oklch(1 0 0 / 55%)",
+          "primary": "oklch(0.22 0.03 262)",
+          "primary-foreground": "oklch(0.985 0 0)",
+          "border": "oklch(0.14 0.025 262 / 6%)",
+          "input": "oklch(0.14 0.025 262 / 8%)",
+          "ring": "oklch(0.62 0.14 262 / 45%)",
+          "radius": "0.625rem",
+          "glass-surface-start": "oklch(1 0 0 / 80%)",
+          "glass-surface-end": "oklch(1 0 0 / 45%)",
+          "glass-border": "oklch(1 0 0 / 60%)",
+          "glass-highlight": "oklch(1 0 0 / 90%)",
+          "glass-shadow": "oklch(0.14 0.025 262 / 6%)",
+          "glass-blur": "24px"
+        },
+        "dark": {
+          "background": "oklch(0.14 0.025 262)",
+          "foreground": "oklch(1 0 0)",
+          "card": "oklch(1 0 0 / 4%)",
+          "card-foreground": "oklch(1 0 0)",
+          "surface-frosted": "oklch(1 0 0 / 3%)",
+          "primary": "oklch(0.95 0.01 262)",
+          "primary-foreground": "oklch(0.14 0.025 262)",
+          "border": "oklch(1 0 0 / 8%)",
+          "input": "oklch(1 0 0 / 15%)",
+          "ring": "oklch(0.7 0.14 262 / 45%)",
+          "glass-surface-start": "oklch(1 0 0 / 7%)",
+          "glass-surface-end": "oklch(1 0 0 / 1%)",
+          "glass-border": "oklch(1 0 0 / 8%)",
+          "glass-highlight": "oklch(1 0 0 / 15%)",
+          "glass-shadow": "oklch(0 0 0 / 50%)",
+          "glass-blur": "24px"
+        }
+      }
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Naum Card",
+      "description": "Card with default, glass, frosted and mesh variants.",
+      "dependencies": ["class-variance-authority"],
+      "files": [
+        {
+          "path": "src/components/ui/card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Naum Button",
+      "description": "Base UI button with glass & glow variants, cursor-pointer and tactile press.",
+      "dependencies": ["@base-ui/react", "class-variance-authority"],
+      "files": [
+        {
+          "path": "src/components/ui/button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "command",
+      "type": "registry:ui",
+      "title": "Naum Command",
+      "description": "Command palette with rounded-3xl dialog and balanced padding.",
+      "dependencies": ["cmdk", "lucide-react"],
+      "registryDependencies": ["dialog", "input-group"],
+      "files": [
+        {
+          "path": "src/components/ui/command.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "sonner",
+      "type": "registry:ui",
+      "title": "Naum Sonner",
+      "description": "Frosted glass toast notifications with high-contrast descriptions.",
+      "dependencies": ["sonner", "next-themes", "lucide-react"],
+      "files": [
+        {
+          "path": "src/components/ui/sonner.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "ambient-backdrop",
+      "type": "registry:ui",
+      "title": "Ambient Backdrop",
+      "description": "Soft ambient glow layer behind glass surfaces.",
+      "files": [
+        {
+          "path": "src/components/ui/ambient-backdrop.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "motion",
+      "type": "registry:ui",
+      "title": "Naum Motion Primitives",
+      "description": "Reduced-motion-aware fade, stagger, path draw and layoutId pill primitives.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "src/components/ui/motion.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    }
+  ]
+}

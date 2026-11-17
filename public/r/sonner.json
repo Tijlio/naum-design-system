@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "sonner",
+  "title": "Naum Sonner",
+  "description": "Frosted glass toast notifications with high-contrast descriptions.",
+  "dependencies": [
+    "sonner",
+    "next-themes",
+    "lucide-react"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/sonner.tsx",
+      "content": "\"use client\"\n\nimport { useTheme } from \"next-themes\"\nimport { Toaster as Sonner, type ToasterProps } from \"sonner\"\nimport { CircleCheck, Info, TriangleAlert, OctagonAlert, Loader2 } from \"lucide-react\"\n\nconst Toaster = ({ ...props }: ToasterProps) => {\n  const { theme = \"system\" } = useTheme()\n\n  return (\n    <Sonner\n      theme={theme as ToasterProps[\"theme\"]}\n      className=\"toaster group\"\n      icons={{\n        success: (\n          <CircleCheck className=\"size-4 text-emerald-600 dark:text-emerald-400\" />\n        ),\n        info: (\n          <Info className=\"size-4 text-indigo-600 dark:text-indigo-400\" />\n        ),\n        warning: (\n          <TriangleAlert className=\"size-4 text-amber-600 dark:text-amber-400\" />\n        ),\n        error: (\n          <OctagonAlert className=\"size-4 text-destructive\" />\n        ),\n        loading: (\n          <Loader2 className=\"size-4 animate-spin\" />\n        ),\n      }}\n      style={\n        {\n          \"--normal-bg\": \"var(--popover)\",\n          \"--normal-text\": \"var(--popover-foreground)\",\n          \"--normal-border\": \"var(--border)\",\n          \"--border-radius\": \"1.25rem\",\n        } as React.CSSProperties\n      }\n      toastOptions={{\n        classNames: {\n          toast:\n            \"cn-toast rounded-3xl! border-foreground/6! bg-card/92! backdrop-blur-xl! shadow-[0_12px_32px_-8px_oklch(0.14_0.025_262/14%)]!\",\n          title: \"font-medium! text-foreground!\",\n          description: \"text-muted-foreground! opacity-100!\",\n        },\n      }}\n      {...props}\n    />\n  )\n}\n\nexport { Toaster }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

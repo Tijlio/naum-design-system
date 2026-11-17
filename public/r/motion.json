@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "motion",
+  "title": "Naum Motion Primitives",
+  "description": "Reduced-motion-aware fade, stagger, path draw and layoutId pill primitives.",
+  "dependencies": [
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/motion.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { motion, MotionConfig, type SVGMotionProps } from \"motion/react\"\nimport { cn } from \"@/lib/utils\"\n\nconst EASE_OUT_EXPO = [0.22, 1, 0.36, 1] as const\n\nexport function MotionProvider({ children }: { children: React.ReactNode }) {\n  return <MotionConfig reducedMotion=\"user\">{children}</MotionConfig>\n}\n\nexport function MotionFadeUp({\n  children,\n  className,\n  delay = 0,\n}: {\n  children: React.ReactNode\n  className?: string\n  delay?: number\n}) {\n  return (\n    <motion.div\n      initial={{ opacity: 0, y: 12 }}\n      animate={{ opacity: 1, y: 0 }}\n      transition={{ duration: 0.35, delay, ease: EASE_OUT_EXPO }}\n      className={className}\n    >\n      {children}\n    </motion.div>\n  )\n}\n\nexport function MotionStagger({\n  children,\n  className,\n}: {\n  children: React.ReactNode\n  className?: string\n}) {\n  return (\n    <motion.div\n      initial=\"hidden\"\n      animate=\"visible\"\n      variants={{\n        hidden: {},\n        visible: {\n          transition: {\n            staggerChildren: 0.045,\n          },\n        },\n      }}\n      className={className}\n    >\n      {children}\n    </motion.div>\n  )\n}\n\nexport function MotionStaggerItem({\n  children,\n  className,\n}: {\n  children: React.ReactNode\n  className?: string\n}) {\n  return (\n    <motion.div\n      variants={{\n        hidden: { opacity: 0, y: 12 },\n        visible: {\n          opacity: 1,\n          y: 0,\n          transition: { duration: 0.35, ease: EASE_OUT_EXPO },\n        },\n      }}\n      className={className}\n    >\n      {children}\n    </motion.div>\n  )\n}\n\nexport function MotionDrawPath({\n  delay = 0.15,\n  duration = 0.75,\n  ...props\n}: SVGMotionProps<SVGPathElement> & { delay?: number; duration?: number }) {\n  return (\n    <motion.path\n      initial={{ pathLength: 0, opacity: 0.3 }}\n      animate={{ pathLength: 1, opacity: 1 }}\n      transition={{ duration, delay, ease: EASE_OUT_EXPO }}\n      {...props}\n    />\n  )\n}\n\nexport function MotionPill({\n  layoutId,\n  className,\n}: {\n  layoutId: string\n  className?: string\n}) {\n  return (\n    <motion.span\n      layoutId={layoutId}\n      transition={{ type: \"spring\", stiffness: 420, damping: 34 }}\n      className={cn(\"absolute inset-0 -z-10 rounded-full\", className)}\n    />\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

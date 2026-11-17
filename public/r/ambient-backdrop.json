@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ambient-backdrop",
+  "title": "Ambient Backdrop",
+  "description": "Soft ambient glow layer behind glass surfaces.",
+  "files": [
+    {
+      "path": "src/components/ui/ambient-backdrop.tsx",
+      "content": "export const AmbientBackdrop = () => {\n  return (\n    <div\n      aria-hidden=\"true\"\n      className=\"pointer-events-none fixed inset-0 z-0 overflow-hidden\"\n    >\n      {/* Lichtbol linksboven */}\n      <div className=\"absolute -top-40 -left-40 h-125 w-125 rounded-full bg-indigo-500/25 blur-[120px] dark:bg-indigo-600/20\" />\n      {/* Lichtbol rechtsonder */}\n      <div className=\"absolute top-1/2 -right-40 h-100 w-100 rounded-full bg-cyan-500/20 blur-[120px] dark:bg-cyan-500/15\" />\n    </div>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}
