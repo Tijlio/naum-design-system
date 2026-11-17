@@ -102,8 +102,7 @@ export type ActivityMotifKind =
 export interface ActivityCardItem {
   title: string
   count: number
-  delta: string
-  positive: boolean
+  period: string
   mesh: string
   motif: ActivityMotifKind
 }
@@ -112,48 +111,42 @@ export const ACTIVITY_CARDS: ActivityCardItem[] = [
   {
     title: "Sales\nQuotes",
     count: 2,
-    delta: "+2",
-    positive: true,
+    period: "Last 7 days",
     mesh: "naum-mesh-lime",
     motif: "wave",
   },
   {
     title: "Sales\nOrders",
     count: 4,
-    delta: "-1",
-    positive: false,
+    period: "Last 7 days",
     mesh: "naum-mesh-coral",
     motif: "arc",
   },
   {
     title: "Sales\nInvoices",
     count: 7,
-    delta: "+3",
-    positive: true,
+    period: "Last 7 days",
     mesh: "naum-mesh-indigo",
     motif: "target",
   },
   {
     title: "Purchase\nOrders",
     count: 5,
-    delta: "+2",
-    positive: true,
+    period: "Last 7 days",
     mesh: "naum-mesh-amber",
     motif: "rings",
   },
   {
     title: "Ongoing\nInvoices",
     count: 0,
-    delta: "0",
-    positive: true,
+    period: "Currently open",
     mesh: "naum-mesh-rose",
     motif: "infinity",
   },
   {
     title: "Invoices Due\nNext Week",
     count: 5,
-    delta: "-2",
-    positive: false,
+    period: "Due next week",
     mesh: "naum-mesh-mint",
     motif: "orbit",
   },

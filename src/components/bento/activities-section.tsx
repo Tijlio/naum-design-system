@@ -173,23 +173,14 @@ export function ActivitiesSection() {
                 </CardHeader>
 
                 <CardContent className="flex flex-col gap-3 px-4">
-                  <ActivityMotif motif={item.motif} />
-                  <div className="flex items-end gap-2">
-                    <span className="text-2xl leading-none font-normal tabular-nums">
+                  <div aria-hidden="true" className="ml-auto w-3/4 opacity-45">
+                    <ActivityMotif motif={item.motif} />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <span className="text-3xl leading-none font-normal tabular-nums">
                       {item.count}
                     </span>
-                    <div className="flex flex-col text-[10px] leading-tight text-white/80">
-                      <span
-                        className={
-                          item.positive
-                            ? "inline-flex w-fit items-center rounded-full bg-emerald-400 px-1.5 py-0.5 text-[9px] font-semibold text-emerald-950"
-                            : "inline-flex w-fit items-center rounded-full bg-orange-500 px-1.5 py-0.5 text-[9px] font-semibold text-white"
-                        }
-                      >
-                        {item.delta}
-                      </span>
-                      <span className="mt-0.5">Last 7 days</span>
-                    </div>
+                    <span className="text-xs text-white/85">{item.period}</span>
                   </div>
                 </CardContent>
               </Card>
