@@ -3,6 +3,7 @@
 ## Sources and generated files
 
 - `src/components/ui/*`: installable UI components.
+- `src/components/blocks/*` and registered Bento compositions: portable blocks with alias-aware component targets.
 - `src/lib/utils.ts`, `src/hooks/use-mobile.ts`, `src/components/theme-provider.tsx`: installable support items.
 - `src/styles/naum.css`: the shared theme and surfaces.
 - `scripts/registry.mjs`: registry assembly, local dependency graph, exact installed npm versions and public export catalog.
@@ -16,7 +17,7 @@ Registry dependency URLs point to Naum's own components, so installing Command d
 
 `pnpm check` runs ESLint, TypeScript, unit/contract tests and registry parity. Unit tests exercise prop/ref forwarding, explicit reduced motion, deterministic skeletons, slider labels, example associations, carousel cleanup, registry schemas and dependency closure.
 
-`pnpm test:registry` starts a temporary loopback registry and installs both `command` and `all` with the actual pinned shadcn CLI. Fixtures have their own dependencies and custom directory aliases. Each fixture compiles with strict TypeScript and Tailwind; installed light/dark tokens are compared with the source. The script closes its server and removes only its own temporary consumer directories. It retains `build/registry-install-results.json`. This check requires npm network access and does not mutate an external project.
+`pnpm test:registry` starts a temporary loopback registry and installs `command`, the app shell, both Bento card blocks and `all` with the actual pinned shadcn CLI. Fixtures have their own dependencies and custom directory aliases. Each fixture compiles with strict TypeScript and Tailwind; installed light/dark tokens are compared with the source. The script closes its server and removes only its own temporary consumer directories. It retains `build/registry-install-results.json`. This check requires npm network access and does not mutate an external project.
 
 `pnpm build:test` uses `build/next` so production verification does not overwrite a developer's `.next` build. `tsconfig.build.json` checks the application sources; the ordinary typecheck also covers tests. Never stop somebody else's development server to run tests.
 

@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Add interactive documentation with registry installation commands, live component/block examples and typed source references with retry/copy recovery.
+- Publish portable BentoStatCard, InsightCard, AppNavigation and AppShell blocks; reuse them in Bento and CRM and verify clean consumer installs.
+- Persist validated, versioned demo contacts, notes, appointments and opportunities in local storage, with a confirmed reset scoped to the demo key and session-only fallback.
+- Add the searchable CRM pipeline with opportunity creation/editing, stage totals, desktop drag/drop, keyboard/touch move controls, delete/undo and live metrics/search integration.
+- Put workspace breadcrumbs in the transparent app topbar, reduce page-heading spacing and add reusable reduced-motion-aware layout transitions.
+
 - Make popup menus opaque, flatten form dialogs to one surface, and share Bento navigation borders/sizing and metric trend indicators across the application. Keep search results outside the animated input clipping boundary.
 
 - Complete a cross-app visual/code quality pass: transparent header, shared page typography, responsive tables, consistent contact avatars/stages, accessible search dismissal and stable result identity.

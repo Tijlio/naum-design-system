@@ -11,12 +11,13 @@ export const CodeSample = ({
   code: string
   label?: string
 }) => {
-  const [copied, setCopied] = useState(false)
+  const [copiedCode, setCopiedCode] = useState<string | null>(null)
+  const copied = copiedCode === code
   const [error, setError] = useState(false)
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(code)
-      setCopied(true)
+      setCopiedCode(code)
       setError(false)
     } catch {
       setError(true)
@@ -30,7 +31,7 @@ export const CodeSample = ({
         </Button>
       </div>
       <pre
-        className="max-w-full overflow-x-auto rounded-2xl bg-muted/60 p-4 text-xs leading-relaxed"
+        className="max-h-96 max-w-full overflow-auto rounded-2xl bg-muted/60 p-4 text-xs leading-relaxed"
         tabIndex={0}
         aria-label="Code sample"
       >

@@ -34,10 +34,14 @@ No runtime dependency was added. No migration, backend integration or persistenc
 - `pnpm test:registry`: real CLI installs of `command` and `all`, including consumer TypeScript, CSS, aliases and theme parity.
 - `pnpm build:test` and the full desktop/mobile browser suite, including screenshots, axe, reduced motion, contacts, search, calendar CRUD and drag/resize.
 
-Final run: 29 unit/contract tests passed; 89 browser tests passed and one desktop drag/drop test was deliberately skipped in the mobile project. Both clean-consumer registry installs passed. Build, lint, TypeScript, formatting and registry parity passed.
+Latest feature pass: 40 unit/contract tests passed; 110 browser tests passed and two desktop drag/drop tests were deliberately skipped in the mobile project. Five clean-consumer registry installs passed (command, app shell, stat card, insight card and complete preset). Build, lint, TypeScript, formatting and registry parity passed.
 
 Browser reports/traces remain ignored locally and are uploaded by CI as temporary artifacts. Only test sources and reviewed reference images are committed.
 
 ## Limits
 
-The workspace remains an in-memory demonstration. Native desktop drag/drop is deliberately skipped in the mobile project, where the appointment editor is tested as the move alternative. Mobile coverage uses Chromium's responsive/touch emulation; it is not a real-device or cross-browser certification. Screenshots and axe checks do not constitute a complete screen-reader or WCAG certification, including contrast over mesh gradients.
+The workspace remains a local demonstration with validated, versioned browser persistence; it has no server or account synchronization. Native desktop drag/drop is deliberately skipped in the mobile project, where the appointment editor and per-card pipeline selector are tested as move alternatives. Mobile coverage uses Chromium's responsive/touch emulation; it is not a real-device or cross-browser certification. Screenshots and axe checks do not constitute a complete screen-reader or WCAG certification, including contrast over mesh gradients.
+
+## Documentation and workspace additions
+
+The follow-up pass covers the `/docs` catalog, live variant/state examples, install/copy commands and typed source API load/retry; portable Bento/app blocks with alias-aware installs; validated local storage, refresh, cross-tab/iframe synchronization and confirmed reset; and the four-stage CRM pipeline. Pipeline coverage exercises create/edit, desktop dragging, keyboard/touch selection, per-stage totals, search deep links, overview metric updates, persistence, delete/undo, both themes and 320px form actions. The shared app shell now includes a compact content transition with the breadcrumb in the topbar. Runtime console/page errors are checked on the production pipeline pages.

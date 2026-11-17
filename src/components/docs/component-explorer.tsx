@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { AmbientBackdrop } from "@/components/ui/ambient-backdrop"
 import { MotionFadeUp, MotionProvider } from "@/components/ui/motion"
+import { SourceReference } from "./source-reference"
 import { BlockExamples } from "./block-examples"
 import { CodeSample } from "./code-sample"
 import { ComponentExamples, INTERACTIVE_COMPONENTS } from "./component-examples"
@@ -155,6 +156,7 @@ export const ComponentExplorer = ({ entries }: { entries: CatalogEntry[] }) => {
                   ) : (
                     <div className="space-y-3">
                       <h2 className="font-medium">Reference & examples</h2>
+                      <SourceReference key={entry.name} name={entry.name} />
                       <p className="text-sm leading-relaxed text-muted-foreground">
                         Open the source for the complete typed API. The
                         component preview demonstrates shared controls,

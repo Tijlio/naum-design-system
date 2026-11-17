@@ -102,3 +102,26 @@ test("installable blocks expose working examples and usage", async ({
       .getByRole("heading", { name: "Good morning, Alex" }),
   ).toBeVisible()
 })
+
+test("typed source reference recovers from a failed load", async ({ page }) => {
+  let requests = 0
+  await page.route("**/r/accordion.json", (route) =>
+    ++requests === 1 ? route.abort() : route.continue(),
+  )
+  await page.goto("/docs")
+  await page.getByLabel("Find a component").fill("accordion")
+  await page
+    .getByRole("navigation", { name: "Component catalog" })
+    .getByRole("button", { name: "accordion", exact: true })
+    .click()
+  await expect(
+    page.getByLabel("Typed source API").getByRole("alert"),
+  ).toContainText("Source could not be loaded.")
+  await page.getByRole("button", { name: "Retry source" }).click()
+  await expect(page.getByLabel("Typed source API")).toContainText(
+    "AccordionTrigger",
+  )
+  await expect(
+    page.getByRole("button", { name: "Copy component source" }),
+  ).toBeVisible()
+})

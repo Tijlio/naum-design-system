@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, type CSSProperties } from "react"
 import { CalendarDays, LayoutDashboard, Users } from "lucide-react"
 import { BentoStatCard } from "@/components/blocks/bento-stat-card"
 import { AppNavigation } from "@/components/blocks/app-navigation"
@@ -24,10 +24,10 @@ export const BlockExamples = ({ name }: { name: string }) => {
     name === "bento-stat-card"
       ? `import { BentoStatCard } from "@/components/blocks/bento-stat-card"\n\n<BentoStatCard title="Revenue" value={{ currency: "€", major: "24", minor: ",500" }}\n  trend={{ direction: "${direction}", label: "Compared with last month" }}>\n  <p>Last 30 days</p>\n</BentoStatCard>`
       : name === "bento-insight-card"
-        ? 'import { InsightCard } from "@/components/bento/insight-card"\n\n<InsightCard title="Appointments" action={<Button onClick={openCalendar}>Open calendar</Button>}>\n  <p>4 appointments this week</p>\n</InsightCard>'
+        ? 'import { InsightCard } from "@/components/bento/insight-card"\nimport { Button } from "@/components/ui/button"\n\n<InsightCard title="Appointments" action={<Button nativeButton={false} render={<a href="/calendar" />}>Open calendar</Button>}>\n  <p>4 appointments this week</p>\n</InsightCard>'
         : name === "app-navigation"
-          ? 'import { AppNavigation } from "@/components/blocks/app-navigation"\n\n// Inside SidebarProvider and MotionProvider:\n<AppNavigation items={[{ id: "overview", label: "Overview",\n  icon: <LayoutDashboard />, render: <a href="/overview" />, active: true }]} />'
-          : 'import { AppShell } from "@/components/blocks/app-shell"\n\n<AppShell brand={<span>Acme</span>}\n  navigation={[{ id: "overview", label: "Overview", icon: <LayoutDashboard />,\n    render: <a href="/overview" />, active: true }]}\n  header={<span>Workspace</span>} actions={<Button>New contact</Button>}>\n  <h1 className="naum-page-title">Overview</h1>\n</AppShell>'
+          ? 'import { AppNavigation } from "@/components/blocks/app-navigation"\nimport { LayoutDashboard } from "lucide-react"\n\n// Inside SidebarProvider and MotionProvider:\n<AppNavigation items={[{ id: "overview", label: "Overview",\n  icon: <LayoutDashboard />, render: <a href="/overview" />, active: true }]} />'
+          : 'import { AppShell } from "@/components/blocks/app-shell"\nimport { LayoutDashboard } from "lucide-react"\n\n<AppShell brand={<span>Acme</span>}\n  navigation={[{ id: "overview", label: "Overview", icon: <LayoutDashboard />,\n    render: <a href="/overview" />, active: true }]}\n  header={<span>Workspace</span>}>\n  <h1 className="naum-page-title">Overview</h1>\n</AppShell>'
   return (
     <div className="space-y-6">
       {name === "bento-stat-card" && (
@@ -85,7 +85,7 @@ export const BlockExamples = ({ name }: { name: string }) => {
         {name === "app-navigation" && (
           <SidebarProvider
             className="min-h-0!"
-            style={{ "--sidebar-width": "100%" } as React.CSSProperties}
+            style={{ "--sidebar-width": "100%" } as CSSProperties}
           >
             <div className="w-full max-w-xs">
               <AppNavigation
