@@ -122,11 +122,13 @@ Checkbox, Switch, Select and Combobox support the underlying controlled and unco
 
 ## Motion
 
-`MotionProvider` defaults to `reducedMotion="user"`. Wrap animated content in it; use `reducedMotion="always"` to enforce reduced motion. `MotionFadeUp`, `MotionStagger`, `MotionStaggerItem`, `MotionDrawPath`, `MotionPill` and `MotionExpand` also honor that configured policy for their custom opacity, stagger and SVG drawing transitions.
+`MotionProvider` defaults to `reducedMotion="user"`. Wrap animated content in it; use `reducedMotion="always"` to enforce reduced motion. `MotionFadeUp`, `MotionStagger`, `MotionStaggerItem`, `MotionDrawPath`, `MotionPill`, `MotionLayout` and `MotionExpand` also honor that configured policy for their custom opacity, stagger and SVG drawing transitions.
 
 The primitives forward the corresponding `HTMLMotionProps`/`SVGMotionProps`, including IDs, ARIA attributes, refs, styles and handlers. Defaults are applied first; explicitly supplied motion props such as `initial`, `animate`, `variants` and `transition` override them. Consumers overriding animation behavior must preserve the motion policy.
 
 `MotionPresence` exposes the presence boundary for enter/exit animations. Use `MotionExpand axis="x"` for horizontal reveals and `axis="y"` for vertical reveals. Its default overflow clipping can be overridden when a revealed surface needs to show a popup.
+
+`MotionLayout` animates position changes and shared element transitions; it disables layout movement and shared layout IDs when reduced motion is active.
 
 Use unique or locally scoped `layoutId` values for pills when multiple independent instances appear together. CSS motion uses `ease-naum` and the shared duration tokens. The theme reduces CSS transitions and animations under the system preference. Hover/press movement is guarded by motion preference.
 

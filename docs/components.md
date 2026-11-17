@@ -42,7 +42,7 @@ Install an item with `pnpm dlx shadcn@4.23.0 add @naum/<name>`. Every UI item in
 | `kbd` | `Kbd`, `KbdGroup` | [Source](../src/components/ui/kbd.tsx) |
 | `label` | `Label` | [Source](../src/components/ui/label.tsx) |
 | `menubar` | `Menubar`, `MenubarPortal`, `MenubarMenu`, `MenubarTrigger`, `MenubarContent`, `MenubarGroup`, `MenubarSeparator`, `MenubarLabel`, `MenubarItem`, `MenubarShortcut`, `MenubarCheckboxItem`, `MenubarRadioGroup`, `MenubarRadioItem`, `MenubarSub`, `MenubarSubTrigger`, `MenubarSubContent` | [Source](../src/components/ui/menubar.tsx) |
-| `motion` | `MotionPresence`, `MotionExpand`, `MotionProvider`, `MotionFadeUp`, `MotionStagger`, `MotionStaggerItem`, `MotionDrawPath`, `MotionPill` | [Source](../src/components/ui/motion.tsx) |
+| `motion` | `MotionPresence`, `MotionExpand`, `MotionLayout`, `MotionProvider`, `MotionFadeUp`, `MotionStagger`, `MotionStaggerItem`, `MotionDrawPath`, `MotionPill` | [Source](../src/components/ui/motion.tsx) |
 | `native-select` | `NativeSelect`, `NativeSelectOptGroup`, `NativeSelectOption` | [Source](../src/components/ui/native-select.tsx) |
 | `navigation-menu` | `NavigationMenu`, `NavigationMenuContent`, `NavigationMenuIndicator`, `NavigationMenuItem`, `NavigationMenuLink`, `NavigationMenuList`, `NavigationMenuTrigger`, `navigationMenuTriggerStyle`, `NavigationMenuPositioner` | [Source](../src/components/ui/navigation-menu.tsx) |
 | `pagination` | `Pagination`, `PaginationContent`, `PaginationEllipsis`, `PaginationItem`, `PaginationLink`, `PaginationNext`, `PaginationPrevious` | [Source](../src/components/ui/pagination.tsx) |

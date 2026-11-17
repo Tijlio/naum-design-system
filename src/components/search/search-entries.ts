@@ -27,5 +27,11 @@ export const PAGE_ENTRIES: SearchEntry[] = [
     group: "Pages",
     href: "/preview",
   },
+  {
+    id: "pipeline",
+    title: "Pipeline",
+    group: "Pages",
+    href: "/showcase/crm/pipeline",
+  },
   { id: "docs", title: "Documentation", group: "Pages", href: "/docs" },
 ]

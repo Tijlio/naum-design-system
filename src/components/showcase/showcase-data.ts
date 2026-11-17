@@ -12,12 +12,18 @@ export type Contact = {
   lastContact: string
   notes: ContactNote[]
 }
+export const DEAL_STAGES = [
+  "Discovery",
+  "Proposal",
+  "Negotiation",
+  "Won",
+] as const
 export type Deal = {
   id: string
   title: string
   contactId: string
   value: number
-  stage: "Discovery" | "Proposal" | "Negotiation" | "Won"
+  stage: (typeof DEAL_STAGES)[number]
 }
 export type Appointment = {
   id: string

@@ -183,6 +183,8 @@ test("compact layouts and form actions remain reachable", async ({ page }) => {
     "/preview",
     "/showcase/crm",
     "/showcase/calendar",
+    "/showcase/crm/pipeline",
+    "/docs",
     "/showcase/crm/contacts",
   ]) {
     await page.goto(route)

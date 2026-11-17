@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation"
 import {
   ArrowUpRight,
   CalendarDays,
+  Columns3,
   Layers,
   LayoutDashboard,
   Users,
@@ -13,7 +14,14 @@ import {
 import { AppShell } from "@/components/blocks/app-shell"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import {
   SidebarMenu,
@@ -28,6 +36,7 @@ import { WorkspaceSearch } from "./workspace-search"
 const NAVIGATION = [
   { label: "Calendar", href: "/showcase/calendar", icon: CalendarDays },
   { label: "Overview", href: "/showcase/crm", icon: LayoutDashboard },
+  { label: "Pipeline", href: "/showcase/crm/pipeline", icon: Columns3 },
   { label: "Contacts", href: "/showcase/crm/contacts", icon: Users },
 ]
 
@@ -91,12 +100,22 @@ export const ShowcaseShell = ({ children }: { children: ReactNode }) => {
         </SidebarMenu>
       }
       header={
-        <>
-          <span className="text-sm font-medium">Naum Studio</span>
-          <Badge variant="outline" className="hidden sm:inline-flex">
-            Demo workspace
-          </Badge>
-        </>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem className="hidden sm:inline-flex">
+              <BreadcrumbLink render={<Link href="/showcase/crm" />}>
+                Workspace
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator className="hidden sm:block" />
+            <BreadcrumbItem>
+              <BreadcrumbPage>
+                {NAVIGATION.find((item) => item.href === path)?.label ??
+                  "Workspace"}
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
       }
       actions={
         <>

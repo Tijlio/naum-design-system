@@ -36,6 +36,7 @@ test("contacts and notes survive reload and reset preserves the theme", async ({
     .getByRole("alertdialog")
     .getByRole("button", { name: "Reset demo", exact: true })
     .click()
+  await expect(page.getByRole("alertdialog")).toBeHidden()
   await expect(page.getByRole("button", { name: /Ada Rivers/ })).toHaveCount(0)
   await page.reload()
   await expect(page.getByRole("heading", { name: /Contacts 8/ })).toBeVisible()
@@ -88,4 +89,28 @@ test("appointments survive reload and remain editable", async ({ page }) => {
       .getByRole("dialog", { name: "Edit appointment" })
       .getByLabel("Title", { exact: true }),
   ).toHaveValue("Persistent review")
+})
+
+test("open tabs synchronize changes and demo resets", async ({
+  page,
+  context,
+}) => {
+  await page.goto("/showcase/crm/contacts")
+  const other = await context.newPage()
+  await other.goto("/showcase/crm/contacts")
+  await expect(other.getByRole("heading", { name: /Contacts 8/ })).toBeVisible()
+  await page.getByRole("button", { name: "New contact", exact: true }).click()
+  const dialog = page.getByRole("dialog", { name: "New contact" })
+  await dialog.getByLabel("Full name").fill("Ada Rivers")
+  await dialog.getByLabel("Email", { exact: true }).fill("ada@example.com")
+  await dialog.getByLabel("Company").fill("Ada Studio")
+  await dialog.getByRole("button", { name: "Add contact", exact: true }).click()
+  await expect(other.getByRole("button", { name: /Ada Rivers/ })).toBeVisible()
+  await other.getByRole("button", { name: "Reset demo data" }).click()
+  await other
+    .getByRole("alertdialog")
+    .getByRole("button", { name: "Reset demo", exact: true })
+    .click()
+  await expect(page.getByRole("button", { name: /Ada Rivers/ })).toHaveCount(0)
+  await other.close()
 })

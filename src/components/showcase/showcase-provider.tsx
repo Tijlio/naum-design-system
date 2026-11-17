@@ -10,7 +10,7 @@ import {
 } from "react"
 import type { Appointment, Contact, Deal } from "./showcase-data"
 import { createWorkspaceStore, type Persistence } from "./workspace-storage"
-import type { DemoWorkspace } from "./workspace-schema"
+import { DEMO_STORAGE_KEY, type DemoWorkspace } from "./workspace-schema"
 
 type Workspace = DemoWorkspace & {
   saveContact: (contact: Contact) => void
@@ -18,6 +18,7 @@ type Workspace = DemoWorkspace & {
   saveAppointment: (appointment: Appointment) => void
   removeAppointment: (id: string) => void
   saveDeal: (deal: Deal) => void
+  removeDeal: (id: string) => void
   resetDemo: () => void
   persistence: Persistence
 }
@@ -38,6 +39,19 @@ export const ShowcaseProvider = ({ children }: { children: ReactNode }) => {
   )
   useEffect(() => {
     store.restore()
+    const synchronize = (event: StorageEvent) => {
+      try {
+        if (
+          (event.key === DEMO_STORAGE_KEY || event.key === null) &&
+          event.storageArea === window.localStorage
+        )
+          store.sync(event.newValue)
+      } catch {
+        /* A blocked storage getter must not disable the workspace. */
+      }
+    }
+    window.addEventListener("storage", synchronize)
+    return () => window.removeEventListener("storage", synchronize)
   }, [store])
   return (
     <WorkspaceContext.Provider
@@ -74,6 +88,11 @@ export const ShowcaseProvider = ({ children }: { children: ReactNode }) => {
           store.update((current) => ({
             ...current,
             deals: upsert(current.deals, deal),
+          })),
+        removeDeal: (id) =>
+          store.update((current) => ({
+            ...current,
+            deals: current.deals.filter((deal) => deal.id !== id),
           })),
         resetDemo: store.reset,
       }}

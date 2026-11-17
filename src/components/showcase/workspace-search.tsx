@@ -24,7 +24,7 @@ export const WorkspaceSearch = () => {
       id: deal.id,
       title: deal.title,
       group: "Deals",
-      href: `/showcase/crm/contacts?contact=${deal.contactId}`,
+      href: `/showcase/crm/pipeline?deal=${deal.id}`,
     })),
     ...appointments.map((appointment): SearchEntry => ({
       id: appointment.id,

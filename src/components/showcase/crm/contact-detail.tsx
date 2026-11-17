@@ -2,6 +2,7 @@
 
 import { formatMoney } from "@/lib/money-format"
 
+import Link from "next/link"
 import { format, parseISO } from "date-fns"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
@@ -110,7 +111,18 @@ export const ContactDetail = ({
                   .map((deal) => (
                     <Card size="sm" key={deal.id}>
                       <CardContent>
-                        <p className="text-sm font-medium">{deal.title}</p>
+                        <Button
+                          variant="link"
+                          className="h-auto p-0 text-left whitespace-normal"
+                          nativeButton={false}
+                          render={
+                            <Link
+                              href={`/showcase/crm/pipeline?deal=${deal.id}`}
+                            />
+                          }
+                        >
+                          {deal.title}
+                        </Button>
                         <div className="mt-2 flex items-center justify-between">
                           <DealStageBadge stage={deal.stage} />
                           <span className="text-sm tabular-nums">

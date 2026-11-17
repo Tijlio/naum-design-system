@@ -1,6 +1,7 @@
 import { isValid, parseISO } from "date-fns"
 import {
   CALENDARS,
+  DEAL_STAGES,
   CONTACT_STAGES,
   type Appointment,
   type Contact,
@@ -54,7 +55,7 @@ const isDeal = (value: unknown): value is Deal =>
   isRecord(value) &&
   hasStrings(value, ["id", "title", "contactId"]) &&
   isAmount(value.value) &&
-  includes(["Discovery", "Proposal", "Negotiation", "Won"], value.stage)
+  includes(DEAL_STAGES, value.stage)
 const uniqueIds = (records: { id: string }[]) =>
   records.every((record) => record.id.length > 0) &&
   new Set(records.map((record) => record.id)).size === records.length

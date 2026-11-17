@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { RotateCcw } from "lucide-react"
 import { toast } from "sonner"
 import {
@@ -19,6 +20,7 @@ import { useShowcase } from "./showcase-provider"
 
 export const DemoControls = () => {
   const { resetDemo, persistence } = useShowcase()
+  const [open, setOpen] = useState(false)
   return (
     <>
       {persistence === "session" && (
@@ -26,7 +28,7 @@ export const DemoControls = () => {
           Session only
         </Badge>
       )}
-      <AlertDialog>
+      <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogTrigger
           render={
             <Button variant="glass" size="icon-sm" aria-label="Reset demo data">
@@ -47,6 +49,7 @@ export const DemoControls = () => {
             <AlertDialogAction
               onClick={() => {
                 resetDemo()
+                setOpen(false)
                 toast.success("Demo data reset")
               }}
             >

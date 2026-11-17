@@ -51,6 +51,18 @@ export const createWorkspaceStore = (getStorage: () => DemoStorage) => {
     getSnapshot: () => snapshot,
     getServerSnapshot: () => initial,
     restore,
+    sync: (raw: string | null) => {
+      restored = true
+      if (raw === null) {
+        emit({ data: createDemoData(), persistence: "local" })
+        return
+      }
+      const data = parseWorkspace(raw)
+      emit({
+        data: data ?? snapshot.data,
+        persistence: data ? "local" : "session",
+      })
+    },
     update: (update: (data: DemoWorkspace) => DemoWorkspace) => {
       restore()
       const data = update(snapshot.data)

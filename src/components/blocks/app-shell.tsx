@@ -74,7 +74,7 @@ export const AppShell = ({
             </div>
             <div className="flex items-center gap-2">{actions}</div>
           </header>
-          <div className="mx-auto w-full max-w-[100rem] p-5 md:p-8">
+          <div className="mx-auto w-full max-w-[100rem] px-5 pt-2 pb-5 md:px-8 md:pt-3 md:pb-8">
             {children}
           </div>
         </SidebarInset>

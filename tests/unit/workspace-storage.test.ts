@@ -116,3 +116,27 @@ it("notifies current subscribers and stops notifying after unsubscribe", () => {
   store.reset()
   expect(calls).toBe(1)
 })
+
+it("synchronizes validated changes and resets from other documents without writing back", () => {
+  const { storage, values } = createStorage()
+  const first = createWorkspaceStore(() => storage)
+  const second = createWorkspaceStore(() => storage)
+  first.update((data) => ({
+    ...data,
+    contacts: data.contacts.map((contact, i) =>
+      i ? contact : { ...contact, name: "Updated in another tab" },
+    ),
+  }))
+  const raw = values.get(DEMO_STORAGE_KEY) ?? null
+  second.sync(raw)
+  expect(second.getSnapshot().data.contacts[0].name).toBe(
+    "Updated in another tab",
+  )
+  second.sync("invalid")
+  expect(second.getSnapshot().data.contacts[0].name).toBe(
+    "Updated in another tab",
+  )
+  expect(values.get(DEMO_STORAGE_KEY)).toBe(raw)
+  second.sync(null)
+  expect(second.getSnapshot().data.contacts[0].name).toBe("Emma Laurent")
+})

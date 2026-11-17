@@ -74,7 +74,15 @@ export const CrmOverview = () => {
                   size="icon-sm"
                   nativeButton={false}
                   aria-label={`Open ${metric.label}`}
-                  render={<Link href="/showcase/crm/contacts" />}
+                  render={
+                    <Link
+                      href={
+                        metric.currency
+                          ? "/showcase/crm/pipeline"
+                          : "/showcase/crm/contacts"
+                      }
+                    />
+                  }
                 >
                   <ArrowUpRight className="size-3.5" />
                 </Button>
@@ -188,7 +196,7 @@ export const CrmOverview = () => {
                         nativeButton={false}
                         render={
                           <Link
-                            href={`/showcase/crm/contacts?contact=${deal.contactId}`}
+                            href={`/showcase/crm/pipeline?deal=${deal.id}`}
                           />
                         }
                       >

@@ -34,6 +34,22 @@ export const MotionExpand = ({
   )
 }
 
+export const MotionLayout = ({
+  layout = "position",
+  layoutId,
+  ...props
+}: HTMLMotionProps<"div">) => {
+  const reducedMotion = useReducedMotionConfig()
+  return (
+    <motion.div
+      transition={{ duration: reducedMotion ? 0 : 0.22, ease: EASE_OUT_EXPO }}
+      {...props}
+      layout={reducedMotion ? false : layout}
+      layoutId={reducedMotion ? undefined : layoutId}
+    />
+  )
+}
+
 export const MotionProvider = (
   props: React.ComponentProps<typeof MotionConfig>,
 ) => {

@@ -191,3 +191,20 @@
     --crm-accent-color: var(--chart-4);
   }
 }
+
+@layer components {
+  .pipeline-column {
+    --pipeline-accent: var(--chart-2);
+    background-image: radial-gradient(
+      at 50% 0%,
+      color-mix(in oklch, var(--pipeline-accent) 14%, transparent),
+      transparent 65%
+    );
+  }
+  .pipeline-column[data-tone="amber"] {
+    --pipeline-accent: var(--chart-4);
+  }
+  .pipeline-column[data-tone="lavender"] {
+    --pipeline-accent: var(--chart-1);
+  }
+}
