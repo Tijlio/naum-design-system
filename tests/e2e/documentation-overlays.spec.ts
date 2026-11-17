@@ -1,6 +1,7 @@
 import AxeBuilder from "@axe-core/playwright"
 import { expect, test } from "@playwright/test"
 import { chooseOption } from "./showcase-controls"
+import { settleAnimations } from "./ui-stability"
 import { captureVisualEvidence } from "./visual-evidence"
 
 for (const kind of ["dialog", "sheet"] as const) {
@@ -78,6 +79,22 @@ for (const kind of ["dialog", "sheet"] as const) {
           .click()
         await trigger.click()
       }
+      for (const state of ["Loading", "Error", "Empty", "Ready"]) {
+        await chooseOption(page, "Content state", state)
+        await settleAnimations(page)
+        expect(
+          (
+            await new AxeBuilder({ page })
+              .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+              .analyze()
+          ).violations,
+        ).toEqual([])
+        await captureVisualEvidence(
+          overlay,
+          testInfo,
+          `${kind}-${state.toLowerCase()}-${theme}.png`,
+        )
+      }
       expect(
         (
           await new AxeBuilder({ page })
@@ -98,3 +115,39 @@ for (const kind of ["dialog", "sheet"] as const) {
     ).toContainText("Saved Naum Design.")
   })
 }
+
+test("Sheet anchors remain usable on all four sides", async ({
+  page,
+}, testInfo) => {
+  await page.goto("/docs")
+  await page.getByLabel("Find a component").fill("sheet")
+  await page
+    .getByRole("navigation", { name: "Component catalog" })
+    .getByRole("button", { name: "sheet", exact: true })
+    .click()
+  for (const side of ["right", "left", "top", "bottom"]) {
+    await chooseOption(page, "Side", side)
+    await page.getByRole("button", { name: "Open sheet", exact: true }).click()
+    const sheet = page.getByRole("dialog", {
+      name: "Edit workspace",
+      exact: true,
+    })
+    await expect(sheet).not.toHaveAttribute("data-starting-style")
+    await settleAnimations(page)
+    const box = await sheet.boundingBox()
+    expect(box).not.toBeNull()
+    if (box) {
+      const viewport = page.viewportSize()
+      expect(box.x).toBeGreaterThanOrEqual(0)
+      expect(box.y).toBeGreaterThanOrEqual(0)
+      expect(box.x + box.width).toBeLessThanOrEqual(viewport?.width ?? 0)
+      expect(box.y + box.height).toBeLessThanOrEqual(viewport?.height ?? 0)
+    }
+    await expect(
+      sheet.getByRole("button", { name: "Save workspace" }),
+    ).toBeInViewport()
+    await captureVisualEvidence(page, testInfo, `sheet-${side}.png`)
+    await page.keyboard.press("Escape")
+    await expect(sheet).toBeHidden()
+  }
+})

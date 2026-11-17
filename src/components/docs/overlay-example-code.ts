@@ -49,7 +49,7 @@ export const WorkspaceExample = () => {
           {state === "ready" && <form id="workspace-form" noValidate onSubmit={event => {
             event.preventDefault()
             if (!name.trim()) { setError("Enter a workspace name."); return }
-            setSaved(\x60Saved \x24{name.trim()}.\x60)
+            setSaved("Saved " + name.trim() + ".")
             setOpen(false)
           }}>
             <Label htmlFor="workspace-name">Workspace name</Label>

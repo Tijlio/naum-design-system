@@ -34,7 +34,7 @@ No runtime dependency was added. No migration, backend integration or persistenc
 - `pnpm test:registry`: real CLI installs of `command` and `all`, including consumer TypeScript, CSS, aliases and theme parity.
 - `pnpm build:test` and the full desktop/mobile browser suite, including screenshots, axe, reduced motion, contacts, search, calendar CRUD and drag/resize.
 
-Latest feature pass: 50 unit/contract tests passed; 128 browser tests passed and two desktop drag/drop tests were deliberately skipped in the mobile project. Eight clean-consumer registry installs passed (command, activity timeline, DataTable, view controls, app shell, stat card, insight card and complete preset). Build, lint, TypeScript, formatting and registry parity passed.
+Data-table and follow-up pass: 50 unit/contract tests passed; 128 browser tests passed and two desktop drag/drop tests were deliberately skipped in the mobile project. Eight clean-consumer registry installs passed (command, activity timeline, DataTable, view controls, app shell, stat card, insight card and complete preset). Build, lint, TypeScript, formatting and registry parity passed.
 
 Browser reports/traces remain ignored locally and are uploaded by CI as temporary artifacts. Only test sources and reviewed reference images are committed.
 
@@ -53,3 +53,11 @@ Contacts, opportunity tables and tasks now share DataTable and saved-view contro
 Nested CRM routes are checked expanded, collapsed, on mobile and with keyboard activation. Fresh screenshots cover tasks and the visible contact timeline in both themes, alongside the existing application/primitive scenes. The shared Select primitive constrains long labels; the documentation tests a long saved-view name without horizontal overflow.
 
 ESLint reports zero errors and three known `react-hooks/incompatible-library` warnings from TanStack v8's mutable `useReactTable` instance (documentation, application adapter and test fixture). The relevant functions and instance renderer use `use no memo`; the compiler compatibility contract is documented in [data-tables-and-follow-ups.md](data-tables-and-follow-ups.md). No lint rule or test was disabled to accept these warnings.
+
+## Interactive overlay and picker documentation
+
+Dialog, Sheet, DateTimePicker and Combobox now share documentation framing and deterministic ready/loading/error/empty controls, while each example owns its form, selection and recovery behavior. Usage snippets remain separate from rendering and are typechecked against the shared exports in all 64 state/variant combinations. No primitive APIs, dependencies or generated registry files changed.
+
+Validation: 51 unit/contract tests passed; 142 browser tests passed with the same two deliberate mobile drag/drop skips. The browser pass covers both themes, desktop/mobile layouts, keyboard selection, focus restoration, validation/retry/clear, every content state and all four Sheet sides. Screenshots were inspected, including mobile popups and dark empty/loading states. Build, strict TypeScript, formatting and registry parity passed. Lint retains the three previously documented TanStack compiler compatibility warnings and has no errors. Clean-consumer installs were not repeated because this pass only changes documentation and the pipeline toolbar layout.
+
+The pipeline toolbar groups Board/Table and search on one row where space permits and stacks them compactly on mobile. The title spacing is unchanged. The four affected light/dark desktop/mobile regression baselines were reviewed and updated.
