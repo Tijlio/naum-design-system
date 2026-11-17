@@ -94,3 +94,70 @@ test("pipeline table reuses views and bulk updates reach the board", async ({
       }),
   ).toBeVisible()
 })
+
+for (const theme of ["light", "dark"]) {
+  test(`saved-view options stay readable within the viewport in ${theme} mode`, async ({
+    page,
+  }, testInfo) => {
+    await page.goto("/showcase/crm/pipeline?layout=table")
+    if (theme === "dark")
+      await page
+        .getByRole("button", { name: "Toggle light or dark theme" })
+        .click()
+    const picker = page.getByRole("combobox", {
+      name: "Saved view",
+      exact: true,
+    })
+    const assertReadableOptions = async () => {
+      const popup = page.locator('[data-slot="select-content"]')
+      await expect(popup).toBeVisible()
+      const bounds = await popup.evaluate((node) => {
+        const box = node.getBoundingClientRect()
+        return { left: box.left, right: box.right, viewport: innerWidth }
+      })
+      expect(bounds.left).toBeGreaterThanOrEqual(0)
+      expect(bounds.right).toBeLessThanOrEqual(bounds.viewport)
+      for (const option of await page.getByRole("option").all()) {
+        expect(
+          await option.evaluate((node) => {
+            const label = node.firstElementChild
+            if (!label) throw new Error("Missing option label")
+            const range = document.createRange()
+            range.selectNodeContents(label)
+            const box = node.getBoundingClientRect()
+            const rightPadding = parseFloat(getComputedStyle(node).paddingRight)
+            return (
+              Array.from(range.getClientRects()).every(
+                (rect) =>
+                  rect.left >= box.left &&
+                  rect.right <= box.right - rightPadding + 1,
+              ) && node.scrollWidth <= node.clientWidth
+            )
+          }),
+        ).toBe(true)
+      }
+    }
+    await picker.click()
+    await assertReadableOptions()
+    await page.screenshot({
+      path: testInfo.outputPath(`saved-views-${theme}.png`),
+    })
+    await page.keyboard.press("ArrowDown")
+    await page.keyboard.press("Enter")
+    await expect(picker).toContainText("My open opportunities")
+
+    await page.getByRole("button", { name: "Save view", exact: true }).click()
+    const dialog = page.getByRole("dialog", { name: "Save view", exact: true })
+    const name = "Workspace " + "x".repeat(50)
+    await dialog.getByLabel("View name").fill(name)
+    await dialog.getByRole("button", { name: "Save view", exact: true }).click()
+    await expect(dialog).toBeHidden()
+    await picker.click()
+    await assertReadableOptions()
+    await page.screenshot({
+      path: testInfo.outputPath(`saved-views-long-${theme}.png`),
+    })
+    await page.keyboard.press("Escape")
+    await expect(picker).toBeFocused()
+  })
+}

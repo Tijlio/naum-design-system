@@ -1,7 +1,7 @@
 "use client"
 
 import { useId, useState, type FormEvent } from "react"
-import { Bookmark, Save, Trash2 } from "lucide-react"
+import { Save, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -59,13 +59,12 @@ export const DataTableViews = ({
       className="flex min-w-0 max-w-full flex-wrap items-center gap-2"
       aria-label="Saved views"
     >
-      <Bookmark className="size-4 text-muted-foreground" aria-hidden />
       <Label htmlFor={`${id}-view`} className="sr-only">
         Saved view
       </Label>
       <SelectControl
         id={`${id}-view`}
-        className="max-w-[calc(100%-2rem)]"
+        className="max-w-full"
         placeholder="Custom view"
         value={current?.id ?? null}
         items={views.map((view) => ({
