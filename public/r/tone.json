@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tone",
+  "title": "Naum Tone",
+  "description": "Naum tone for React and Tailwind CSS v4.",
+  "files": [
+    {
+      "path": "src/lib/tone.ts",
+      "type": "registry:lib",
+      "content": "/** Decorative palette; status meaning must also have a visible label. */\nexport type NaumTone = \"lavender\" | \"mint\" | \"amber\"\n"
+    }
+  ],
+  "type": "registry:lib"
+}

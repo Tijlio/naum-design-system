@@ -13,7 +13,7 @@
       "path": "src/components/blocks/app-page.tsx",
       "type": "registry:component",
       "target": "@components/blocks/app-page.tsx",
-      "content": "\"use client\"\n\nimport type { ComponentProps } from \"react\"\nimport { MotionFadeUp } from \"@/components/ui/motion\"\nimport { cn } from \"@/lib/utils\"\n\nexport const AppPage = ({\n  className,\n  ...props\n}: ComponentProps<typeof MotionFadeUp>) => (\n  <MotionFadeUp\n    data-slot=\"app-page\"\n    className={cn(\"flex min-w-0 flex-col gap-6\", className)}\n    {...props}\n  />\n)\n"
+      "content": "\"use client\"\n\nimport type { ComponentProps } from \"react\"\nimport { MotionFadeUp } from \"@/components/ui/motion\"\nimport { cn } from \"@/lib/utils\"\n\nexport const AppPage = ({\n  className,\n  ...props\n}: ComponentProps<typeof MotionFadeUp>) => (\n  <MotionFadeUp\n    data-slot=\"app-page\"\n    className={cn(\"flex min-w-0 flex-col gap-(--naum-space-page)\", className)}\n    {...props}\n  />\n)\n"
     }
   ],
   "type": "registry:block"

@@ -14,6 +14,8 @@
       "cssVars": {
         "theme": {
           "ease-naum": "cubic-bezier(0.22, 1, 0.36, 1)",
+          "default-transition-duration": "var(--naum-duration-fast)",
+          "default-transition-timing-function": "var(--ease-naum)",
           "shadow-naum-card": "var(--naum-shadow-card)",
           "shadow-naum-toast": "var(--naum-shadow-toast)",
           "shadow-naum-glow": "var(--naum-shadow-glow)",
@@ -109,6 +111,7 @@
           "naum-space-control": "0.75rem",
           "naum-space-inline": "0.5rem",
           "naum-space-field": "0.5rem",
+          "naum-control-height": "2.25rem",
           "naum-inset-panel": "1.5rem",
           "naum-inset-compact": "1rem",
           "naum-inset-page": "1.25rem",
@@ -252,6 +255,9 @@
         "@utility naum-popup-surface": {
           "position": "relative",
           "background-color": "var(--popover)",
+          "color": "var(--popover-foreground)",
+          "--tw-ring-color": "var(--naum-surface-ring)",
+          "@apply rounded-2xl shadow-2xl ring-1": {},
           "& [data-slot$=\"-item\"]:focus,\n  & [data-slot$=\"-item\"][data-highlighted]": {
             "background-color": "color-mix(in oklch, var(--foreground) 10%, transparent)"
           },
@@ -314,6 +320,7 @@
           "@apply shadow-sm ring-1": {}
         },
         "@utility naum-tone": {
+          "--tone-ring": "color-mix(in oklch, var(--tone-accent) 20%, transparent)",
           "--tone-accent": "var(--tone-lavender-accent)",
           "--tone-background": "var(--tone-lavender-background)",
           "--tone-foreground": "var(--tone-lavender-foreground)",
@@ -440,10 +447,12 @@
       "title": "Naum Avatar",
       "description": "Naum avatar for React and Tailwind CSS v4.",
       "dependencies": [
-        "@base-ui/react@1.9.0"
+        "@base-ui/react@1.9.0",
+        "class-variance-authority@0.7.1"
       ],
       "registryDependencies": [
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/tone.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
       ],
       "files": [
@@ -464,6 +473,7 @@
       ],
       "registryDependencies": [
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/tone.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
       ],
       "files": [
@@ -565,6 +575,7 @@
       ],
       "registryDependencies": [
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/tone.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
       ],
       "files": [
@@ -625,6 +636,7 @@
       ],
       "registryDependencies": [
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/tone.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
       ],
       "files": [
@@ -1023,6 +1035,7 @@
         "motion@14.14.0"
       ],
       "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/motion-tokens.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
       ],
@@ -1548,6 +1561,18 @@
       "type": "registry:lib"
     },
     {
+      "name": "tone",
+      "title": "Naum Tone",
+      "description": "Naum tone for React and Tailwind CSS v4.",
+      "files": [
+        {
+          "path": "src/lib/tone.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "type": "registry:lib"
+    },
+    {
       "name": "utils",
       "title": "Naum Utils",
       "description": "Naum utils for React and Tailwind CSS v4.",
@@ -1922,6 +1947,7 @@
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/tooltip.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/data-table-view.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/motion-tokens.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/tone.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/use-mobile.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme-provider.json",

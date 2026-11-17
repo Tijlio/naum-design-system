@@ -81,7 +81,7 @@ const NavigationBranch = ({
       data-slot="navigation-active"
       layoutId={`${navigationId}-active`}
       aria-hidden
-      className="bg-white shadow-sm ring-1 ring-foreground/5"
+      className="naum-active-pill"
     />
   )
   const content = (
@@ -149,7 +149,7 @@ const NavigationBranch = ({
                     data-slot="navigation-flyout-active"
                     layoutId={`${navigationId}-flyout-${item.id}`}
                     aria-hidden
-                    className="bg-white shadow-sm ring-1 ring-foreground/5"
+                    className="naum-active-pill"
                   />
                 )}
                 {child.icon}

@@ -1,6 +1,7 @@
 import { mergeProps } from "@base-ui/react/merge-props"
 import { useRender } from "@base-ui/react/use-render"
 import { cva, type VariantProps } from "class-variance-authority"
+import type { NaumTone } from "@/lib/tone"
 import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
@@ -9,6 +10,7 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground [a]:hover:bg-primary/80",
+        soft: "naum-tone naum-tone-fill ring-1 ring-(--tone-ring)",
         secondary:
           "bg-secondary text-secondary-foreground [a]:hover:bg-secondary/80",
         destructive:
@@ -30,8 +32,10 @@ function Badge({
   className,
   variant = "default",
   render,
+  tone = "lavender",
   ...props
-}: useRender.ComponentProps<"span"> & VariantProps<typeof badgeVariants>) {
+}: useRender.ComponentProps<"span"> &
+  VariantProps<typeof badgeVariants> & { tone?: NaumTone }) {
   return useRender({
     defaultTagName: "span",
     props: mergeProps<"span">(
@@ -44,6 +48,7 @@ function Badge({
     state: {
       slot: "badge",
       variant,
+      tone,
     },
   })
 }

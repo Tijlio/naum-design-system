@@ -69,15 +69,17 @@ export const AppShell = ({
         <SidebarInset className="min-w-0 bg-transparent md:peer-data-[variant=inset]:shadow-none">
           <header
             data-slot="app-header"
-            className="workspace-header flex min-h-20 flex-wrap items-center justify-between gap-3 px-5 py-4 md:px-8 md:py-6"
+            className="workspace-header flex min-h-20 flex-wrap items-center justify-between gap-(--naum-space-control) px-(--naum-inset-page) py-4 md:px-(--naum-inset-page-wide) md:py-6"
           >
-            <div className="flex min-w-0 items-center gap-3">
+            <div className="flex min-w-0 items-center gap-(--naum-space-control)">
               <SidebarTrigger />
               {header}
             </div>
-            <div className="flex items-center gap-2">{actions}</div>
+            <div className="flex items-center gap-(--naum-space-inline)">
+              {actions}
+            </div>
           </header>
-          <div className="mx-auto w-full max-w-[100rem] px-5 pt-2 pb-5 md:px-8 md:pt-3 md:pb-8">
+          <div className="mx-auto w-full max-w-[100rem] px-(--naum-inset-page) pt-2 pb-5 md:px-(--naum-inset-page-wide) md:pt-3 md:pb-8">
             {children}
           </div>
         </SidebarInset>

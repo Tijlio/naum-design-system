@@ -1,5 +1,6 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
+import type { NaumTone } from "@/lib/tone"
 import { cn } from "@/lib/utils"
 
 const cardVariants = cva(
@@ -7,17 +8,15 @@ const cardVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          "rounded-3xl bg-card ring-1 ring-foreground/5 shadow-naum-card",
+        default: "naum-surface-card",
         glass:
-          "naum-glass-card rounded-3xl transition-all duration-300 hover:border-foreground/15",
-        frosted:
-          "rounded-3xl bg-surface-frosted ring-1 ring-white/60 backdrop-blur-md dark:ring-white/8",
+          "naum-glass-card rounded-3xl transition-all duration-(--naum-duration-normal) hover:border-foreground/15",
+        frosted: "naum-surface-frosted",
         mesh: "rounded-3xl border border-white/15 text-white shadow-sm [&_[data-slot=card-description]]:text-white/80",
       },
       size: {
-        default: "[--card-spacing:--spacing(6)]",
-        sm: "[--card-spacing:--spacing(4)]",
+        default: "[--card-spacing:var(--naum-inset-panel)]",
+        sm: "[--card-spacing:var(--naum-inset-compact)]",
       },
     },
     defaultVariants: {
@@ -31,14 +30,21 @@ function Card({
   className,
   variant = "default",
   size = "default",
+  tone,
   ...props
-}: React.ComponentProps<"div"> & VariantProps<typeof cardVariants>) {
+}: React.ComponentProps<"div"> &
+  VariantProps<typeof cardVariants> & { tone?: NaumTone }) {
   return (
     <div
       data-slot="card"
       data-variant={variant}
       data-size={size}
-      className={cn(cardVariants({ variant, size, className }))}
+      data-tone={tone}
+      className={cn(
+        cardVariants({ variant, size }),
+        tone && "naum-tone",
+        className,
+      )}
       {...props}
     />
   )

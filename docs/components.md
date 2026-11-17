@@ -70,6 +70,7 @@ Install an item with `pnpm dlx shadcn@4.23.0 add @naum/<name>`. Every UI item in
 | `tooltip` | `Tooltip`, `TooltipTrigger`, `TooltipContent`, `TooltipProvider` | [Source](../src/components/ui/tooltip.tsx) |
 | `data-table-view` | `DataTableViewState`, `DEFAULT_TABLE_VIEW`, `isDataTableView` | [Source](../src/lib/data-table-view.ts) |
 | `motion-tokens` | `motionTokens` | [Source](../src/lib/motion-tokens.ts) |
+| `tone` | `NaumTone` | [Source](../src/lib/tone.ts) |
 | `utils` | `cn` | [Source](../src/lib/utils.ts) |
 | `use-mobile` | `useIsMobile` | [Source](../src/hooks/use-mobile.ts) |
 | `theme-provider` | `ThemeProvider` | [Source](../src/components/theme-provider.tsx) |

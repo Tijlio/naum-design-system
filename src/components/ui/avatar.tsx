@@ -2,6 +2,8 @@
 
 import * as React from "react"
 import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar"
+import type { NaumTone } from "@/lib/tone"
+import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 function Avatar({
@@ -37,17 +39,33 @@ function AvatarImage({ className, ...props }: AvatarPrimitive.Image.Props) {
   )
 }
 
+const avatarFallbackVariants = cva(
+  "flex size-full items-center justify-center rounded-full text-sm group-data-[size=sm]/avatar:text-xs",
+  {
+    variants: {
+      variant: {
+        default: "bg-muted text-muted-foreground",
+        soft: "naum-tone naum-tone-fill",
+        mesh: "bg-white/20 text-white",
+      },
+    },
+    defaultVariants: { variant: "default" },
+  },
+)
+
 function AvatarFallback({
   className,
+  variant = "default",
+  tone = "lavender",
   ...props
-}: AvatarPrimitive.Fallback.Props) {
+}: AvatarPrimitive.Fallback.Props &
+  VariantProps<typeof avatarFallbackVariants> & { tone?: NaumTone }) {
   return (
     <AvatarPrimitive.Fallback
       data-slot="avatar-fallback"
-      className={cn(
-        "flex size-full items-center justify-center rounded-full bg-muted text-sm text-muted-foreground group-data-[size=sm]/avatar:text-xs",
-        className,
-      )}
+      data-variant={variant}
+      data-tone={tone}
+      className={cn(avatarFallbackVariants({ variant }), className)}
       {...props}
     />
   )

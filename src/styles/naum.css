@@ -50,6 +50,7 @@
   --naum-space-control: 0.75rem;
   --naum-space-inline: 0.5rem;
   --naum-space-field: 0.5rem;
+  --naum-control-height: 2.25rem;
   --naum-inset-panel: 1.5rem;
   --naum-inset-compact: 1rem;
   --naum-inset-page: 1.25rem;
@@ -136,6 +137,8 @@
 
 @theme inline {
   --ease-naum: cubic-bezier(0.22, 1, 0.36, 1);
+  --default-transition-duration: var(--naum-duration-fast);
+  --default-transition-timing-function: var(--ease-naum);
   --shadow-naum-card: var(--naum-shadow-card);
   --shadow-naum-toast: var(--naum-shadow-toast);
   --shadow-naum-glow: var(--naum-shadow-glow);
@@ -295,6 +298,9 @@
 @utility naum-popup-surface {
   position: relative;
   background-color: var(--popover);
+  color: var(--popover-foreground);
+  --tw-ring-color: var(--naum-surface-ring);
+  @apply rounded-2xl shadow-2xl ring-1;
 
   & [data-slot$="-item"]:focus,
   & [data-slot$="-item"][data-highlighted] {
@@ -393,6 +399,7 @@
   @apply shadow-sm ring-1;
 }
 @utility naum-tone {
+  --tone-ring: color-mix(in oklch, var(--tone-accent) 20%, transparent);
   --tone-accent: var(--tone-lavender-accent);
   --tone-background: var(--tone-lavender-background);
   --tone-foreground: var(--tone-lavender-foreground);

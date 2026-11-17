@@ -105,6 +105,7 @@ export const createRegistry = async ({
       path: "src/lib/motion-tokens.ts",
       type: "registry:lib",
     },
+    { name: "tone", path: "src/lib/tone.ts", type: "registry:lib" },
     { name: "utils", path: "src/lib/utils.ts", type: "registry:lib" },
     {
       name: "use-mobile",

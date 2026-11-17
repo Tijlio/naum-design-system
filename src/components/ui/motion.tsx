@@ -11,7 +11,7 @@ import {
 } from "motion/react"
 import { cn } from "@/lib/utils"
 
-const EASE_OUT_EXPO = [0.22, 1, 0.36, 1] as const
+import { motionTokens } from "@/lib/motion-tokens"
 
 export const MotionPresence = AnimatePresence
 
@@ -27,7 +27,10 @@ export const MotionExpand = ({
       initial={reducedMotion ? false : { [dimension]: 0, opacity: 0 }}
       animate={{ [dimension]: "auto", opacity: 1 }}
       exit={{ [dimension]: 0, opacity: 0 }}
-      transition={{ duration: reducedMotion ? 0 : 0.22, ease: EASE_OUT_EXPO }}
+      transition={{
+        duration: reducedMotion ? 0 : motionTokens.duration.layout,
+        ease: motionTokens.ease,
+      }}
       className={cn("overflow-hidden", className)}
       {...props}
     />
@@ -42,7 +45,10 @@ export const MotionLayout = ({
   const reducedMotion = useReducedMotionConfig()
   return (
     <motion.div
-      transition={{ duration: reducedMotion ? 0 : 0.22, ease: EASE_OUT_EXPO }}
+      transition={{
+        duration: reducedMotion ? 0 : motionTokens.duration.layout,
+        ease: motionTokens.ease,
+      }}
       {...props}
       layout={reducedMotion ? false : layout}
       layoutId={reducedMotion ? undefined : layoutId}
@@ -65,12 +71,12 @@ export function MotionFadeUp({
   const reducedMotion = useReducedMotionConfig()
   return (
     <motion.div
-      initial={reducedMotion ? false : { opacity: 0, y: 12 }}
+      initial={reducedMotion ? false : { opacity: 0, y: motionTokens.offset }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
-        duration: reducedMotion ? 0 : 0.35,
+        duration: reducedMotion ? 0 : motionTokens.duration.enter,
         delay: reducedMotion ? 0 : delay,
-        ease: EASE_OUT_EXPO,
+        ease: motionTokens.ease,
       }}
       className={className}
       {...props}
@@ -94,7 +100,7 @@ export function MotionStagger({
         hidden: {},
         visible: {
           transition: {
-            staggerChildren: reducedMotion ? 0 : 0.045,
+            staggerChildren: reducedMotion ? 0 : motionTokens.delay.stagger,
           },
         },
       }}
@@ -115,13 +121,16 @@ export function MotionStaggerItem({
   return (
     <motion.div
       variants={{
-        hidden: { opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : 12 },
+        hidden: {
+          opacity: reducedMotion ? 1 : 0,
+          y: reducedMotion ? 0 : motionTokens.offset,
+        },
         visible: {
           opacity: 1,
           y: 0,
           transition: {
-            duration: reducedMotion ? 0 : 0.35,
-            ease: EASE_OUT_EXPO,
+            duration: reducedMotion ? 0 : motionTokens.duration.enter,
+            ease: motionTokens.ease,
           },
         },
       }}
@@ -134,8 +143,8 @@ export function MotionStaggerItem({
 }
 
 export function MotionDrawPath({
-  delay = 0.15,
-  duration = 0.75,
+  delay = motionTokens.delay.draw,
+  duration = motionTokens.duration.draw,
   ...props
 }: SVGMotionProps<SVGPathElement> & { delay?: number; duration?: number }) {
   const reducedMotion = useReducedMotionConfig()
@@ -146,7 +155,7 @@ export function MotionDrawPath({
       transition={{
         duration: reducedMotion ? 0 : duration,
         delay: reducedMotion ? 0 : delay,
-        ease: EASE_OUT_EXPO,
+        ease: motionTokens.ease,
       }}
       {...props}
     />
@@ -162,11 +171,7 @@ export function MotionPill({
   return (
     <motion.span
       layoutId={layoutId}
-      transition={
-        reducedMotion
-          ? { duration: 0 }
-          : { type: "spring", stiffness: 420, damping: 34 }
-      }
+      transition={reducedMotion ? { duration: 0 } : motionTokens.spring}
       className={cn("absolute inset-0 -z-10 rounded-full", className)}
       {...props}
     />

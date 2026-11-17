@@ -18,13 +18,13 @@ const buttonVariants = cva(
           "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
         link: "text-primary underline-offset-4 hover:underline",
         glass:
-          "naum-glass-card rounded-full text-foreground duration-300 hover:border-foreground/20 hover:brightness-110",
+          "naum-glass-card rounded-full text-foreground duration-(--naum-duration-normal) hover:border-foreground/20 hover:brightness-110",
         mesh: "rounded-full bg-white/20 text-white hover:bg-white/30 hover:text-white",
-        glow: "rounded-full border-white/20 bg-linear-to-r from-indigo-500 via-purple-500 to-cyan-500 text-white shadow-naum-glow duration-300 hover:shadow-naum-glow-hover",
+        glow: "rounded-full border-white/20 bg-linear-to-r from-indigo-500 via-purple-500 to-cyan-500 text-white shadow-naum-glow duration-(--naum-duration-normal) hover:shadow-naum-glow-hover",
       },
       size: {
         default:
-          "h-9 gap-1.5 px-3 has-data-[icon=inline-end]:pr-2.5 has-data-[icon=inline-start]:pl-2.5",
+          "h-(--naum-control-height) gap-1.5 px-3 has-data-[icon=inline-end]:pr-2.5 has-data-[icon=inline-start]:pl-2.5",
         xs: "h-6 gap-1 px-2.5 text-xs has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 [&_svg:not([class*='size-'])]:size-3",
         sm: "h-8 gap-1 px-3 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
         lg: "h-10 gap-1.5 px-4 has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3",

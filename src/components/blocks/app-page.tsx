@@ -10,7 +10,7 @@ export const AppPage = ({
 }: ComponentProps<typeof MotionFadeUp>) => (
   <MotionFadeUp
     data-slot="app-page"
-    className={cn("flex min-w-0 flex-col gap-6", className)}
+    className={cn("flex min-w-0 flex-col gap-(--naum-space-page)", className)}
     {...props}
   />
 )
