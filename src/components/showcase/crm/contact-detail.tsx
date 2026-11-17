@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select"
+import { SelectControl } from "@/components/ui/select-control"
 import {
   Sheet,
   SheetContent,
@@ -60,23 +60,21 @@ export const ContactDetail = ({
             <div className="workspace-stack px-6 pb-6">
               <div className="workspace-field">
                 <Label htmlFor="detail-stage">Relationship</Label>
-                <NativeSelect
+                <SelectControl
                   id="detail-stage"
                   value={contact.stage}
-                  onChange={(event) => {
-                    const stage = CONTACT_STAGES.find(
-                      (stage) => stage === event.target.value,
-                    )
+                  className="w-full"
+                  items={CONTACT_STAGES.map((stage) => ({
+                    value: stage,
+                    label: stage,
+                  }))}
+                  onValueChange={(stage) => {
                     if (stage) {
                       saveContact({ ...contact, stage })
                       toast.success("Relationship updated")
                     }
                   }}
-                >
-                  {CONTACT_STAGES.map((stage) => (
-                    <NativeSelectOption key={stage}>{stage}</NativeSelectOption>
-                  ))}
-                </NativeSelect>
+                />
               </div>
               <dl className="workspace-details">
                 <div>

@@ -27,6 +27,7 @@ Install an item with `pnpm dlx shadcn@4.23.0 add @naum/<name>`. Every UI item in
 | `combobox` | `Combobox`, `ComboboxInput`, `ComboboxContent`, `ComboboxList`, `ComboboxItem`, `ComboboxGroup`, `ComboboxLabel`, `ComboboxCollection`, `ComboboxEmpty`, `ComboboxSeparator`, `ComboboxChips`, `ComboboxChip`, `ComboboxChipsInput`, `ComboboxTrigger`, `ComboboxValue`, `useComboboxAnchor` | [Source](../src/components/ui/combobox.tsx) |
 | `command` | `Command`, `CommandDialog`, `CommandInput`, `CommandList`, `CommandEmpty`, `CommandGroup`, `CommandItem`, `CommandShortcut`, `CommandSeparator` | [Source](../src/components/ui/command.tsx) |
 | `context-menu` | `ContextMenu`, `ContextMenuTrigger`, `ContextMenuContent`, `ContextMenuItem`, `ContextMenuCheckboxItem`, `ContextMenuRadioItem`, `ContextMenuLabel`, `ContextMenuSeparator`, `ContextMenuShortcut`, `ContextMenuGroup`, `ContextMenuPortal`, `ContextMenuSub`, `ContextMenuSubContent`, `ContextMenuSubTrigger`, `ContextMenuRadioGroup` | [Source](../src/components/ui/context-menu.tsx) |
+| `date-time-picker` | `DateTimePicker` | [Source](../src/components/ui/date-time-picker.tsx) |
 | `dialog` | `Dialog`, `DialogClose`, `DialogContent`, `DialogDescription`, `DialogFooter`, `DialogHeader`, `DialogOverlay`, `DialogPortal`, `DialogTitle`, `DialogTrigger` | [Source](../src/components/ui/dialog.tsx) |
 | `direction` | `DirectionProvider`, `useDirection` | [Source](../src/components/ui/direction.tsx) |
 | `drawer` | `Drawer`, `DrawerPortal`, `DrawerOverlay`, `DrawerSwipeHandle`, `DrawerTrigger`, `DrawerClose`, `DrawerContent`, `DrawerHeader`, `DrawerFooter`, `DrawerTitle`, `DrawerDescription` | [Source](../src/components/ui/drawer.tsx) |
@@ -50,6 +51,7 @@ Install an item with `pnpm dlx shadcn@4.23.0 add @naum/<name>`. Every UI item in
 | `radio-group` | `RadioGroup`, `RadioGroupItem` | [Source](../src/components/ui/radio-group.tsx) |
 | `resizable` | `ResizableHandle`, `ResizablePanel`, `ResizablePanelGroup` | [Source](../src/components/ui/resizable.tsx) |
 | `scroll-area` | `ScrollArea`, `ScrollBar` | [Source](../src/components/ui/scroll-area.tsx) |
+| `select-control` | `SelectControl` | [Source](../src/components/ui/select-control.tsx) |
 | `select` | `Select`, `SelectContent`, `SelectGroup`, `SelectItem`, `SelectLabel`, `SelectScrollDownButton`, `SelectScrollUpButton`, `SelectSeparator`, `SelectTrigger`, `SelectValue` | [Source](../src/components/ui/select.tsx) |
 | `separator` | `Separator` | [Source](../src/components/ui/separator.tsx) |
 | `sheet` | `Sheet`, `SheetTrigger`, `SheetClose`, `SheetContent`, `SheetHeader`, `SheetFooter`, `SheetTitle`, `SheetDescription` | [Source](../src/components/ui/sheet.tsx) |

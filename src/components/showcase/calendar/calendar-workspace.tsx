@@ -24,7 +24,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { MotionFadeUp, MotionPresence } from "@/components/ui/motion"
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select"
+import { SelectControl } from "@/components/ui/select-control"
 import { CALENDARS, DEMO_DATE, type Appointment } from "../showcase-data"
 import { useShowcase } from "../showcase-provider"
 import { CalendarTimeGrid } from "./calendar-time-grid"
@@ -178,18 +178,14 @@ export const CalendarWorkspace = () => {
               <Label htmlFor="calendar-view" className="sr-only">
                 Calendar view
               </Label>
-              <NativeSelect
+              <SelectControl
                 id="calendar-view"
                 value={view}
-                onChange={(event) => {
-                  const view = VIEWS.find((view) => view === event.target.value)
+                items={VIEWS.map((view) => ({ value: view, label: view }))}
+                onValueChange={(view) => {
                   if (view) setChosenView(view)
                 }}
-              >
-                {VIEWS.map((view) => (
-                  <NativeSelectOption key={view}>{view}</NativeSelectOption>
-                ))}
-              </NativeSelect>
+              />
             </div>
           </div>
           <CardContent className="px-0">
@@ -221,6 +217,20 @@ export const CalendarWorkspace = () => {
                     appointments={visible}
                     onEdit={edit}
                     onCreate={create}
+                    onResize={(next) => {
+                      const original = appointments.find(
+                        (event) => event.id === next.id,
+                      )
+                      saveAppointment(next)
+                      toast.success("Appointment resized", {
+                        action: {
+                          label: "Undo",
+                          onClick: () => {
+                            if (original) saveAppointment(original)
+                          },
+                        },
+                      })
+                    }}
                     onMove={(id, day, minutes) => {
                       const appointment = appointments.find(
                         (appointment) => appointment.id === id,

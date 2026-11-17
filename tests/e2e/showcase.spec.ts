@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test"
 import AxeBuilder from "@axe-core/playwright"
+import { chooseOption } from "./showcase-controls"
 
 test("search expands, filters results and restores focus", async ({ page }) => {
   await page.goto("/")
@@ -41,7 +42,7 @@ test("contacts can be filtered, created, annotated and archived", async ({
   await page.getByRole("checkbox", { name: "Select Ada Rivers" }).check()
   await page.getByRole("button", { name: "Archive 1" }).click()
   await expect(page.getByRole("button", { name: /Ada Rivers/ })).toHaveCount(0)
-  await page.getByLabel("Filter by relationship").selectOption("Archived")
+  await chooseOption(page, "Filter by relationship", "Archived")
   await expect(page.getByRole("button", { name: /Ada Rivers/ })).toBeVisible()
 })
 

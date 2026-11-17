@@ -12,9 +12,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { DateTimePicker } from "@/components/ui/date-time-picker"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select"
+import { SelectControl } from "@/components/ui/select-control"
 import { Textarea } from "@/components/ui/textarea"
 import { CALENDARS, type Appointment } from "../showcase-data"
 import { useShowcase } from "../showcase-provider"
@@ -136,32 +137,28 @@ export const EventEditor = ({
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="workspace-field">
               <Label htmlFor="event-start">Start</Label>
-              <Input
+              <DateTimePicker
                 id="event-start"
-                type={allDay ? "date" : "datetime-local"}
-                value={allDay ? start.slice(0, 10) : start}
-                required
-                onChange={(event) => {
-                  setStart(
-                    allDay ? `${event.target.value}T00:00` : event.target.value,
-                  )
+                label="Start"
+                value={start}
+                dateOnly={allDay}
+                onValueChange={(value) => {
+                  setStart(value)
                   setError("")
                 }}
               />
             </div>
             <div className="workspace-field">
               <Label htmlFor="event-end">End</Label>
-              <Input
+              <DateTimePicker
                 id="event-end"
-                type={allDay ? "date" : "datetime-local"}
-                value={allDay ? end.slice(0, 10) : end}
-                required
+                label="End"
+                value={end}
+                dateOnly={allDay}
                 aria-invalid={Boolean(error)}
                 aria-describedby={error ? "event-time-error" : undefined}
-                onChange={(event) => {
-                  setEnd(
-                    allDay ? `${event.target.value}T00:00` : event.target.value,
-                  )
+                onValueChange={(value) => {
+                  setEnd(value)
                   setError("")
                 }}
               />
@@ -179,38 +176,38 @@ export const EventEditor = ({
           <div className="grid grid-cols-2 gap-4">
             <div className="workspace-field">
               <Label htmlFor="event-calendar">Calendar</Label>
-              <NativeSelect
+              <SelectControl
                 id="event-calendar"
                 name="calendar"
+                className="w-full"
                 defaultValue={appointment?.calendar ?? "Sales"}
-              >
-                {CALENDARS.map((calendar) => (
-                  <NativeSelectOption key={calendar}>
-                    {calendar}
-                  </NativeSelectOption>
-                ))}
-              </NativeSelect>
+                items={CALENDARS.map((calendar) => ({
+                  value: calendar,
+                  label: calendar,
+                }))}
+              />
             </div>
             <div className="workspace-field">
               <Label htmlFor="event-contact">Contact</Label>
-              <NativeSelect
+              <SelectControl
                 id="event-contact"
                 name="contact"
+                className="w-full"
                 defaultValue={appointment?.contactId ?? ""}
-              >
-                <NativeSelectOption value="">No contact</NativeSelectOption>
-                {contacts
-                  .filter(
-                    (contact) =>
-                      contact.stage !== "Archived" ||
-                      contact.id === appointment?.contactId,
-                  )
-                  .map((contact) => (
-                    <NativeSelectOption key={contact.id} value={contact.id}>
-                      {contact.name}
-                    </NativeSelectOption>
-                  ))}
-              </NativeSelect>
+                items={[
+                  { value: "", label: "No contact" },
+                  ...contacts
+                    .filter(
+                      (contact) =>
+                        contact.stage !== "Archived" ||
+                        contact.id === appointment?.contactId,
+                    )
+                    .map((contact) => ({
+                      value: contact.id,
+                      label: contact.name,
+                    })),
+                ]}
+              />
             </div>
           </div>
           <div className="workspace-field">

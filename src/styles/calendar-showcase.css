@@ -149,6 +149,24 @@
     z-index: 10;
     padding-bottom: 2px;
   }
+  .calendar-resize-handle {
+    opacity: 0;
+  }
+  .calendar-placed-event:hover .calendar-resize-handle,
+  .calendar-placed-event:focus-within .calendar-resize-handle,
+  .calendar-placed-event[data-resizing="true"] .calendar-resize-handle {
+    opacity: 1;
+  }
+  .calendar-placed-event[data-resizing="true"] {
+    z-index: 30;
+    box-shadow: 0 0 0 2px var(--ring);
+    border-radius: var(--radius-lg);
+  }
+  @media (hover: none) {
+    .calendar-resize-handle {
+      opacity: 1;
+    }
+  }
   .calendar-event-title {
     display: block;
     overflow: hidden;

@@ -22,7 +22,7 @@ export const AppointmentChip = ({
     variant="ghost"
     data-calendar={appointment.calendar}
     className={cn(
-      "calendar-event h-full w-full flex-col items-start justify-start gap-0.5 overflow-hidden rounded-lg bg-(--event-background) px-2 py-1.5 text-left whitespace-normal text-(--event-foreground) hover:bg-(--event-background)",
+      "calendar-event h-auto w-full flex-col items-start justify-start gap-0.5 overflow-hidden rounded-lg bg-(--event-background) px-2 py-1.5 text-left whitespace-normal text-(--event-foreground) hover:bg-(--event-background)",
       compact && "calendar-event-compact h-auto",
       className,
     )}

@@ -23,7 +23,7 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group"
 import { Label } from "@/components/ui/label"
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select"
+import { SelectControl } from "@/components/ui/select-control"
 import {
   Table,
   TableBody,
@@ -115,21 +115,23 @@ export const ContactsWorkspace = () => {
             <Label htmlFor="relationship-filter" className="sr-only">
               Filter by relationship
             </Label>
-            <NativeSelect
+            <SelectControl
               id="relationship-filter"
               value={stage}
-              onChange={(event) => {
-                setStage(event.target.value)
-                setPage(0)
+              items={[
+                { value: "All", label: "All relationships" },
+                ...CONTACT_STAGES.map((stage) => ({
+                  value: stage,
+                  label: stage,
+                })),
+              ]}
+              onValueChange={(stage) => {
+                if (stage) {
+                  setStage(stage)
+                  setPage(0)
+                }
               }}
-            >
-              <NativeSelectOption value="All">
-                All relationships
-              </NativeSelectOption>
-              {CONTACT_STAGES.map((stage) => (
-                <NativeSelectOption key={stage}>{stage}</NativeSelectOption>
-              ))}
-            </NativeSelect>
+            />
             {selected.length > 0 && (
               <Button
                 variant="outline"

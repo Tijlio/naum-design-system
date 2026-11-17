@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select"
+import { SelectControl } from "@/components/ui/select-control"
 import { CONTACT_STAGES, DEMO_DATE, type ContactStage } from "../showcase-data"
 import { useShowcase } from "../showcase-provider"
 import { Plus } from "lucide-react"
@@ -103,15 +103,15 @@ export const ContactForm = () => {
           </div>
           <div className="workspace-field">
             <Label htmlFor="contact-stage">Relationship</Label>
-            <NativeSelect id="contact-stage" name="stage" defaultValue="Lead">
-              {CONTACT_STAGES.filter((stage) => stage !== "Archived").map(
-                (stage) => (
-                  <NativeSelectOption key={stage} value={stage}>
-                    {stage}
-                  </NativeSelectOption>
-                ),
+            <SelectControl
+              id="contact-stage"
+              name="stage"
+              defaultValue="Lead"
+              className="w-full"
+              items={CONTACT_STAGES.filter((stage) => stage !== "Archived").map(
+                (stage) => ({ value: stage, label: stage }),
               )}
-            </NativeSelect>
+            />
           </div>
           <div className="flex justify-end gap-2">
             <Button

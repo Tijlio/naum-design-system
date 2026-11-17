@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react"
 import { format, isSameDay } from "date-fns"
 import { Button } from "@/components/ui/button"
 import type { Appointment } from "../showcase-data"
+import { ResizableCalendarEvent } from "./resizable-calendar-event"
 import { AppointmentChip } from "./appointment-chip"
 import { HOUR_HEIGHT, layoutDayEvents, occursOnDay } from "./calendar-layout"
 
@@ -16,6 +17,7 @@ export const CalendarTimeGrid = ({
   onEdit,
   onCreate,
   onMove,
+  onResize,
 }: {
   days: Date[]
   today: Date
@@ -23,6 +25,7 @@ export const CalendarTimeGrid = ({
   onEdit: (event: Appointment) => void
   onCreate: (date: Date, hour: number) => void
   onMove: (id: string, date: Date, minutes: number) => void
+  onResize: (event: Appointment) => void
 }) => {
   const scroller = useRef<HTMLDivElement>(null)
   const firstDay = days[0]?.getTime()
@@ -131,26 +134,15 @@ export const CalendarTimeGrid = ({
                 onClick={() => onCreate(day, hour)}
               />
             ))}
-            {layoutDayEvents(appointments, day).map(
-              ({ event, top, height, column, columns }) => (
-                <div
-                  key={event.id}
-                  className="calendar-placed-event"
-                  style={{
-                    top,
-                    height,
-                    left: `calc(${(column / columns) * 100}% + 2px)`,
-                    width: `calc(${100 / columns}% - 4px)`,
-                  }}
-                >
-                  <AppointmentChip
-                    appointment={event}
-                    draggable
-                    onClick={() => onEdit(event)}
-                  />
-                </div>
-              ),
-            )}
+            {layoutDayEvents(appointments, day).map((placement) => (
+              <ResizableCalendarEvent
+                key={placement.event.id}
+                placement={placement}
+                day={day}
+                onEdit={onEdit}
+                onResize={onResize}
+              />
+            ))}
           </div>
         ))}
       </div>

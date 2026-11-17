@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "select-control",
+  "title": "Naum Select Control",
+  "description": "Naum select-control for React and Tailwind CSS v4.",
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/select.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/select-control.tsx",
+      "type": "registry:ui",
+      "content": "\"use client\"\n\nimport type { ComponentProps } from \"react\"\nimport {\n  Select,\n  SelectContent,\n  SelectItem,\n  SelectTrigger,\n  SelectValue,\n} from \"@/components/ui/select\"\n\ntype SelectOption<Value extends string> = {\n  value: Value\n  label: string\n  disabled?: boolean\n}\n\nexport const SelectControl = <Value extends string>({\n  items,\n  value,\n  defaultValue,\n  onValueChange,\n  name,\n  placeholder,\n  ...triggerProps\n}: Pick<\n  ComponentProps<typeof SelectTrigger>,\n  | \"id\"\n  | \"disabled\"\n  | \"className\"\n  | \"aria-label\"\n  | \"aria-describedby\"\n  | \"aria-invalid\"\n> & {\n  items: readonly SelectOption<Value>[]\n  value?: Value | null\n  defaultValue?: Value\n  onValueChange?: (value: Value | null) => void\n  name?: string\n  placeholder?: string\n}) => (\n  <Select\n    items={items}\n    value={value}\n    defaultValue={defaultValue}\n    onValueChange={onValueChange}\n    name={name}\n    disabled={triggerProps.disabled}\n  >\n    <SelectTrigger {...triggerProps}>\n      <SelectValue placeholder={placeholder} />\n    </SelectTrigger>\n    <SelectContent>\n      {items.map((item) => (\n        <SelectItem\n          key={item.value}\n          value={item.value}\n          disabled={item.disabled}\n        >\n          {item.label}\n        </SelectItem>\n      ))}\n    </SelectContent>\n  </Select>\n)\n"
+    }
+  ],
+  "type": "registry:ui"
+}

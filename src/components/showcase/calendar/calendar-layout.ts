@@ -1,14 +1,37 @@
 import {
   addDays,
+  addMinutes,
+  format,
   differenceInMinutes,
   isAfter,
   isBefore,
   parseISO,
   startOfDay,
+  roundToNearestMinutes,
 } from "date-fns"
 import type { Appointment } from "../showcase-data"
 
 export const HOUR_HEIGHT = 64
+
+export type ResizeEdge = "start" | "end"
+
+export const resizeAppointment = (
+  event: Appointment,
+  edge: ResizeEdge,
+  minutes: number,
+): Appointment => {
+  const start = parseISO(event.start),
+    end = parseISO(event.end)
+  const proposed = roundToNearestMinutes(
+    addMinutes(edge === "start" ? start : end, minutes),
+    { nearestTo: 15 },
+  )
+  const next =
+    edge === "start"
+      ? new Date(Math.min(proposed.getTime(), addMinutes(end, -15).getTime()))
+      : new Date(Math.max(proposed.getTime(), addMinutes(start, 15).getTime()))
+  return { ...event, [edge]: format(next, "yyyy-MM-dd'T'HH:mm") }
+}
 
 export const occursOnDay = (event: Appointment, day: Date) =>
   isBefore(parseISO(event.start), addDays(startOfDay(day), 1)) &&

@@ -3,6 +3,7 @@ import { parseISO } from "date-fns"
 import {
   layoutDayEvents,
   occursOnDay,
+  resizeAppointment,
 } from "@/components/showcase/calendar/calendar-layout"
 import type { Appointment } from "@/components/showcase/showcase-data"
 
@@ -57,4 +58,11 @@ describe("calendar event layout", () => {
     expect(occursOnDay(offsite, parseISO("2026-11-18"))).toBe(false)
     expect(layoutDayEvents([offsite], day)).toEqual([])
   })
+})
+
+it("snaps resizing to quarters and keeps at least fifteen minutes", () => {
+  const source = event("meeting", "2026-11-17T09:30", "2026-11-17T10:30")
+  expect(resizeAppointment(source, "end", 30).end).toBe("2026-11-17T11:00")
+  expect(resizeAppointment(source, "end", -120).end).toBe("2026-11-17T09:45")
+  expect(resizeAppointment(source, "start", 120).start).toBe("2026-11-17T10:15")
 })
