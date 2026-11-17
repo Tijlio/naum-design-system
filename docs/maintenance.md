@@ -5,11 +5,12 @@
 - `src/components/ui/*`: installable UI components.
 - `src/components/blocks/*` and registered Bento compositions: portable blocks with alias-aware component targets.
 - `src/lib/utils.ts`, `src/hooks/use-mobile.ts`, `src/components/theme-provider.tsx`: installable support items.
-- `src/styles/naum.css`: the shared theme and surfaces.
+- `src/styles/naum.css`: the shared theme, surfaces, spacing and motion source.
+- `src/lib/motion-tokens.ts`: generated numeric Motion defaults; edit CSS tokens and regenerate.
 - `scripts/registry.mjs`: registry assembly, local dependency graph, exact installed npm versions and public export catalog.
 - `registry.json`, `public/r/*.json`, `docs/components.md`: generated; never edit them manually.
 
-After changing a source, run `pnpm registry:build`. `pnpm registry:check` compares generated outputs with sources without modifying them. UI additions are discovered automatically. Imports of unregistered local modules or undeclared npm packages fail generation; register a new support module explicitly when needed. Preserve React/React DOM as host dependencies.
+After changing a source, run `pnpm registry:build`. This also regenerates numeric Motion tokens from the CSS contract. `pnpm registry:check` compares generated outputs with sources without modifying them. UI additions are discovered automatically. Imports of unregistered local modules or undeclared npm packages fail generation; register a new support module explicitly when needed. Preserve React/React DOM as host dependencies.
 
 Registry dependency URLs point to Naum's own components, so installing Command does not silently install upstream variants of its Dialog/InputGroup. A frozen pnpm installation supplies the exact npm versions emitted into each item. Changes to dependency versions require review and rerunning consumer checks.
 

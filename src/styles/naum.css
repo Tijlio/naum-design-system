@@ -44,7 +44,42 @@
   --naum-shadow-toast: 0 12px 32px -8px oklch(0.14 0.025 262 / 14%);
   --naum-shadow-glow: 0 0 25px rgb(99 102 241 / 40%);
   --naum-shadow-glow-hover: 0 0 35px rgb(99 102 241 / 60%);
+  /* Spacing roles: 4px base scale, named only for repeated compositions. */
+  --naum-space-page: 1.5rem;
+  --naum-space-section: 1rem;
+  --naum-space-control: 0.75rem;
+  --naum-space-inline: 0.5rem;
+  --naum-space-field: 0.5rem;
+  --naum-inset-panel: 1.5rem;
+  --naum-inset-compact: 1rem;
+  --naum-inset-page: 1.25rem;
+  --naum-inset-page-wide: 2rem;
+  --naum-surface-ring: oklch(0.14 0.025 262 / 5%);
+  --naum-frosted-ring: oklch(1 0 0 / 60%);
+  --naum-active-background: oklch(1 0 0);
+  --naum-active-foreground: oklch(0.14 0.025 262);
+  --naum-ambient-primary: oklch(0.585 0.233 277.117 / 25%);
+  --naum-ambient-secondary: oklch(0.715 0.143 215.221 / 20%);
+  --tone-lavender-accent: var(--chart-1);
+  --tone-lavender-background: oklch(0.93 0.035 270);
+  --tone-lavender-foreground: oklch(0.34 0.12 270);
+  --tone-mint-accent: var(--chart-2);
+  --tone-mint-background: oklch(0.94 0.035 170);
+  --tone-mint-foreground: oklch(0.33 0.08 170);
+  --tone-amber-accent: var(--chart-4);
+  --tone-amber-background: oklch(0.95 0.035 70);
+  --tone-amber-foreground: oklch(0.36 0.08 60);
+  /* CSS times generate numeric Motion tokens; keep all timing edits here. */
   --naum-duration-fast: 150ms;
+  --naum-duration-hover: 200ms;
+  --naum-duration-layout: 220ms;
+  --naum-duration-enter: 350ms;
+  --naum-duration-draw: 750ms;
+  --naum-delay-stagger: 45ms;
+  --naum-delay-draw: 150ms;
+  --naum-motion-offset: 12px;
+  --naum-spring-stiffness: 420;
+  --naum-spring-damping: 34;
   --naum-duration-normal: 300ms;
 }
 
@@ -87,6 +122,16 @@
   --glass-highlight: oklch(1 0 0 / 15%);
   --glass-shadow: oklch(0 0 0 / 50%);
   --glass-blur: 24px;
+  --naum-surface-ring: oklch(1 0 0 / 5%);
+  --naum-frosted-ring: oklch(1 0 0 / 8%);
+  --naum-ambient-primary: oklch(0.511 0.262 276.966 / 20%);
+  --naum-ambient-secondary: oklch(0.715 0.143 215.221 / 15%);
+  --tone-lavender-background: oklch(0.28 0.06 270);
+  --tone-lavender-foreground: oklch(0.88 0.05 270);
+  --tone-mint-background: oklch(0.28 0.045 170);
+  --tone-mint-foreground: oklch(0.88 0.05 170);
+  --tone-amber-background: oklch(0.3 0.045 70);
+  --tone-amber-foreground: oklch(0.91 0.05 70);
 }
 
 @theme inline {
@@ -262,7 +307,7 @@
 }
 
 @utility naum-card-lift {
-  transition: transform 200ms var(--ease-naum);
+  transition: transform var(--naum-duration-hover) var(--ease-naum);
 }
 
 @layer components {
@@ -326,4 +371,53 @@
     opacity: 0;
     scale: 0.98;
   }
+}
+
+/* Surface roles keep opacity, outlines and elevation together. */
+@utility naum-surface-card {
+  border-radius: var(--radius-3xl);
+  background-color: var(--card);
+  --tw-ring-color: var(--naum-surface-ring);
+  @apply ring-1 shadow-naum-card;
+}
+@utility naum-surface-frosted {
+  border-radius: var(--radius-3xl);
+  background-color: var(--surface-frosted);
+  --tw-ring-color: var(--naum-frosted-ring);
+  @apply ring-1 backdrop-blur-md;
+}
+@utility naum-active-pill {
+  background-color: var(--naum-active-background);
+  color: var(--naum-active-foreground);
+  --tw-ring-color: var(--naum-surface-ring);
+  @apply shadow-sm ring-1;
+}
+@utility naum-tone {
+  --tone-accent: var(--tone-lavender-accent);
+  --tone-background: var(--tone-lavender-background);
+  --tone-foreground: var(--tone-lavender-foreground);
+  &[data-tone="mint"] {
+    --tone-accent: var(--tone-mint-accent);
+    --tone-background: var(--tone-mint-background);
+    --tone-foreground: var(--tone-mint-foreground);
+  }
+  &[data-tone="amber"] {
+    --tone-accent: var(--tone-amber-accent);
+    --tone-background: var(--tone-amber-background);
+    --tone-foreground: var(--tone-amber-foreground);
+  }
+}
+@utility naum-tone-fill {
+  background-color: var(--tone-background);
+  color: var(--tone-foreground);
+}
+@utility naum-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--naum-space-section);
+}
+@utility naum-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--naum-space-field);
 }

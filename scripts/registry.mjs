@@ -2,6 +2,7 @@ import { readFile, readdir } from "node:fs/promises"
 import { resolve } from "node:path"
 import postcss from "postcss"
 import ts from "typescript"
+import { createMotionTokens } from "./motion-tokens.mjs"
 import { registrySchema } from "shadcn/schema"
 
 export const root = resolve(import.meta.dirname, "..")
@@ -48,6 +49,7 @@ export const createRegistry = async ({
   const url = (name) => `${baseUrl.replace(/\/$/, "")}/${name}.json`
   const manifest = JSON.parse(await read("package.json"))
   const css = postcss.parse(await read("src/styles/naum.css"))
+  const motionModule = await createMotionTokens(css)
   const cssVars = { light: {}, dark: {}, theme: {} }
   for (const node of [...css.nodes]) {
     const scope =
@@ -96,6 +98,11 @@ export const createRegistry = async ({
     {
       name: "data-table-view",
       path: "src/lib/data-table-view.ts",
+      type: "registry:lib",
+    },
+    {
+      name: "motion-tokens",
+      path: "src/lib/motion-tokens.ts",
       type: "registry:lib",
     },
     { name: "utils", path: "src/lib/utils.ts", type: "registry:lib" },
@@ -151,7 +158,8 @@ export const createRegistry = async ({
   const catalog = []
   const items = [theme]
   for (const entry of entries) {
-    const content = await read(entry.path)
+    const content =
+      entry.name === "motion-tokens" ? motionModule : await read(entry.path)
     contents.set(entry.path, content)
     const source = ts.createSourceFile(
       entry.path,
@@ -252,6 +260,7 @@ export const createRegistry = async ({
     items,
   })
   const outputs = new Map([
+    ["src/lib/motion-tokens.ts", motionModule],
     ["registry.json", registry],
     ["public/r/registry.json", registry],
   ])

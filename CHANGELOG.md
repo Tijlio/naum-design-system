@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Establish a shared design contract for semantic tones, spacing, surfaces and motion. Generate typed Motion defaults from the CSS source and distribute them with the registry.
+
 - Add installable DataTable, saved-view controls and ActivityTimeline blocks with live documentation and clean-consumer coverage.
 - Reuse tables across contacts, opportunity list/board and tasks, with shareable URL state, saved views, filters, columns, bulk actions and history navigation.
 - Add persisted contextual follow-ups and atomic activity history, with migration from earlier demo storage versions and undo for task actions.

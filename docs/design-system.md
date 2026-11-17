@@ -152,6 +152,8 @@ Popup primitives share the opaque `naum-popup-surface`; each component retains i
 
 ## Tokens and extension
 
+The [design contract](design-contract.md) defines the roles for color, spacing, surfaces and motion, and the rules for extending them.
+
 `src/styles/naum.css` is the source for the showcase and registry theme. It contains semantic colors, light/dark values, typography, radii, glass, shadows, easing/durations and shared surface utilities. `src/app/globals.css` imports it after framework CSS.
 
 `naum-page-title` provides the shared page-heading font, weight, tracking and responsive size used by Bento, the app shell and preview.
