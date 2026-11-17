@@ -8,6 +8,7 @@ import {
   useSyncExternalStore,
   type ReactNode,
 } from "react"
+import type { WorkspaceSavedView } from "./table-views"
 import type { Appointment, Contact, Deal } from "./showcase-data"
 import { createWorkspaceStore, type Persistence } from "./workspace-storage"
 import { DEMO_STORAGE_KEY, type DemoWorkspace } from "./workspace-schema"
@@ -19,6 +20,8 @@ type Workspace = DemoWorkspace & {
   removeAppointment: (id: string) => void
   saveDeal: (deal: Deal) => void
   removeDeal: (id: string) => void
+  saveView: (view: WorkspaceSavedView) => void
+  removeView: (id: string) => void
   resetDemo: () => void
   persistence: Persistence
 }
@@ -93,6 +96,16 @@ export const ShowcaseProvider = ({ children }: { children: ReactNode }) => {
           store.update((current) => ({
             ...current,
             deals: current.deals.filter((deal) => deal.id !== id),
+          })),
+        saveView: (view) =>
+          store.update((current) => ({
+            ...current,
+            savedViews: upsert(current.savedViews, view),
+          })),
+        removeView: (id) =>
+          store.update((current) => ({
+            ...current,
+            savedViews: current.savedViews.filter((view) => view.id !== id),
           })),
         resetDemo: store.reset,
       }}

@@ -1,3 +1,4 @@
+import { isWorkspaceSavedView, type WorkspaceSavedView } from "./table-views"
 import { isValid, parseISO } from "date-fns"
 import {
   CALENDARS,
@@ -12,9 +13,10 @@ export type DemoWorkspace = {
   contacts: Contact[]
   appointments: Appointment[]
   deals: Deal[]
+  savedViews: WorkspaceSavedView[]
 }
 export const DEMO_STORAGE_KEY = "naum-demo-workspace"
-export const DEMO_STORAGE_VERSION = 1
+export const DEMO_STORAGE_VERSION = 2
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null && !Array.isArray(value)
 const hasStrings = (value: Record<string, unknown>, keys: string[]) =>
@@ -65,7 +67,7 @@ export const parseWorkspace = (raw: string): DemoWorkspace | null => {
     const value: unknown = JSON.parse(raw)
     if (
       !isRecord(value) ||
-      value.version !== DEMO_STORAGE_VERSION ||
+      (value.version !== 1 && value.version !== DEMO_STORAGE_VERSION) ||
       !isRecord(value.data)
     )
       return null
@@ -82,6 +84,13 @@ export const parseWorkspace = (raw: string): DemoWorkspace | null => {
       !uniqueIds(data.deals)
     )
       return null
+    const savedViews = value.version === 1 ? [] : data.savedViews
+    if (
+      !Array.isArray(savedViews) ||
+      !savedViews.every(isWorkspaceSavedView) ||
+      !uniqueIds(savedViews)
+    )
+      return null
     const contacts = new Set(data.contacts.map((contact) => contact.id))
     if (
       data.deals.some((deal) => !contacts.has(deal.contactId)) ||
@@ -94,6 +103,7 @@ export const parseWorkspace = (raw: string): DemoWorkspace | null => {
       contacts: data.contacts,
       appointments: data.appointments,
       deals: data.deals,
+      savedViews,
     }
   } catch {
     return null

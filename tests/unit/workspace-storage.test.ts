@@ -48,7 +48,7 @@ it("rejects corrupt, incompatible, duplicate and invalid record payloads", () =>
   const data = store.getSnapshot().data
   for (const raw of [
     "{",
-    JSON.stringify({ version: 2, data }),
+    JSON.stringify({ version: 999, data }),
     JSON.stringify({
       version: 1,
       data: { ...data, contacts: [data.contacts[0], data.contacts[0]] },

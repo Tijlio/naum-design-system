@@ -19,6 +19,7 @@ export type DataTableViewItem = { id: string; name: string; readOnly?: boolean }
 export type DataTableViewsProps = {
   views: readonly DataTableViewItem[]
   selected?: string
+  dirty?: boolean
   onSelect: (id: string) => void
   onSave: (name: string) => void
   onUpdate?: (id: string) => void
@@ -28,6 +29,7 @@ export type DataTableViewsProps = {
 export const DataTableViews = ({
   views,
   selected,
+  dirty = false,
   onSelect,
   onSave,
   onUpdate,
@@ -62,7 +64,10 @@ export const DataTableViews = ({
         id={`${id}-view`}
         placeholder="Custom view"
         value={current?.id ?? null}
-        items={views.map((view) => ({ value: view.id, label: view.name }))}
+        items={views.map((view) => ({
+          value: view.id,
+          label: `${view.name}${dirty && view.id === selected ? " · Modified" : ""}`,
+        }))}
         onValueChange={(value) => value && onSelect(value)}
       />
       <Button

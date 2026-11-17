@@ -14,6 +14,7 @@ const createDemoData = (): DemoWorkspace =>
     contacts: INITIAL_CONTACTS,
     appointments: INITIAL_APPOINTMENTS,
     deals: DEALS,
+    savedViews: [],
   })
 
 // One store per mounted provider. Browser storage is only read after hydration.

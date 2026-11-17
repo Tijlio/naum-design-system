@@ -1,16 +1,14 @@
 "use client"
 
-import { formatMoney } from "@/lib/money-format"
-
-import { useMemo, useState } from "react"
+import { useCallback, useMemo } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { ArrowDownUp, Archive, Search, Users } from "lucide-react"
+import type { ColumnDef } from "@tanstack/react-table"
+import { Archive, Users } from "lucide-react"
 import { format, parseISO } from "date-fns"
 import { toast } from "sonner"
+import { DataTable } from "@/components/blocks/data-table"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
   Empty,
   EmptyDescription,
@@ -18,66 +16,112 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty"
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@/components/ui/input-group"
+import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { SelectControl } from "@/components/ui/select-control"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
 import { MotionFadeUp } from "@/components/ui/motion"
-import { CONTACT_STAGES } from "../showcase-data"
+import { formatMoney } from "@/lib/money-format"
+import { CONTACT_STAGES, type Contact } from "../showcase-data"
 import { useShowcase } from "../showcase-provider"
+import { useWorkspaceTable } from "../use-workspace-table"
+import { WorkspaceSavedViews } from "../workspace-saved-views"
+import { defaultTableView } from "../table-views"
 import { ContactAvatar } from "./contact-avatar"
 import { ContactDetail } from "./contact-detail"
 import { ContactForm } from "./contact-form"
-
-const PAGE_SIZE = 6
 
 export const ContactsWorkspace = () => {
   const { contacts, archiveContacts } = useShowcase()
   const params = useSearchParams()
   const router = useRouter()
-  const [query, setQuery] = useState("")
-  const [stage, setStage] = useState("All")
-  const [descending, setDescending] = useState(false)
-  const [selected, setSelected] = useState<string[]>([])
-  const [page, setPage] = useState(0)
-  const filtered = useMemo(
-    () =>
-      contacts
-        .filter(
-          (contact) =>
-            (stage === "All"
-              ? contact.stage !== "Archived"
-              : contact.stage === stage) &&
-            `${contact.name} ${contact.company} ${contact.email}`
-              .toLowerCase()
-              .includes(query.toLowerCase()),
-        )
-        .sort((a, b) => a.name.localeCompare(b.name) * (descending ? -1 : 1)),
-    [contacts, stage, query, descending],
+  const openContact = useCallback(
+    (id?: string) => {
+      const url = new URL(window.location.href)
+      if (id) url.searchParams.set("contact", id)
+      else url.searchParams.delete("contact")
+      router[id ? "push" : "replace"](`/showcase/crm/contacts${url.search}`, {
+        scroll: false,
+      })
+    },
+    [router],
   )
-  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
-  const activePage = Math.min(page, pageCount - 1)
-  const visible = filtered.slice(
-    activePage * PAGE_SIZE,
-    (activePage + 1) * PAGE_SIZE,
+  const columns = useMemo<ColumnDef<Contact>[]>(
+    () => [
+      {
+        id: "name",
+        accessorFn: (contact) =>
+          `${contact.name} ${contact.company} ${contact.email}`,
+        header: "Name",
+        enableHiding: false,
+        cell: ({ row }) => (
+          <Button
+            variant="ghost"
+            className="h-auto w-full justify-start gap-3 rounded-xl px-0 py-2 text-left"
+            onClick={() => openContact(row.original.id)}
+          >
+            <ContactAvatar name={row.original.name} />
+            <span className="min-w-0">
+              <span className="block truncate font-medium">
+                {row.original.name}
+              </span>
+              <span className="block truncate text-xs font-normal text-muted-foreground">
+                {row.original.company}
+              </span>
+            </span>
+          </Button>
+        ),
+      },
+      {
+        id: "relationship",
+        accessorKey: "stage",
+        header: "Relationship",
+        enableGlobalFilter: false,
+        enableSorting: false,
+        filterFn: (row, _id, value) =>
+          value === "Active"
+            ? row.original.stage !== "Archived"
+            : row.original.stage === value,
+        cell: ({ row }) => (
+          <Badge
+            variant={
+              row.original.stage === "Customer" ? "secondary" : "outline"
+            }
+          >
+            {row.original.stage}
+          </Badge>
+        ),
+      },
+      {
+        accessorKey: "owner",
+        header: "Owner",
+        enableGlobalFilter: false,
+        filterFn: "equalsString",
+      },
+      {
+        accessorKey: "lastContact",
+        header: "Last contacted",
+        enableGlobalFilter: false,
+        cell: ({ row }) =>
+          format(parseISO(row.original.lastContact), "d MMM yyyy"),
+      },
+      {
+        accessorKey: "value",
+        header: "Value",
+        enableGlobalFilter: false,
+        cell: ({ row }) => formatMoney(row.original.value),
+      },
+    ],
+    [openContact],
   )
-  const currentContact = contacts.find(
-    (contact) => contact.id === params.get("contact"),
-  )
-  const allSelected =
-    visible.length > 0 &&
-    visible.every((contact) => selected.includes(contact.id))
+  const { table, view, update, apply, selectedView } = useWorkspaceTable({
+    scope: "contacts",
+    data: contacts,
+    columns,
+    getRowId: (contact) => contact.id,
+  })
+  const owners = [...new Set(contacts.map((contact) => contact.owner))]
+  const filter = (key: string, value: string) =>
+    update("filters", (current) => ({ ...current, [key]: value }))
   return (
     <div className="workspace-stack">
       <MotionFadeUp>
@@ -101,231 +145,105 @@ export const ContactsWorkspace = () => {
           <ContactForm />
         </div>
       </MotionFadeUp>
-      <Card variant="default" className="gap-0">
-        <div className="workspace-table-toolbar">
-          <InputGroup className="max-w-sm">
-            <InputGroupAddon>
-              <Search />
-            </InputGroupAddon>
-            <InputGroupInput
+      <WorkspaceSavedViews
+        scope="contacts"
+        state={view}
+        selected={selectedView}
+        onApply={apply}
+      />
+      <DataTable
+        table={table}
+        label="Contacts"
+        selectable
+        getRowLabel={(contact) => contact.name}
+        mobileHiddenColumns={["owner", "lastContact", "value"]}
+        columnLabels={{
+          relationship: "Relationship",
+          owner: "Owner",
+          lastContact: "Last contacted",
+          value: "Value",
+        }}
+        columnClassNames={{
+          relationship: "w-28 md:w-36",
+          owner: "w-32",
+          lastContact: "w-40 text-muted-foreground",
+          value: "w-28 text-right tabular-nums",
+        }}
+        toolbar={
+          <>
+            <Input
+              className="max-w-sm"
               aria-label="Search contacts"
               placeholder="Search contacts…"
-              value={query}
-              onChange={(event) => {
-                setQuery(event.target.value)
-                setPage(0)
-              }}
+              value={view.query}
+              onChange={(event) => update("query", event.target.value)}
             />
-          </InputGroup>
-          <div className="flex items-center gap-2">
             <Label htmlFor="relationship-filter" className="sr-only">
               Filter by relationship
             </Label>
             <SelectControl
               id="relationship-filter"
-              value={stage}
+              value={view.filters.relationship ?? "Active"}
               items={[
-                { value: "All", label: "All relationships" },
-                ...CONTACT_STAGES.map((stage) => ({
-                  value: stage,
-                  label: stage,
-                })),
+                { value: "Active", label: "All relationships" },
+                ...CONTACT_STAGES.map((value) => ({ value, label: value })),
               ]}
-              onValueChange={(stage) => {
-                if (stage) {
-                  setStage(stage)
-                  setPage(0)
-                }
-              }}
+              onValueChange={(value) => value && filter("relationship", value)}
             />
-            {selected.length > 0 && (
-              <Button
-                variant="outline"
-                onClick={() => {
-                  archiveContacts(selected)
-                  toast.success(`${selected.length} contacts archived`)
-                  setSelected([])
-                }}
-              >
-                <Archive />
-                Archive {selected.length}
-              </Button>
-            )}
-          </div>
-        </div>
-        <CardContent className="px-0">
-          <Table aria-label="Workspace contacts" className="table-fixed">
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-12 pl-6">
-                  <Checkbox
-                    aria-label="Select contacts on this page"
-                    checked={allSelected}
-                    indeterminate={
-                      !allSelected &&
-                      visible.some((contact) => selected.includes(contact.id))
-                    }
-                    onCheckedChange={(checked) =>
-                      setSelected((current) =>
-                        checked
-                          ? [
-                              ...new Set([
-                                ...current,
-                                ...visible.map((contact) => contact.id),
-                              ]),
-                            ]
-                          : current.filter(
-                              (id) =>
-                                !visible.some((contact) => contact.id === id),
-                            ),
-                      )
-                    }
-                  />
-                </TableHead>
-                <TableHead>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="-ml-3"
-                    onClick={() => setDescending((value) => !value)}
-                  >
-                    Name
-                    <ArrowDownUp />
-                  </Button>
-                </TableHead>
-                <TableHead className="w-28 md:w-36">Relationship</TableHead>
-                <TableHead className="hidden w-32 md:table-cell">
-                  Owner
-                </TableHead>
-                <TableHead className="hidden w-40 lg:table-cell">
-                  Last contacted
-                </TableHead>
-                <TableHead className="hidden w-28 pr-6 text-right md:table-cell">
-                  Value
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {visible.map((contact) => (
-                <TableRow
-                  key={contact.id}
-                  data-state={
-                    selected.includes(contact.id) ? "selected" : undefined
-                  }
-                >
-                  <TableCell className="pl-6">
-                    <Checkbox
-                      aria-label={`Select ${contact.name}`}
-                      checked={selected.includes(contact.id)}
-                      onCheckedChange={(checked) =>
-                        setSelected((current) =>
-                          checked
-                            ? [...current, contact.id]
-                            : current.filter((id) => id !== contact.id),
-                        )
-                      }
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      variant="ghost"
-                      className="h-auto w-full justify-start gap-3 rounded-xl px-0 py-2 text-left"
-                      onClick={() =>
-                        router.push(
-                          `/showcase/crm/contacts?contact=${contact.id}`,
-                        )
-                      }
-                    >
-                      <ContactAvatar name={contact.name} />
-                      <span className="min-w-0">
-                        <span className="block truncate font-medium">
-                          {contact.name}
-                        </span>
-                        <span className="block truncate text-xs font-normal text-muted-foreground">
-                          {contact.company}
-                        </span>
-                      </span>
-                    </Button>
-                  </TableCell>
-                  <TableCell>
-                    <Badge
-                      variant={
-                        contact.stage === "Customer" ? "secondary" : "outline"
-                      }
-                    >
-                      {contact.stage}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    {contact.owner}
-                  </TableCell>
-                  <TableCell className="hidden text-muted-foreground lg:table-cell">
-                    {format(parseISO(contact.lastContact), "d MMM yyyy")}
-                  </TableCell>
-                  <TableCell className="hidden pr-6 text-right tabular-nums md:table-cell">
-                    {formatMoney(contact.value)}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          {visible.length === 0 && (
-            <Empty>
-              <EmptyHeader>
-                <EmptyMedia variant="icon">
-                  <Users />
-                </EmptyMedia>
-                <EmptyTitle>No contacts found</EmptyTitle>
-                <EmptyDescription>
-                  Try another name or relationship.
-                </EmptyDescription>
-              </EmptyHeader>
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setQuery("")
-                  setStage("All")
-                  setPage(0)
-                }}
-              >
-                Clear filters
-              </Button>
-            </Empty>
-          )}
-        </CardContent>
-        <CardFooter className="flex-wrap justify-between gap-3 border-t pt-4">
-          <p className="text-xs text-muted-foreground" role="status">
-            {filtered.length} contacts
-            {selected.length ? ` · ${selected.length} selected` : ""}
-          </p>
-          <nav aria-label="Contact pages" className="flex items-center gap-3">
-            <Button
-              variant="outline"
-              size="sm"
-              disabled={activePage === 0}
-              onClick={() => setPage(activePage - 1)}
-            >
-              Previous
-            </Button>
-            <span className="text-xs tabular-nums">
-              {activePage + 1} / {pageCount}
-            </span>
-            <Button
-              variant="outline"
-              size="sm"
-              disabled={activePage >= pageCount - 1}
-              onClick={() => setPage(activePage + 1)}
-            >
-              Next
-            </Button>
-          </nav>
-        </CardFooter>
-      </Card>
-      <ContactDetail
-        contact={currentContact}
-        onClose={() =>
-          router.replace("/showcase/crm/contacts", { scroll: false })
+            <Label htmlFor="owner-filter" className="sr-only">
+              Filter by owner
+            </Label>
+            <SelectControl
+              id="owner-filter"
+              value={view.filters.owner ?? ""}
+              items={[
+                { value: "", label: "All owners" },
+                ...owners.map((value) => ({ value, label: value })),
+              ]}
+              onValueChange={(value) =>
+                value !== null && filter("owner", value)
+              }
+            />
+          </>
         }
+        bulkActions={(selected) => (
+          <Button
+            variant="outline"
+            onClick={() => {
+              archiveContacts(selected.map((contact) => contact.id))
+              table.resetRowSelection()
+              toast.success(`${selected.length} contacts archived`)
+            }}
+          >
+            <Archive />
+            Archive {selected.length}
+          </Button>
+        )}
+        empty={
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Users />
+              </EmptyMedia>
+              <EmptyTitle>No contacts found</EmptyTitle>
+              <EmptyDescription>
+                Try another name or relationship.
+              </EmptyDescription>
+            </EmptyHeader>
+            <Button
+              variant="outline"
+              onClick={() => apply(defaultTableView("contacts"), "preset:all")}
+            >
+              Clear filters
+            </Button>
+          </Empty>
+        }
+      />
+      <ContactDetail
+        contact={contacts.find(
+          (contact) => contact.id === params.get("contact"),
+        )}
+        onClose={() => openContact()}
       />
     </div>
   )
