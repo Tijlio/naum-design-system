@@ -24,7 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { MotionFadeUp } from "@/components/ui/motion"
+import { PageToolbar } from "@/components/blocks/page-toolbar"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 
@@ -76,42 +76,45 @@ export const DataTable = <T,>({
   const pageCount = Math.max(1, table.getPageCount())
   const span = Math.max(1, visible.length + Number(selectable))
   return (
-    <MotionFadeUp className="min-w-0">
-      <Card className="gap-0" aria-busy={loading || undefined}>
-        <div className="flex flex-wrap items-center justify-between gap-3 px-6 pb-5">
-          <div className="flex min-w-0 flex-1 flex-wrap items-center gap-3">
-            {toolbar}
-          </div>
-          <div className="flex flex-wrap items-center gap-2">
-            {selected.length > 0 && bulkActions?.(selected)}
-            <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <Button variant="outline" size="sm">
-                    <Columns3 />
-                    Columns
-                  </Button>
-                }
-              />
-              <DropdownMenuContent align="end">
-                {available
-                  .filter((column) => column.getCanHide())
-                  .map((column) => (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      checked={column.getIsVisible()}
-                      disabled={column.getIsVisible() && visible.length <= 1}
-                      onCheckedChange={(checked) =>
-                        column.toggleVisibility(checked)
-                      }
-                    >
-                      {columnLabels[column.id] ?? column.id}
-                    </DropdownMenuCheckboxItem>
-                  ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </div>
+    <div className="min-w-0">
+      <Card className="gap-0 pt-0" aria-busy={loading || undefined}>
+        <PageToolbar
+          variant="inset"
+          aria-label={`${label} controls`}
+          actions={
+            <>
+              {selected.length > 0 && bulkActions?.(selected)}
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  render={
+                    <Button variant="outline">
+                      <Columns3 />
+                      Columns
+                    </Button>
+                  }
+                />
+                <DropdownMenuContent align="end">
+                  {available
+                    .filter((column) => column.getCanHide())
+                    .map((column) => (
+                      <DropdownMenuCheckboxItem
+                        key={column.id}
+                        checked={column.getIsVisible()}
+                        disabled={column.getIsVisible() && visible.length <= 1}
+                        onCheckedChange={(checked) =>
+                          column.toggleVisibility(checked)
+                        }
+                      >
+                        {columnLabels[column.id] ?? column.id}
+                      </DropdownMenuCheckboxItem>
+                    ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
+          }
+        >
+          {toolbar}
+        </PageToolbar>
         <CardContent className="px-0">
           <Table aria-label={label} className="table-fixed">
             <TableHeader>
@@ -327,6 +330,6 @@ export const DataTable = <T,>({
           </div>
         </CardFooter>
       </Card>
-    </MotionFadeUp>
+    </div>
   )
 }

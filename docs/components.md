@@ -51,6 +51,7 @@ Install an item with `pnpm dlx shadcn@4.23.0 add @naum/<name>`. Every UI item in
 | `radio-group` | `RadioGroup`, `RadioGroupItem` | [Source](../src/components/ui/radio-group.tsx) |
 | `resizable` | `ResizableHandle`, `ResizablePanel`, `ResizablePanelGroup` | [Source](../src/components/ui/resizable.tsx) |
 | `scroll-area` | `ScrollArea`, `ScrollBar` | [Source](../src/components/ui/scroll-area.tsx) |
+| `search-input` | `SearchInputProps`, `SearchInput` | [Source](../src/components/ui/search-input.tsx) |
 | `select-control` | `SelectControl` | [Source](../src/components/ui/select-control.tsx) |
 | `select` | `Select`, `SelectContent`, `SelectGroup`, `SelectItem`, `SelectLabel`, `SelectScrollDownButton`, `SelectScrollUpButton`, `SelectSeparator`, `SelectTrigger`, `SelectValue` | [Source](../src/components/ui/select.tsx) |
 | `separator` | `Separator` | [Source](../src/components/ui/separator.tsx) |
@@ -73,10 +74,13 @@ Install an item with `pnpm dlx shadcn@4.23.0 add @naum/<name>`. Every UI item in
 | `theme-provider` | `ThemeProvider` | [Source](../src/components/theme-provider.tsx) |
 | `activity-timeline` | `TimelineEntry`, `ActivityTimeline` | [Source](../src/components/blocks/activity-timeline.tsx) |
 | `app-navigation` | `AppNavigationVariant`, `AppNavigationItem`, `AppNavigation` | [Source](../src/components/blocks/app-navigation.tsx) |
+| `app-page` | `AppPage` | [Source](../src/components/blocks/app-page.tsx) |
 | `app-shell` | `AppShellProps`, `AppShell` | [Source](../src/components/blocks/app-shell.tsx) |
 | `bento-stat-card` | `BentoStatCardProps`, `BentoStatCard` | [Source](../src/components/blocks/bento-stat-card.tsx) |
 | `data-table-views` | `DataTableViewItem`, `DataTableViewsProps`, `DataTableViews` | [Source](../src/components/blocks/data-table-views.tsx) |
 | `data-table` | `DataTableProps`, `DataTable` | [Source](../src/components/blocks/data-table.tsx) |
+| `page-header` | `PageHeaderProps`, `PageHeader` | [Source](../src/components/blocks/page-header.tsx) |
+| `page-toolbar` | `PageToolbarProps`, `PageToolbar` | [Source](../src/components/blocks/page-toolbar.tsx) |
 | `bento-insight-card` | `InsightCard` | [Source](../src/components/bento/insight-card.tsx) |
 | `metric-value` | `BentoMetricValue` | [Source](../src/components/bento/metric-value.tsx) |
 | `metric-trend` | `BentoMetricTrend` | [Source](../src/components/bento/metric-trend.tsx) |

@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label"
 import { TimelineExample } from "./timeline-example"
 import { DataTableExample } from "./data-table-example"
 import { SavedViewsExample } from "./saved-views-example"
+import { PageCompositionExample } from "./page-composition-example"
 import { CodeSample } from "./code-sample"
 
 export const BlockExamples = ({ name }: { name: string }) => {
@@ -27,6 +28,8 @@ export const BlockExamples = ({ name }: { name: string }) => {
     { id: "overview", label: "Overview", icon: <LayoutDashboard /> },
     { id: "contacts", label: "Contacts", icon: <Users /> },
   ]
+  if (["app-page", "page-header", "page-toolbar"].includes(name))
+    return <PageCompositionExample />
   if (name === "activity-timeline") return <TimelineExample />
   if (name === "data-table") return <DataTableExample />
   if (name === "data-table-views") return <SavedViewsExample />

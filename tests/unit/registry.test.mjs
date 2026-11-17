@@ -62,6 +62,9 @@ describe("consumer registry contract", () => {
       "bento-insight-card",
       "app-navigation",
       "app-shell",
+      "app-page",
+      "page-header",
+      "page-toolbar",
     ]) {
       const item = outputs.get(`public/r/${name}.json`)
       expect(item.type).toBe("registry:block")

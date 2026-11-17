@@ -73,7 +73,6 @@ export const DataTableViews = ({
       />
       <Button
         variant="outline"
-        size="sm"
         onClick={() => {
           setError("")
           setOpen(true)

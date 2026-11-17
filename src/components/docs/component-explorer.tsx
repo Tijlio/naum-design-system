@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { BookOpen, ExternalLink, Search } from "lucide-react"
+import { BookOpen, ExternalLink } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -13,8 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { SearchInput } from "@/components/ui/search-input"
 import { AmbientBackdrop } from "@/components/ui/ambient-backdrop"
 import { MotionFadeUp, MotionProvider } from "@/components/ui/motion"
 import { SourceReference } from "./source-reference"
@@ -72,22 +71,13 @@ export const ComponentExplorer = ({ entries }: { entries: CatalogEntry[] }) => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Label htmlFor="catalog-search" className="sr-only">
-                  Find a component
-                </Label>
-                <div className="relative">
-                  <Search
-                    aria-hidden
-                    className="absolute top-2.5 left-3 size-4 text-muted-foreground"
-                  />
-                  <Input
-                    id="catalog-search"
-                    placeholder="Find a component…"
-                    className="pl-9"
-                    value={query}
-                    onChange={(event) => setQuery(event.target.value)}
-                  />
-                </div>
+                <SearchInput
+                  id="catalog-search"
+                  label="Find a component"
+                  placeholder="Find a component…"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                />
                 <nav
                   aria-label="Component catalog"
                   className="max-h-64 space-y-1 overflow-y-auto md:max-h-[65vh]"

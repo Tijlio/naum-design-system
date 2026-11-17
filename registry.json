@@ -1100,6 +1100,27 @@
       "type": "registry:ui"
     },
     {
+      "name": "search-input",
+      "title": "Naum Search Input",
+      "description": "Naum search-input for React and Tailwind CSS v4.",
+      "dependencies": [
+        "lucide-react@1.74.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/input-group.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/label.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/search-input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
       "name": "select-control",
       "title": "Naum Select Control",
       "description": "Naum select-control for React and Tailwind CSS v4.",
@@ -1511,6 +1532,24 @@
       "type": "registry:block"
     },
     {
+      "name": "app-page",
+      "title": "Naum App Page",
+      "description": "Naum app-page for React and Tailwind CSS v4.",
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/motion.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/blocks/app-page.tsx",
+          "type": "registry:component",
+          "target": "@components/blocks/app-page.tsx"
+        }
+      ],
+      "type": "registry:block"
+    },
+    {
       "name": "app-shell",
       "title": "Naum App Shell",
       "description": "Naum app-shell for React and Tailwind CSS v4.",
@@ -1589,7 +1628,7 @@
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/dropdown-menu.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/empty.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/label.json",
-        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/motion.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/page-toolbar.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/select-control.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/skeleton.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/table.json",
@@ -1602,6 +1641,44 @@
           "path": "src/components/blocks/data-table.tsx",
           "type": "registry:component",
           "target": "@components/blocks/data-table.tsx"
+        }
+      ],
+      "type": "registry:block"
+    },
+    {
+      "name": "page-header",
+      "title": "Naum Page Header",
+      "description": "Naum page-header for React and Tailwind CSS v4.",
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/badge.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/blocks/page-header.tsx",
+          "type": "registry:component",
+          "target": "@components/blocks/page-header.tsx"
+        }
+      ],
+      "type": "registry:block"
+    },
+    {
+      "name": "page-toolbar",
+      "title": "Naum Page Toolbar",
+      "description": "Naum page-toolbar for React and Tailwind CSS v4.",
+      "dependencies": [
+        "class-variance-authority@0.7.1"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/blocks/page-toolbar.tsx",
+          "type": "registry:component",
+          "target": "@components/blocks/page-toolbar.tsx"
         }
       ],
       "type": "registry:block"
@@ -1724,6 +1801,7 @@
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/radio-group.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/resizable.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/scroll-area.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/search-input.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/select-control.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/select.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/separator.json",
@@ -1746,10 +1824,13 @@
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme-provider.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/activity-timeline.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/app-navigation.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/app-page.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/app-shell.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/bento-stat-card.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/data-table-views.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/data-table.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/page-header.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/page-toolbar.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/bento-insight-card.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/metric-value.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/metric-trend.json",

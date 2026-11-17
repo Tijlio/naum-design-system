@@ -135,7 +135,7 @@ test("DataTable, view controls and timeline examples work independently of CRM d
   await catalog
     .getByRole("button", { name: "data-table Block", exact: true })
     .click()
-  await page.getByRole("textbox", { name: "Search members" }).fill("Emma")
+  await page.getByRole("searchbox", { name: "Search members" }).fill("Emma")
   await expect(page.getByRole("table", { name: "Members" })).toContainText(
     "Emma Laurent",
   )

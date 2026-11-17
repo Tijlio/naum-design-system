@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "search-input",
+  "title": "Naum Search Input",
+  "description": "Naum search-input for React and Tailwind CSS v4.",
+  "dependencies": [
+    "lucide-react@1.74.0"
+  ],
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/input-group.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/label.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/search-input.tsx",
+      "type": "registry:ui",
+      "content": "\"use client\"\n\nimport { useId, type ComponentProps } from \"react\"\nimport { Search } from \"lucide-react\"\nimport {\n  InputGroup,\n  InputGroupAddon,\n  InputGroupInput,\n} from \"@/components/ui/input-group\"\nimport { Label } from \"@/components/ui/label\"\nimport { cn } from \"@/lib/utils\"\n\nexport type SearchInputProps = Omit<\n  ComponentProps<typeof InputGroupInput>,\n  \"type\"\n> & { label: string }\n\nexport const SearchInput = ({\n  label,\n  id,\n  className,\n  disabled,\n  ...props\n}: SearchInputProps) => {\n  const generatedId = useId()\n  const inputId = id ?? generatedId\n  return (\n    <InputGroup\n      data-slot=\"search-input\"\n      data-disabled={disabled || undefined}\n      className={cn(\"w-full max-w-sm\", className)}\n    >\n      <Label htmlFor={inputId} className=\"sr-only\">\n        {label}\n      </Label>\n      <InputGroupAddon aria-hidden>\n        <Search />\n      </InputGroupAddon>\n      <InputGroupInput\n        id={inputId}\n        type=\"search\"\n        disabled={disabled}\n        autoComplete=\"off\"\n        spellCheck={false}\n        placeholder=\"Search…\"\n        className=\"[&::-webkit-search-cancel-button]:appearance-none\"\n        {...props}\n      />\n    </InputGroup>\n  )\n}\n"
+    }
+  ],
+  "type": "registry:ui"
+}

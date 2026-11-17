@@ -10,7 +10,7 @@ import {
   type ColumnDef,
 } from "@tanstack/react-table"
 import { DataTable } from "@/components/blocks/data-table"
-import { Input } from "@/components/ui/input"
+import { SearchInput } from "@/components/ui/search-input"
 import { Label } from "@/components/ui/label"
 import { SelectControl } from "@/components/ui/select-control"
 import { CodeSample } from "./code-sample"
@@ -61,8 +61,8 @@ export const DataTableExample = () => {
         error={state === "error" ? "Members could not be loaded." : undefined}
         onRetry={() => setState("ready")}
         toolbar={
-          <Input
-            aria-label="Search members"
+          <SearchInput
+            label="Search members"
             placeholder="Search members…"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
@@ -72,7 +72,7 @@ export const DataTableExample = () => {
       />
       <CodeSample
         code={
-          'import { DataTable } from "@/components/blocks/data-table"\n\n// Pass a TanStack v8 table with your columns, data and row models.\n<DataTable table={table} label="Members" selectable\n  getRowLabel={member => member.name}\n  toolbar={<Input aria-label="Search members" value={query} onChange={onSearch} />}\n  bulkActions={members => <Button onClick={() => archive(members)}>Archive</Button>} />'
+          'import { DataTable } from "@/components/blocks/data-table"\n\n// Pass a TanStack v8 table with your columns, data and row models.\n<DataTable table={table} label="Members" selectable\n  getRowLabel={member => member.name}\n  toolbar={<Input label="Search members" value={query} onChange={onSearch} />}\n  bulkActions={members => <Button onClick={() => archive(members)}>Archive</Button>} />'
         }
       />
     </div>
