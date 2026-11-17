@@ -7,6 +7,13 @@ export type SearchEntry = {
 }
 
 export const PAGE_ENTRIES: SearchEntry[] = [
+  { id: "crm", title: "CRM overview", group: "Pages", href: "/showcase/crm" },
+  {
+    id: "contacts",
+    title: "All contacts",
+    group: "Pages",
+    href: "/showcase/crm/contacts",
+  },
   { id: "bento", title: "Bento dashboard", group: "Pages", href: "/" },
   {
     id: "components",

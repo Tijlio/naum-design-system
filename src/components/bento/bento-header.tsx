@@ -129,6 +129,14 @@ export function BentoHeader() {
           variant="glass"
           size="sm"
           nativeButton={false}
+          render={<Link href="/showcase/crm" />}
+        >
+          CRM showcase <ArrowUpRight className="size-3.5 opacity-70" />
+        </Button>
+        <Button
+          variant="glass"
+          size="sm"
+          nativeButton={false}
           render={<Link href="/preview" />}
           className="h-8 px-3 text-xs font-normal"
         >
