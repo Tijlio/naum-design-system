@@ -169,7 +169,10 @@ export function OverlaysCard() {
           </DropdownMenu>
 
           <Tooltip>
-            <TooltipTrigger render={<Button variant="glass" size="icon-sm" />}>
+            <TooltipTrigger
+              aria-label="More information"
+              render={<Button variant="glass" size="icon-sm" />}
+            >
               <Info className="size-3.5" />
             </TooltipTrigger>
             <TooltipContent>Tooltip example</TooltipContent>

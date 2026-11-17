@@ -38,7 +38,7 @@ export function PreviewHeader({
         </h1>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <Button variant="outline" size="sm" onClick={onOpenCommand}>
           <Search className="size-3.5" />
           Search

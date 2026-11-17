@@ -1,5 +1,7 @@
 "use client"
 
+import { useReducedMotionConfig } from "motion/react"
+
 import * as React from "react"
 import { ArrowDown, ArrowUp, ArrowUpRight } from "lucide-react"
 import {
@@ -38,6 +40,7 @@ function KpiChart({
   kpi: KpiCardItem
   gradientId: string
 }) {
+  const reducedMotion = useReducedMotionConfig()
   const commonGrid = (
     <CartesianGrid
       vertical={false}
@@ -103,6 +106,7 @@ function KpiChart({
           strokeDasharray="3 3"
           fill="transparent"
           strokeWidth={1.2}
+          isAnimationActive={reducedMotion === false}
           animationDuration={650}
         />
         <Area
@@ -111,6 +115,7 @@ function KpiChart({
           stroke="var(--color-thisWeek)"
           fill={`url(#${gradientId})`}
           strokeWidth={1.7}
+          isAnimationActive={reducedMotion === false}
           animationDuration={800}
         />
       </AreaChart>
@@ -132,6 +137,7 @@ function KpiChart({
           fillOpacity={0.18}
           radius={[4, 4, 4, 4]}
           barSize={6}
+          isAnimationActive={reducedMotion === false}
           animationDuration={650}
         />
         <Bar
@@ -139,6 +145,7 @@ function KpiChart({
           fill="var(--color-thisWeek)"
           radius={[4, 4, 4, 4]}
           barSize={6}
+          isAnimationActive={reducedMotion === false}
           animationDuration={800}
         />
       </BarChart>
@@ -166,6 +173,7 @@ function KpiChart({
         strokeWidth={1.2}
         dot={false}
         activeDot={{ r: 3 }}
+        isAnimationActive={reducedMotion === false}
         animationDuration={650}
         animationEasing="ease-out"
       />
@@ -176,6 +184,7 @@ function KpiChart({
         strokeWidth={1.6}
         dot={false}
         activeDot={{ r: 4 }}
+        isAnimationActive={reducedMotion === false}
         animationDuration={800}
         animationEasing="ease-out"
       />
@@ -197,10 +206,7 @@ export function KpiCard({ kpi }: { kpi: KpiCardItem }) {
   } satisfies ChartConfig
 
   return (
-    <Card
-      variant="default"
-      className="w-full justify-between transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5"
-    >
+    <Card variant="default" className="w-full justify-between naum-card-lift">
       <CardHeader className="pb-0">
         <CardTitle className="text-sm font-normal text-muted-foreground">
           {kpi.title}
@@ -212,7 +218,7 @@ export function KpiCard({ kpi }: { kpi: KpiCardItem }) {
             className="rounded-full"
             aria-label={`Open ${kpi.title}`}
           >
-            <ArrowUpRight className="size-3.5 transition-transform duration-200 group-hover/card:translate-x-0.5 group-hover/card:-translate-y-0.5" />
+            <ArrowUpRight className="size-3.5 transition-transform duration-200 motion-safe:group-hover/card:translate-x-0.5 motion-safe:group-hover/card:-translate-y-0.5" />
           </Button>
         </CardAction>
       </CardHeader>

@@ -31,7 +31,11 @@ export function ControlsCard() {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        <RadioGroup defaultValue="primary" className="grid gap-2">
+        <RadioGroup
+          aria-label="Data source"
+          defaultValue="primary"
+          className="grid gap-2"
+        >
           <div className="flex items-center gap-2">
             <RadioGroupItem value="primary" id="src-primary" />
             <Label htmlFor="src-primary">Primary data source</Label>
@@ -44,10 +48,13 @@ export function ControlsCard() {
 
         <div className="grid gap-2">
           <div className="flex items-center justify-between text-xs">
-            <span className="text-muted-foreground">Threshold</span>
+            <span id="threshold-label" className="text-muted-foreground">
+              Threshold
+            </span>
             <span className="tabular-nums">{sliderValue[0]}%</span>
           </div>
           <Slider
+            aria-labelledby="threshold-label"
             value={sliderValue}
             onValueChange={(val) =>
               setSliderValue(Array.isArray(val) ? [...val] : [val])
@@ -61,12 +68,17 @@ export function ControlsCard() {
             <span className="text-muted-foreground">Completeness</span>
             <span className="tabular-nums">78%</span>
           </div>
-          <Progress value={78} />
+          <Progress aria-label="Completeness" value={78} />
         </div>
 
         <div className="grid gap-1.5">
-          <Label>Verification code</Label>
-          <InputOTP maxLength={5} value={otp} onChange={setOtp}>
+          <Label htmlFor="verification-code">Verification code</Label>
+          <InputOTP
+            id="verification-code"
+            maxLength={5}
+            value={otp}
+            onChange={setOtp}
+          >
             <InputOTPGroup>
               <InputOTPSlot index={0} />
               <InputOTPSlot index={1} />

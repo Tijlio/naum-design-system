@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "theme-provider",
+  "title": "Naum Theme Provider",
+  "description": "Naum theme-provider for React and Tailwind CSS v4.",
+  "dependencies": [
+    "next-themes@0.4.6"
+  ],
+  "files": [
+    {
+      "path": "src/components/theme-provider.tsx",
+      "type": "registry:component",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { ThemeProvider as NextThemesProvider } from \"next-themes\"\n\nexport function ThemeProvider({\n  children,\n  ...props\n}: React.ComponentProps<typeof NextThemesProvider>) {\n  return <NextThemesProvider {...props}>{children}</NextThemesProvider>\n}\n"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,5 +1,7 @@
 "use client"
 
+import { useReducedMotionConfig } from "motion/react"
+
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 import {
   Card,
@@ -36,6 +38,7 @@ const CHART_CONFIG = {
 } satisfies ChartConfig
 
 export function ChartCard() {
+  const reducedMotion = useReducedMotionConfig()
   return (
     <Card className="md:col-span-2">
       <CardHeader>
@@ -89,6 +92,7 @@ export function ChartCard() {
               fill="transparent"
               strokeWidth={1.5}
               strokeDasharray="4 4"
+              isAnimationActive={reducedMotion === false}
               animationDuration={650}
             />
             <Area
@@ -98,6 +102,7 @@ export function ChartCard() {
               fill="url(#fillActual)"
               strokeWidth={2}
               filter="url(#naum-chart-glow)"
+              isAnimationActive={reducedMotion === false}
               animationDuration={850}
             />
           </AreaChart>

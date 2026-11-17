@@ -14,20 +14,15 @@ export function InsightCard() {
   return (
     <Card
       variant="mesh"
-      className="naum-mesh-amber w-full justify-between transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5"
+      className="naum-mesh-amber w-full justify-between naum-card-lift"
     >
       <CardHeader>
         <CardTitle className="text-sm font-normal text-white/90">
           Insights
         </CardTitle>
         <CardAction>
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            className="rounded-full bg-white/20 text-white hover:bg-white/30 hover:text-white"
-            aria-label="Open Insights"
-          >
-            <ArrowUpRight className="size-3.5 transition-transform duration-200 group-hover/card:translate-x-0.5 group-hover/card:-translate-y-0.5" />
+          <Button variant="mesh" size="icon-sm" aria-label="Open Insights">
+            <ArrowUpRight className="size-3.5 transition-transform duration-200 motion-safe:group-hover/card:translate-x-0.5 motion-safe:group-hover/card:-translate-y-0.5" />
           </Button>
         </CardAction>
       </CardHeader>

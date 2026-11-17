@@ -39,16 +39,25 @@ export function AdvancedFormsCard() {
         <FieldGroup className="gap-4">
           <Field>
             <FieldLabel htmlFor="field-workspace">Workspace</FieldLabel>
-            <Input id="field-workspace" defaultValue="Naum Design" />
-            <FieldDescription>
+            <Input
+              id="field-workspace"
+              aria-describedby="workspace-description"
+              defaultValue="Naum Design"
+            />
+            <FieldDescription id="workspace-description">
               Displayed in the top navigation bar.
             </FieldDescription>
           </Field>
 
           <Field>
-            <FieldLabel>Framework (Combobox)</FieldLabel>
+            <FieldLabel htmlFor="field-framework">
+              Framework (Combobox)
+            </FieldLabel>
             <Combobox items={FRAMEWORKS} defaultValue="Next.js">
-              <ComboboxInput placeholder="Select framework..." />
+              <ComboboxInput
+                id="field-framework"
+                placeholder="Select framework..."
+              />
               <ComboboxContent>
                 <ComboboxEmpty>No framework found.</ComboboxEmpty>
                 <ComboboxList>

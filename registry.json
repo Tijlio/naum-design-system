@@ -5,13 +5,60 @@
   "items": [
     {
       "name": "theme",
-      "type": "registry:style",
-      "title": "Naum Theme & Surfaces",
-      "description": "OKLCH light & dark tokens, naum-glass-card and naum-mesh-* utilities for Tailwind v4.",
-      "dependencies": ["tw-animate-css"],
+      "title": "Naum Theme",
+      "description": "Semantic light/dark tokens, radius and typography scales, surfaces and reduced-motion styles.",
+      "dependencies": [
+        "tw-animate-css@1.4.0",
+        "shadcn@4.23.0"
+      ],
       "cssVars": {
         "theme": {
-          "color-surface-frosted": "var(--surface-frosted)"
+          "ease-naum": "cubic-bezier(0.22, 1, 0.36, 1)",
+          "shadow-naum-card": "var(--naum-shadow-card)",
+          "shadow-naum-toast": "var(--naum-shadow-toast)",
+          "shadow-naum-glow": "var(--naum-shadow-glow)",
+          "shadow-naum-glow-hover": "var(--naum-shadow-glow-hover)",
+          "font-sans": "var(\n    --font-naum,\n    \"Plus Jakarta Sans\",\n    ui-sans-serif,\n    system-ui,\n    sans-serif\n  )",
+          "font-heading": "var(\n    --font-naum,\n    \"Plus Jakarta Sans\",\n    ui-sans-serif,\n    system-ui,\n    sans-serif\n  )",
+          "color-sidebar-ring": "var(--sidebar-ring)",
+          "color-sidebar-border": "var(--sidebar-border)",
+          "color-sidebar-accent-foreground": "var(--sidebar-accent-foreground)",
+          "color-sidebar-accent": "var(--sidebar-accent)",
+          "color-sidebar-primary-foreground": "var(--sidebar-primary-foreground)",
+          "color-sidebar-primary": "var(--sidebar-primary)",
+          "color-sidebar-foreground": "var(--sidebar-foreground)",
+          "color-sidebar": "var(--sidebar)",
+          "color-chart-5": "var(--chart-5)",
+          "color-chart-4": "var(--chart-4)",
+          "color-chart-3": "var(--chart-3)",
+          "color-chart-2": "var(--chart-2)",
+          "color-chart-1": "var(--chart-1)",
+          "color-ring": "var(--ring)",
+          "color-input": "var(--input)",
+          "color-border": "var(--border)",
+          "color-destructive": "var(--destructive)",
+          "color-accent-foreground": "var(--accent-foreground)",
+          "color-accent": "var(--accent)",
+          "color-muted-foreground": "var(--muted-foreground)",
+          "color-muted": "var(--muted)",
+          "color-secondary-foreground": "var(--secondary-foreground)",
+          "color-secondary": "var(--secondary)",
+          "color-primary-foreground": "var(--primary-foreground)",
+          "color-primary": "var(--primary)",
+          "color-popover-foreground": "var(--popover-foreground)",
+          "color-popover": "var(--popover)",
+          "color-card-foreground": "var(--card-foreground)",
+          "color-card": "var(--card)",
+          "color-surface-frosted": "var(--surface-frosted)",
+          "color-foreground": "var(--foreground)",
+          "color-background": "var(--background)",
+          "radius-sm": "calc(var(--radius) * 0.6)",
+          "radius-md": "calc(var(--radius) * 0.8)",
+          "radius-lg": "var(--radius)",
+          "radius-xl": "calc(var(--radius) * 1.4)",
+          "radius-2xl": "calc(var(--radius) * 1.8)",
+          "radius-3xl": "calc(var(--radius) * 2.2)",
+          "radius-4xl": "calc(var(--radius) * 2.6)"
         },
         "light": {
           "background": "oklch(0.93 0.004 260)",
@@ -19,8 +66,17 @@
           "card": "oklch(1 0 0 / 92%)",
           "card-foreground": "oklch(0.14 0.025 262)",
           "surface-frosted": "oklch(1 0 0 / 55%)",
+          "popover": "oklch(1 0 0)",
+          "popover-foreground": "oklch(0.145 0 0)",
           "primary": "oklch(0.22 0.03 262)",
           "primary-foreground": "oklch(0.985 0 0)",
+          "secondary": "oklch(0.97 0 0)",
+          "secondary-foreground": "oklch(0.205 0 0)",
+          "muted": "oklch(0.97 0 0)",
+          "muted-foreground": "oklch(0.49 0 0)",
+          "accent": "oklch(0.97 0 0)",
+          "accent-foreground": "oklch(0.205 0 0)",
+          "destructive": "oklch(0.5 0.2 27.325)",
           "border": "oklch(0.14 0.025 262 / 6%)",
           "input": "oklch(0.14 0.025 262 / 8%)",
           "ring": "oklch(0.62 0.14 262 / 45%)",
@@ -30,12 +86,26 @@
           "chart-4": "oklch(0.74 0.16 70)",
           "chart-5": "oklch(0.66 0.2 350)",
           "radius": "0.625rem",
+          "sidebar": "oklch(0.985 0 0)",
+          "sidebar-foreground": "oklch(0.145 0 0)",
+          "sidebar-primary": "oklch(0.205 0 0)",
+          "sidebar-primary-foreground": "oklch(0.985 0 0)",
+          "sidebar-accent": "oklch(0.97 0 0)",
+          "sidebar-accent-foreground": "oklch(0.205 0 0)",
+          "sidebar-border": "oklch(0.922 0 0)",
+          "sidebar-ring": "oklch(0.708 0 0)",
           "glass-surface-start": "oklch(1 0 0 / 80%)",
           "glass-surface-end": "oklch(1 0 0 / 45%)",
           "glass-border": "oklch(1 0 0 / 60%)",
           "glass-highlight": "oklch(1 0 0 / 90%)",
           "glass-shadow": "oklch(0.14 0.025 262 / 6%)",
-          "glass-blur": "24px"
+          "glass-blur": "24px",
+          "naum-shadow-card": "0 2px 12px -4px oklch(0.14 0.025 262 / 6%)",
+          "naum-shadow-toast": "0 12px 32px -8px oklch(0.14 0.025 262 / 14%)",
+          "naum-shadow-glow": "0 0 25px rgb(99 102 241 / 40%)",
+          "naum-shadow-glow-hover": "0 0 35px rgb(99 102 241 / 60%)",
+          "naum-duration-fast": "150ms",
+          "naum-duration-normal": "300ms"
         },
         "dark": {
           "background": "oklch(0.14 0.025 262)",
@@ -43,8 +113,17 @@
           "card": "oklch(1 0 0 / 4%)",
           "card-foreground": "oklch(1 0 0)",
           "surface-frosted": "oklch(1 0 0 / 3%)",
+          "popover": "oklch(0.205 0 0)",
+          "popover-foreground": "oklch(0.985 0 0)",
           "primary": "oklch(0.95 0.01 262)",
           "primary-foreground": "oklch(0.14 0.025 262)",
+          "secondary": "oklch(0.269 0 0)",
+          "secondary-foreground": "oklch(0.985 0 0)",
+          "muted": "oklch(0.269 0 0)",
+          "muted-foreground": "oklch(0.708 0 0)",
+          "accent": "oklch(0.269 0 0)",
+          "accent-foreground": "oklch(0.985 0 0)",
+          "destructive": "oklch(0.704 0.191 22.216)",
           "border": "oklch(1 0 0 / 8%)",
           "input": "oklch(1 0 0 / 15%)",
           "ring": "oklch(0.7 0.14 262 / 45%)",
@@ -53,6 +132,14 @@
           "chart-3": "oklch(0.72 0.16 155)",
           "chart-4": "oklch(0.78 0.15 75)",
           "chart-5": "oklch(0.72 0.19 345)",
+          "sidebar": "oklch(0.205 0 0)",
+          "sidebar-foreground": "oklch(0.985 0 0)",
+          "sidebar-primary": "oklch(0.488 0.243 264.376)",
+          "sidebar-primary-foreground": "oklch(0.985 0 0)",
+          "sidebar-accent": "oklch(0.269 0 0)",
+          "sidebar-accent-foreground": "oklch(0.985 0 0)",
+          "sidebar-border": "oklch(1 0 0 / 10%)",
+          "sidebar-ring": "oklch(0.556 0 0)",
           "glass-surface-start": "oklch(1 0 0 / 7%)",
           "glass-surface-end": "oklch(1 0 0 / 1%)",
           "glass-border": "oklch(1 0 0 / 8%)",
@@ -62,145 +149,1309 @@
         }
       },
       "css": {
+        "@import \"tw-animate-css\"": {},
+        "@import \"shadcn/tailwind.css\"": {},
+        "@custom-variant dark (&:is(.dark *))": {},
+        "@layer base": {
+          "*": {
+            "@apply border-border outline-ring/50": {}
+          },
+          "body": {
+            "@apply bg-background text-foreground": {}
+          },
+          "html": {
+            "@apply font-sans": {}
+          },
+          "@media (prefers-reduced-motion: reduce)": {
+            "*,\n    *::before,\n    *::after": {
+              "animation-duration": "0.01ms !important",
+              "animation-iteration-count": "1 !important",
+              "transition-duration": "0.01ms !important",
+              "scroll-behavior": "auto !important"
+            }
+          }
+        },
         "@utility naum-glass-card": {
-          "background": "linear-gradient(145deg, var(--glass-surface-start) 0%, var(--glass-surface-end) 100%)",
+          "background": "linear-gradient(\n    145deg,\n    var(--glass-surface-start) 0%,\n    var(--glass-surface-end) 100%\n  )",
           "backdrop-filter": "blur(var(--glass-blur))",
           "-webkit-backdrop-filter": "blur(var(--glass-blur))",
           "border": "1px solid var(--glass-border)",
-          "box-shadow": "inset 0 1px 1px 0 var(--glass-highlight), 0 20px 40px -15px var(--glass-shadow)"
+          "box-shadow": "inset 0 1px 1px 0 var(--glass-highlight),\n    0 20px 40px -15px var(--glass-shadow)"
         },
         "@utility naum-mesh-lime": {
-          "background": "radial-gradient(circle at 85% 90%, oklch(0.84 0.16 95 / 85%), transparent 60%), linear-gradient(135deg, oklch(0.58 0.12 135) 0%, oklch(0.75 0.15 100) 100%)"
+          "background": "radial-gradient(\n      circle at 85% 90%,\n      oklch(0.84 0.16 95 / 85%),\n      transparent 60%\n    ),\n    linear-gradient(135deg, oklch(0.58 0.12 135) 0%, oklch(0.75 0.15 100) 100%)"
         },
         "@utility naum-mesh-coral": {
-          "background": "radial-gradient(circle at 85% 90%, oklch(0.82 0.12 55 / 85%), transparent 60%), linear-gradient(135deg, oklch(0.66 0.19 25) 0%, oklch(0.77 0.14 48) 100%)"
+          "background": "radial-gradient(\n      circle at 85% 90%,\n      oklch(0.82 0.12 55 / 85%),\n      transparent 60%\n    ),\n    linear-gradient(135deg, oklch(0.66 0.19 25) 0%, oklch(0.77 0.14 48) 100%)"
         },
         "@utility naum-mesh-indigo": {
-          "background": "radial-gradient(circle at 85% 85%, oklch(0.82 0.08 220 / 85%), transparent 60%), linear-gradient(135deg, oklch(0.68 0.13 265) 0%, oklch(0.78 0.11 310) 100%)"
+          "background": "radial-gradient(\n      circle at 85% 85%,\n      oklch(0.82 0.08 220 / 85%),\n      transparent 60%\n    ),\n    linear-gradient(135deg, oklch(0.68 0.13 265) 0%, oklch(0.78 0.11 310) 100%)"
         },
         "@utility naum-mesh-amber": {
-          "background": "radial-gradient(circle at 80% 95%, oklch(0.86 0.16 88 / 85%), transparent 58%), linear-gradient(135deg, oklch(0.75 0.1 65) 0%, oklch(0.78 0.16 78) 100%)"
+          "background": "radial-gradient(\n      circle at 80% 95%,\n      oklch(0.86 0.16 88 / 85%),\n      transparent 58%\n    ),\n    linear-gradient(135deg, oklch(0.75 0.1 65) 0%, oklch(0.78 0.16 78) 100%)"
         },
         "@utility naum-mesh-rose": {
-          "background": "radial-gradient(circle at 80% 85%, oklch(0.72 0.2 350 / 85%), transparent 60%), linear-gradient(135deg, oklch(0.76 0.14 10) 0%, oklch(0.68 0.2 345) 100%)"
+          "background": "radial-gradient(\n      circle at 80% 85%,\n      oklch(0.72 0.2 350 / 85%),\n      transparent 60%\n    ),\n    linear-gradient(135deg, oklch(0.76 0.14 10) 0%, oklch(0.68 0.2 345) 100%)"
         },
         "@utility naum-mesh-mint": {
-          "background": "radial-gradient(circle at 85% 90%, oklch(0.84 0.12 145 / 85%), transparent 60%), linear-gradient(135deg, oklch(0.76 0.09 195) 0%, oklch(0.8 0.12 155) 100%)"
+          "background": "radial-gradient(\n      circle at 85% 90%,\n      oklch(0.84 0.12 145 / 85%),\n      transparent 60%\n    ),\n    linear-gradient(135deg, oklch(0.76 0.09 195) 0%, oklch(0.8 0.12 155) 100%)"
+        },
+        "@utility naum-popup-surface": {
+          "position": "relative",
+          "background-color": "color-mix(in oklch, var(--popover) 70%, transparent)",
+          "&::before": {
+            "content": "\"\"",
+            "pointer-events": "none",
+            "position": "absolute",
+            "inset": "0",
+            "z-index": "-1",
+            "border-radius": "inherit",
+            "backdrop-filter": "blur(40px) saturate(1.5)",
+            "-webkit-backdrop-filter": "blur(40px) saturate(1.5)"
+          },
+          "& [data-slot$=\"-item\"]:focus,\n  & [data-slot$=\"-item\"][data-highlighted]": {
+            "background-color": "color-mix(in oklch, var(--foreground) 10%, transparent)"
+          },
+          "& [data-slot$=\"-separator\"]": {
+            "background-color": "color-mix(in oklch, var(--foreground) 5%, transparent)"
+          }
+        },
+        "@utility naum-card-lift": {
+          "transition": "transform 200ms var(--ease-naum)"
+        },
+        "@layer components": {
+          "@media (prefers-reduced-motion: no-preference)": {
+            ".naum-card-lift:hover": {
+              "transform": "translateY(-2px)"
+            }
+          }
         }
-      }
+      },
+      "type": "registry:style"
     },
     {
-      "name": "card",
-      "type": "registry:ui",
-      "title": "Naum Card",
-      "description": "Card with default, glass, frosted and mesh variants.",
-      "dependencies": ["class-variance-authority"],
+      "name": "accordion",
+      "title": "Naum Accordion",
+      "description": "Naum accordion for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0",
+        "lucide-react@1.74.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/accordion.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "alert-dialog",
+      "title": "Naum Alert Dialog",
+      "description": "Naum alert-dialog for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/button.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/alert-dialog.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "alert",
+      "title": "Naum Alert",
+      "description": "Naum alert for React and Tailwind CSS v4.",
+      "dependencies": [
+        "class-variance-authority@0.7.1"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/alert.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "ambient-backdrop",
+      "title": "Naum Ambient Backdrop",
+      "description": "Naum ambient-backdrop for React and Tailwind CSS v4.",
       "registryDependencies": [
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json"
       ],
       "files": [
         {
-          "path": "src/components/ui/card.tsx",
+          "path": "src/components/ui/ambient-backdrop.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "aspect-ratio",
+      "title": "Naum Aspect Ratio",
+      "description": "Naum aspect-ratio for React and Tailwind CSS v4.",
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/aspect-ratio.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "avatar",
+      "title": "Naum Avatar",
+      "description": "Naum avatar for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/avatar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "badge",
+      "title": "Naum Badge",
+      "description": "Naum badge for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0",
+        "class-variance-authority@0.7.1"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/badge.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "breadcrumb",
+      "title": "Naum Breadcrumb",
+      "description": "Naum breadcrumb for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0",
+        "lucide-react@1.74.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/breadcrumb.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "button-group",
+      "title": "Naum Button Group",
+      "description": "Naum button-group for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0",
+        "class-variance-authority@0.7.1"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/separator.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/button-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
     },
     {
       "name": "button",
-      "type": "registry:ui",
       "title": "Naum Button",
-      "description": "Base UI button with glass & glow variants, cursor-pointer and tactile press.",
-      "dependencies": ["@base-ui/react", "class-variance-authority"],
+      "description": "Naum button for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0",
+        "class-variance-authority@0.7.1"
+      ],
       "registryDependencies": [
-        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json"
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
       ],
       "files": [
         {
           "path": "src/components/ui/button.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "type": "registry:ui"
     },
     {
-      "name": "command",
-      "type": "registry:ui",
-      "title": "Naum Command",
-      "description": "Command palette with rounded-3xl dialog and balanced padding.",
-      "dependencies": ["cmdk", "lucide-react"],
-      "registryDependencies": ["dialog", "input-group"],
+      "name": "calendar",
+      "title": "Naum Calendar",
+      "description": "Naum calendar for React and Tailwind CSS v4.",
+      "dependencies": [
+        "lucide-react@1.74.0",
+        "react-day-picker@9.14.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/button.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
       "files": [
         {
-          "path": "src/components/ui/command.tsx",
+          "path": "src/components/ui/calendar.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "type": "registry:ui"
     },
     {
-      "name": "sonner",
-      "type": "registry:ui",
-      "title": "Naum Sonner",
-      "description": "Frosted glass toast notifications with high-contrast descriptions.",
-      "dependencies": ["sonner", "next-themes", "lucide-react"],
+      "name": "card",
+      "title": "Naum Card",
+      "description": "Naum card for React and Tailwind CSS v4.",
+      "dependencies": [
+        "class-variance-authority@0.7.1"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
       "files": [
         {
-          "path": "src/components/ui/sonner.tsx",
+          "path": "src/components/ui/card.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "type": "registry:ui"
     },
     {
-      "name": "ambient-backdrop",
-      "type": "registry:ui",
-      "title": "Ambient Backdrop",
-      "description": "Soft ambient glow layer behind glass surfaces.",
+      "name": "carousel",
+      "title": "Naum Carousel",
+      "description": "Naum carousel for React and Tailwind CSS v4.",
+      "dependencies": [
+        "embla-carousel-react@8.6.0",
+        "lucide-react@1.74.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/button.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
       "files": [
         {
-          "path": "src/components/ui/ambient-backdrop.tsx",
+          "path": "src/components/ui/carousel.tsx",
           "type": "registry:ui"
         }
-      ]
-    },
-    {
-      "name": "motion",
-      "type": "registry:ui",
-      "title": "Naum Motion Primitives",
-      "description": "Reduced-motion-aware fade, stagger, path draw and layoutId pill primitives.",
-      "dependencies": ["motion"],
-      "files": [
-        {
-          "path": "src/components/ui/motion.tsx",
-          "type": "registry:ui"
-        }
-      ]
+      ],
+      "type": "registry:ui"
     },
     {
       "name": "chart",
-      "type": "registry:ui",
       "title": "Naum Chart",
-      "description": "Recharts wrapper with frosted glass ChartTooltipContent.",
-      "dependencies": ["recharts"],
+      "description": "Naum chart for React and Tailwind CSS v4.",
+      "dependencies": [
+        "recharts@3.11.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
       "files": [
         {
           "path": "src/components/ui/chart.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "checkbox",
+      "title": "Naum Checkbox",
+      "description": "Naum checkbox for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0",
+        "lucide-react@1.74.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/checkbox.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "collapsible",
+      "title": "Naum Collapsible",
+      "description": "Naum collapsible for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/collapsible.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "combobox",
+      "title": "Naum Combobox",
+      "description": "Naum combobox for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0",
+        "lucide-react@1.74.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/button.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/input-group.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/combobox.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "command",
+      "title": "Naum Command",
+      "description": "Naum command for React and Tailwind CSS v4.",
+      "dependencies": [
+        "cmdk@1.1.1",
+        "lucide-react@1.74.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/dialog.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/input-group.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/command.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "context-menu",
+      "title": "Naum Context Menu",
+      "description": "Naum context-menu for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0",
+        "lucide-react@1.74.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/context-menu.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "dialog",
+      "title": "Naum Dialog",
+      "description": "Naum dialog for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0",
+        "lucide-react@1.74.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/button.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/dialog.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "direction",
+      "title": "Naum Direction",
+      "description": "Naum direction for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/direction.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "drawer",
+      "title": "Naum Drawer",
+      "description": "Naum drawer for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/drawer.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "dropdown-menu",
+      "title": "Naum Dropdown Menu",
+      "description": "Naum dropdown-menu for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0",
+        "lucide-react@1.74.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/dropdown-menu.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "empty",
+      "title": "Naum Empty",
+      "description": "Naum empty for React and Tailwind CSS v4.",
+      "dependencies": [
+        "class-variance-authority@0.7.1"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/empty.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "field",
+      "title": "Naum Field",
+      "description": "Naum field for React and Tailwind CSS v4.",
+      "dependencies": [
+        "class-variance-authority@0.7.1"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/label.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/separator.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/field.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "hover-card",
+      "title": "Naum Hover Card",
+      "description": "Naum hover-card for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/hover-card.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "input-group",
+      "title": "Naum Input Group",
+      "description": "Naum input-group for React and Tailwind CSS v4.",
+      "dependencies": [
+        "class-variance-authority@0.7.1"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/button.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/input.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/textarea.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/input-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "input-otp",
+      "title": "Naum Input Otp",
+      "description": "Naum input-otp for React and Tailwind CSS v4.",
+      "dependencies": [
+        "input-otp@1.5.0",
+        "lucide-react@1.74.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/input-otp.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "input",
+      "title": "Naum Input",
+      "description": "Naum input for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "item",
+      "title": "Naum Item",
+      "description": "Naum item for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0",
+        "class-variance-authority@0.7.1"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/separator.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/item.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "kbd",
+      "title": "Naum Kbd",
+      "description": "Naum kbd for React and Tailwind CSS v4.",
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/kbd.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "label",
+      "title": "Naum Label",
+      "description": "Naum label for React and Tailwind CSS v4.",
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/label.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "menubar",
+      "title": "Naum Menubar",
+      "description": "Naum menubar for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0",
+        "lucide-react@1.74.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/dropdown-menu.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/menubar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "motion",
+      "title": "Naum Motion",
+      "description": "Naum motion for React and Tailwind CSS v4.",
+      "dependencies": [
+        "motion@14.14.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/motion.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "native-select",
+      "title": "Naum Native Select",
+      "description": "Naum native-select for React and Tailwind CSS v4.",
+      "dependencies": [
+        "lucide-react@1.74.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/native-select.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "navigation-menu",
+      "title": "Naum Navigation Menu",
+      "description": "Naum navigation-menu for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0",
+        "class-variance-authority@0.7.1",
+        "lucide-react@1.74.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/navigation-menu.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "pagination",
+      "title": "Naum Pagination",
+      "description": "Naum pagination for React and Tailwind CSS v4.",
+      "dependencies": [
+        "lucide-react@1.74.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/button.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/pagination.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "popover",
+      "title": "Naum Popover",
+      "description": "Naum popover for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/popover.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "progress",
+      "title": "Naum Progress",
+      "description": "Naum progress for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/progress.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "radio-group",
+      "title": "Naum Radio Group",
+      "description": "Naum radio-group for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/radio-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "resizable",
+      "title": "Naum Resizable",
+      "description": "Naum resizable for React and Tailwind CSS v4.",
+      "dependencies": [
+        "react-resizable-panels@4.24.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/resizable.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "scroll-area",
+      "title": "Naum Scroll Area",
+      "description": "Naum scroll-area for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/scroll-area.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "select",
+      "title": "Naum Select",
+      "description": "Naum select for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0",
+        "lucide-react@1.74.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/select.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "separator",
+      "title": "Naum Separator",
+      "description": "Naum separator for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/separator.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "sheet",
+      "title": "Naum Sheet",
+      "description": "Naum sheet for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0",
+        "lucide-react@1.74.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/button.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/sheet.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "sidebar",
+      "title": "Naum Sidebar",
+      "description": "Naum sidebar for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0",
+        "class-variance-authority@0.7.1",
+        "lucide-react@1.74.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/button.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/input.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/separator.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/sheet.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/skeleton.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/tooltip.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/use-mobile.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/sidebar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "skeleton",
+      "title": "Naum Skeleton",
+      "description": "Naum skeleton for React and Tailwind CSS v4.",
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/skeleton.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "slider",
+      "title": "Naum Slider",
+      "description": "Naum slider for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/slider.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "sonner",
+      "title": "Naum Sonner",
+      "description": "Naum sonner for React and Tailwind CSS v4.",
+      "dependencies": [
+        "lucide-react@1.74.0",
+        "next-themes@0.4.6",
+        "sonner@2.0.8"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/sonner.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "spinner",
+      "title": "Naum Spinner",
+      "description": "Naum spinner for React and Tailwind CSS v4.",
+      "dependencies": [
+        "lucide-react@1.74.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/spinner.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "switch",
+      "title": "Naum Switch",
+      "description": "Naum switch for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/switch.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "table",
+      "title": "Naum Table",
+      "description": "Naum table for React and Tailwind CSS v4.",
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/table.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "tabs",
+      "title": "Naum Tabs",
+      "description": "Naum tabs for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0",
+        "class-variance-authority@0.7.1"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/tabs.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "textarea",
+      "title": "Naum Textarea",
+      "description": "Naum textarea for React and Tailwind CSS v4.",
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/textarea.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "toggle-group",
+      "title": "Naum Toggle Group",
+      "description": "Naum toggle-group for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0",
+        "class-variance-authority@0.7.1"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/toggle.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/toggle-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "toggle",
+      "title": "Naum Toggle",
+      "description": "Naum toggle for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0",
+        "class-variance-authority@0.7.1"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/toggle.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "tooltip",
+      "title": "Naum Tooltip",
+      "description": "Naum tooltip for React and Tailwind CSS v4.",
+      "dependencies": [
+        "@base-ui/react@1.9.0"
+      ],
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/tooltip.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "name": "utils",
+      "title": "Naum Utils",
+      "description": "Naum utils for React and Tailwind CSS v4.",
+      "dependencies": [
+        "clsx@2.1.1",
+        "tailwind-merge@3.7.0"
+      ],
+      "files": [
+        {
+          "path": "src/lib/utils.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "type": "registry:lib"
+    },
+    {
+      "name": "use-mobile",
+      "title": "Naum Use Mobile",
+      "description": "Naum use-mobile for React and Tailwind CSS v4.",
+      "files": [
+        {
+          "path": "src/hooks/use-mobile.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "type": "registry:hook"
+    },
+    {
+      "name": "theme-provider",
+      "title": "Naum Theme Provider",
+      "description": "Naum theme-provider for React and Tailwind CSS v4.",
+      "dependencies": [
+        "next-themes@0.4.6"
+      ],
+      "files": [
+        {
+          "path": "src/components/theme-provider.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "type": "registry:component"
     },
     {
       "name": "all",
-      "type": "registry:style",
       "title": "Naum Complete Preset",
-      "description": "Installs the complete Naum theme, surfaces, components and motion primitives.",
+      "description": "Every Naum UI component, shared dependency, theme and provider.",
       "registryDependencies": [
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
-        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/card.json",
-        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/button.json",
-        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/command.json",
-        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/sonner.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/accordion.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/alert-dialog.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/alert.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/ambient-backdrop.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/aspect-ratio.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/avatar.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/badge.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/breadcrumb.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/button-group.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/button.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/calendar.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/card.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/carousel.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/chart.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/checkbox.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/collapsible.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/combobox.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/command.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/context-menu.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/dialog.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/direction.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/drawer.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/dropdown-menu.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/empty.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/field.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/hover-card.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/input-group.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/input-otp.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/input.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/item.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/kbd.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/label.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/menubar.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/motion.json",
-        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/chart.json"
-      ]
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/native-select.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/navigation-menu.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/pagination.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/popover.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/progress.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/radio-group.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/resizable.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/scroll-area.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/select.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/separator.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/sheet.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/sidebar.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/skeleton.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/slider.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/sonner.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/spinner.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/switch.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/table.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/tabs.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/textarea.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/toggle-group.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/toggle.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/tooltip.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/use-mobile.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme-provider.json"
+      ],
+      "type": "registry:style"
     }
   ]
 }

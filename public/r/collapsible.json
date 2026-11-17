@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "collapsible",
+  "title": "Naum Collapsible",
+  "description": "Naum collapsible for React and Tailwind CSS v4.",
+  "dependencies": [
+    "@base-ui/react@1.9.0"
+  ],
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/collapsible.tsx",
+      "type": "registry:ui",
+      "content": "\"use client\"\n\nimport { Collapsible as CollapsiblePrimitive } from \"@base-ui/react/collapsible\"\n\nfunction Collapsible({ ...props }: CollapsiblePrimitive.Root.Props) {\n  return <CollapsiblePrimitive.Root data-slot=\"collapsible\" {...props} />\n}\n\nfunction CollapsibleTrigger({ ...props }: CollapsiblePrimitive.Trigger.Props) {\n  return (\n    <CollapsiblePrimitive.Trigger data-slot=\"collapsible-trigger\" {...props} />\n  )\n}\n\nfunction CollapsibleContent({ ...props }: CollapsiblePrimitive.Panel.Props) {\n  return (\n    <CollapsiblePrimitive.Panel data-slot=\"collapsible-content\" {...props} />\n  )\n}\n\nexport { Collapsible, CollapsibleTrigger, CollapsibleContent }\n"
+    }
+  ],
+  "type": "registry:ui"
+}

@@ -2,17 +2,21 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "sonner",
   "title": "Naum Sonner",
-  "description": "Frosted glass toast notifications with high-contrast descriptions.",
+  "description": "Naum sonner for React and Tailwind CSS v4.",
   "dependencies": [
-    "sonner",
-    "next-themes",
-    "lucide-react"
+    "lucide-react@1.74.0",
+    "next-themes@0.4.6",
+    "sonner@2.0.8"
+  ],
+  "registryDependencies": [
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/utils.json"
   ],
   "files": [
     {
       "path": "src/components/ui/sonner.tsx",
-      "content": "\"use client\"\n\nimport { useTheme } from \"next-themes\"\nimport { Toaster as Sonner, type ToasterProps } from \"sonner\"\nimport {\n  CircleCheck,\n  Info,\n  TriangleAlert,\n  OctagonAlert,\n  Loader2,\n} from \"lucide-react\"\n\nconst Toaster = ({ ...props }: ToasterProps) => {\n  const { theme = \"system\" } = useTheme()\n\n  return (\n    <Sonner\n      theme={theme as ToasterProps[\"theme\"]}\n      className=\"toaster group\"\n      icons={{\n        success: (\n          <CircleCheck className=\"size-4 text-emerald-600 dark:text-emerald-400\" />\n        ),\n        info: <Info className=\"size-4 text-indigo-600 dark:text-indigo-400\" />,\n        warning: (\n          <TriangleAlert className=\"size-4 text-amber-600 dark:text-amber-400\" />\n        ),\n        error: <OctagonAlert className=\"size-4 text-destructive\" />,\n        loading: <Loader2 className=\"size-4 animate-spin\" />,\n      }}\n      style={\n        {\n          \"--normal-bg\": \"var(--popover)\",\n          \"--normal-text\": \"var(--popover-foreground)\",\n          \"--normal-border\": \"var(--border)\",\n          \"--border-radius\": \"1.25rem\",\n        } as React.CSSProperties\n      }\n      toastOptions={{\n        classNames: {\n          toast:\n            \"cn-toast rounded-3xl! border-foreground/6! bg-card/92! backdrop-blur-xl! shadow-[0_12px_32px_-8px_oklch(0.14_0.025_262/14%)]!\",\n          title: \"font-medium! text-foreground!\",\n          description: \"text-muted-foreground! opacity-100!\",\n        },\n      }}\n      {...props}\n    />\n  )\n}\n\nexport { Toaster }\n",
-      "type": "registry:ui"
+      "type": "registry:ui",
+      "content": "\"use client\"\n\nimport { useTheme } from \"next-themes\"\nimport { Toaster as Sonner, type ToasterProps } from \"sonner\"\nimport type { CSSProperties } from \"react\"\nimport { cn } from \"@/lib/utils\"\nimport {\n  CircleCheck,\n  Info,\n  TriangleAlert,\n  OctagonAlert,\n  Loader2,\n} from \"lucide-react\"\n\nconst toastStyle: CSSProperties & Record<`--${string}`, string> = {\n  \"--normal-bg\": \"var(--popover)\",\n  \"--normal-text\": \"var(--popover-foreground)\",\n  \"--normal-border\": \"var(--border)\",\n  \"--border-radius\": \"1.25rem\",\n}\n\nconst Toaster = ({\n  className,\n  icons,\n  style,\n  toastOptions,\n  ...props\n}: ToasterProps) => {\n  const { theme = \"system\" } = useTheme()\n\n  return (\n    <Sonner\n      theme={theme === \"light\" || theme === \"dark\" ? theme : \"system\"}\n      className={cn(\"toaster group\", className)}\n      icons={{\n        success: (\n          <CircleCheck className=\"size-4 text-emerald-600 dark:text-emerald-400\" />\n        ),\n        info: <Info className=\"size-4 text-indigo-600 dark:text-indigo-400\" />,\n        warning: (\n          <TriangleAlert className=\"size-4 text-amber-600 dark:text-amber-400\" />\n        ),\n        error: <OctagonAlert className=\"size-4 text-destructive\" />,\n        loading: <Loader2 className=\"size-4 animate-spin\" />,\n        ...icons,\n      }}\n      style={{ ...toastStyle, ...style }}\n      toastOptions={{\n        ...toastOptions,\n        classNames: {\n          ...toastOptions?.classNames,\n          toast: cn(\n            \"cn-toast rounded-3xl! border-foreground/6! bg-card/92! backdrop-blur-xl! shadow-naum-toast!\",\n            toastOptions?.classNames?.toast,\n          ),\n          title: cn(\n            \"font-medium! text-foreground!\",\n            toastOptions?.classNames?.title,\n          ),\n          description: cn(\n            \"text-muted-foreground! opacity-100!\",\n            toastOptions?.classNames?.description,\n          ),\n        },\n      }}\n      {...props}\n    />\n  )\n}\n\nexport { Toaster }\n"
     }
   ],
   "type": "registry:ui"

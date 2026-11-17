@@ -27,6 +27,12 @@ import {
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
 
+const REGIONS = [
+  { value: "eu-west", label: "EU West" },
+  { value: "eu-central", label: "EU Central" },
+  { value: "us-east", label: "US East" },
+]
+
 export function FormsCard() {
   const [notifications, setNotifications] = React.useState(true)
 
@@ -58,15 +64,17 @@ export function FormsCard() {
             <Input id="preview-name" defaultValue="Alex Mercer" />
           </div>
           <div className="grid gap-1.5">
-            <Label>Region</Label>
-            <Select defaultValue="eu-west">
-              <SelectTrigger className="w-full">
+            <Label htmlFor="preview-region">Region</Label>
+            <Select items={REGIONS} defaultValue="eu-west">
+              <SelectTrigger id="preview-region" className="w-full">
                 <SelectValue placeholder="Choose region" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="eu-west">EU West</SelectItem>
-                <SelectItem value="eu-central">EU Central</SelectItem>
-                <SelectItem value="us-east">US East</SelectItem>
+                {REGIONS.map((region) => (
+                  <SelectItem key={region.value} value={region.value}>
+                    {region.label}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -79,6 +87,29 @@ export function FormsCard() {
             placeholder="Optional context..."
             rows={2}
           />
+        </div>
+
+        <div className="grid gap-1.5">
+          <Label htmlFor="preview-email">Email</Label>
+          <Input
+            id="preview-email"
+            defaultValue="alex@"
+            aria-invalid="true"
+            aria-describedby="preview-email-error"
+          />
+          <p id="preview-email-error" className="text-xs text-destructive">
+            Enter a valid email address.
+          </p>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="grid gap-1.5">
+            <Label htmlFor="preview-reference">Reference</Label>
+            <Input id="preview-reference" value="NAUM-001" readOnly />
+          </div>
+          <div className="grid gap-1.5">
+            <Label htmlFor="preview-disabled">Department</Label>
+            <Input id="preview-disabled" defaultValue="Finance" disabled />
+          </div>
         </div>
 
         <div className="flex items-center justify-between gap-3 pt-1">

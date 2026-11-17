@@ -155,7 +155,7 @@ export function ActivitiesSection() {
               <Card
                 variant="mesh"
                 size="sm"
-                className={`${item.mesh} w-full justify-between gap-4 transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5`}
+                className={`${item.mesh} w-full justify-between gap-4 naum-card-lift`}
               >
                 <CardHeader className="px-4">
                   <CardTitle className="whitespace-pre-line text-xs leading-snug font-normal text-white/95">
@@ -163,12 +163,11 @@ export function ActivitiesSection() {
                   </CardTitle>
                   <CardAction>
                     <Button
-                      variant="ghost"
+                      variant="mesh"
                       size="icon-xs"
-                      className="rounded-full bg-white/20 text-white hover:bg-white/30 hover:text-white"
                       aria-label={item.title.replace("\n", " ")}
                     >
-                      <ArrowUpRight className="size-3 transition-transform duration-200 group-hover/card:translate-x-0.5 group-hover/card:-translate-y-0.5" />
+                      <ArrowUpRight className="size-3 transition-transform duration-200 motion-safe:group-hover/card:translate-x-0.5 motion-safe:group-hover/card:-translate-y-0.5" />
                     </Button>
                   </CardAction>
                 </CardHeader>

@@ -151,7 +151,7 @@ export function NavigationOverlaysCard() {
               <DrawerHeader>
                 <DrawerTitle>Mobile-friendly Drawer</DrawerTitle>
                 <DrawerDescription>
-                  Swipeable bottom sheet powered by Vaul.
+                  Swipe down or select Close to dismiss.
                 </DrawerDescription>
               </DrawerHeader>
               <DrawerFooter>

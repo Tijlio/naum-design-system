@@ -33,6 +33,10 @@ export function ButtonsCard() {
           <Button variant="destructive">Destructive</Button>
           <Button variant="glass">Glass</Button>
           <Button variant="glow">Glow</Button>
+          <Button disabled>Disabled</Button>
+          <Button disabled aria-busy="true">
+            <Spinner aria-hidden="true" /> Saving
+          </Button>
         </div>
 
         <Separator />

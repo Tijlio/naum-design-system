@@ -8,7 +8,7 @@ const cardVariants = cva(
     variants: {
       variant: {
         default:
-          "rounded-3xl bg-card ring-1 ring-foreground/5 shadow-[0_2px_12px_-4px_oklch(0.14_0.025_262/6%)]",
+          "rounded-3xl bg-card ring-1 ring-foreground/5 shadow-naum-card",
         glass:
           "naum-glass-card rounded-3xl transition-all duration-300 hover:border-foreground/15",
         frosted:

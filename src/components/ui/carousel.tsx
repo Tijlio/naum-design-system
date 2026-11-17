@@ -104,7 +104,8 @@ function Carousel({
 
     return () => {
       active = false
-      api?.off("select", onSelect)
+      api.off("select", onSelect)
+      api.off("reInit", onSelect)
     }
   }, [api, onSelect])
 

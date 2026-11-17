@@ -11,7 +11,13 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
-    "registry:build": "shadcn build"
+    "registry:build": "node scripts/build-registry.mjs",
+    "registry:check": "node scripts/build-registry.mjs --check",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "test:registry": "node scripts/test-registry-install.mjs",
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm registry:check",
+    "build:test": "NAUM_BUILD_DIR=build/next next build"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
@@ -38,15 +44,21 @@
     "vaul": "^1.1.2"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.65.1",
     "@tailwindcss/postcss": "4.3.3",
+    "@testing-library/react": "^16.3.3",
     "@types/node": "^24.19.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.6",
+    "jsdom": "^31.0.1",
+    "postcss": "^8.5.33",
     "prettier": "^3.10.1",
     "tailwindcss": "4.3.3",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^5.1.0"
   },
   "packageManager": "pnpm@10.34.9"
 }
