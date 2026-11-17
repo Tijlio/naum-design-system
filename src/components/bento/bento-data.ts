@@ -26,6 +26,8 @@ export interface KpiSeriesPoint {
   thisWeek: number
 }
 
+export type KpiChartType = "line" | "area" | "bar"
+
 export interface KpiCardItem {
   title: string
   major: string
@@ -33,6 +35,7 @@ export interface KpiCardItem {
   trend: "up" | "down"
   delta: string
   lineColor: string
+  chartType: KpiChartType
   series: KpiSeriesPoint[]
 }
 
@@ -44,6 +47,7 @@ export const KPI_CARDS: KpiCardItem[] = [
     trend: "down",
     delta: "-12%",
     lineColor: "#e14d2a",
+    chartType: "line",
     series: [
       { day: "Mon", lastWeek: 88, thisWeek: 62 },
       { day: "Tue", lastWeek: 82, thisWeek: 66 },
@@ -61,6 +65,7 @@ export const KPI_CARDS: KpiCardItem[] = [
     trend: "up",
     delta: "+36%",
     lineColor: "#16a34a",
+    chartType: "area",
     series: [
       { day: "Mon", lastWeek: 90, thisWeek: 58 },
       { day: "Tue", lastWeek: 80, thisWeek: 64 },
@@ -78,6 +83,7 @@ export const KPI_CARDS: KpiCardItem[] = [
     trend: "up",
     delta: "+24%",
     lineColor: "#16a34a",
+    chartType: "bar",
     series: [
       { day: "Mon", lastWeek: 92, thisWeek: 68 },
       { day: "Tue", lastWeek: 84, thisWeek: 72 },
