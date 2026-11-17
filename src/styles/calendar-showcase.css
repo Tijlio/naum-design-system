@@ -39,13 +39,6 @@
   .calendar-board {
     min-width: 0;
   }
-  .calendar-color-dot {
-    height: --spacing(2);
-    width: --spacing(2);
-    display: inline-block;
-    border-radius: 50%;
-    background-color: var(--event-foreground);
-  }
   .calendar-time-scroll {
     max-height: 38rem;
     overflow: auto;

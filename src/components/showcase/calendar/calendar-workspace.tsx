@@ -121,9 +121,14 @@ export const CalendarWorkspace = () => {
                   My calendars
                 </legend>
                 {CALENDARS.map((calendar) => (
-                  <div className="flex items-center gap-3" key={calendar}>
+                  <div
+                    className="flex items-center gap-2"
+                    key={calendar}
+                    data-calendar={calendar}
+                  >
                     <Checkbox
                       id={`calendar-${calendar}`}
+                      className="data-checked:border-transparent data-checked:bg-(--event-background) data-checked:text-(--event-foreground) dark:data-checked:bg-(--event-background)"
                       checked={enabledCalendars.includes(calendar)}
                       onCheckedChange={(checked) =>
                         setEnabledCalendars((current) =>
@@ -137,10 +142,6 @@ export const CalendarWorkspace = () => {
                       htmlFor={`calendar-${calendar}`}
                       className="text-sm font-normal"
                     >
-                      <span
-                        className="calendar-color-dot"
-                        data-calendar={calendar}
-                      />
                       {calendar}
                     </Label>
                   </div>

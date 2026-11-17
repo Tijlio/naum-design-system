@@ -59,7 +59,7 @@ function KpiChart({
       <ChartTooltip
         cursor={
           kpi.chartType === "bar"
-            ? { fill: "var(--foreground)", fillOpacity: 0.04 }
+            ? { fill: "var(--foreground)", fillOpacity: 0.04, stroke: "none" }
             : {
                 stroke: "currentColor",
                 strokeOpacity: 0.2,

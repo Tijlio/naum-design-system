@@ -52,7 +52,11 @@ export const MetricBreakdown = ({
           }
         />
         <ChartTooltip
-          cursor={{ fill: "var(--foreground)", fillOpacity: 0.04 }}
+          cursor={{
+            fill: "var(--foreground)",
+            fillOpacity: 0.04,
+            stroke: "none",
+          }}
           content={
             <ChartTooltipContent
               formatter={(value) =>
