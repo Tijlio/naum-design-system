@@ -1,0 +1,36 @@
+name: Prepare versioned registry
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Release tag to prepare (for example v0.1.0)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  registry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+      - name: Validate release version
+        run: node --input-type=module -e 'import { readFile } from "node:fs/promises"; const { version } = JSON.parse(await readFile("package.json", "utf8")); if (process.env.NAUM_REGISTRY_REF !== `v${version}`) throw new Error("The release tag must match package.json version");'
+        env:
+          NAUM_REGISTRY_REF: ${{ inputs.version }}
+      - run: pnpm registry:build
+        env:
+          NAUM_REGISTRY_REF: ${{ inputs.version }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: naum-registry-${{ inputs.version }}
+          path: public/r
