@@ -32,3 +32,50 @@ it("opens from the keyboard and routes a selected result", () => {
   fireEvent.click(screen.getByRole("option", { name: /Component preview/ }))
   expect(push).toHaveBeenCalledWith("/preview")
 })
+
+it("clears the query and restores focus when the shortcut closes search", () => {
+  render(
+    <MotionProvider reducedMotion="always">
+      <SiteSearch />
+    </MotionProvider>,
+  )
+  const trigger = screen.getByRole("button", { name: /^Search$/ })
+  fireEvent.keyDown(document, { key: "k", ctrlKey: true })
+  fireEvent.change(screen.getByRole("combobox"), {
+    target: { value: "Calendar" },
+  })
+  fireEvent.keyDown(document, { key: "k", ctrlKey: true })
+  expect(document.activeElement).toBe(trigger)
+  fireEvent.keyDown(document, { key: "k", ctrlKey: true })
+  expect(screen.getByRole("combobox")).toHaveProperty("value", "")
+})
+
+it("keeps results with identical titles independently selectable", () => {
+  render(
+    <MotionProvider reducedMotion="always">
+      <SiteSearch
+        entries={[
+          {
+            id: "first",
+            title: "Review",
+            group: "Appointments",
+            href: "/first",
+          },
+          {
+            id: "second",
+            title: "Review",
+            group: "Appointments",
+            href: "/second",
+          },
+        ]}
+      />
+    </MotionProvider>,
+  )
+  fireEvent.click(screen.getByRole("button", { name: /^Search$/ }))
+  const results = screen.getAllByRole("option", { name: "Review" })
+  expect(
+    results.filter((result) => result.getAttribute("aria-selected") === "true"),
+  ).toHaveLength(1)
+  fireEvent.click(results[1])
+  expect(push).toHaveBeenCalledWith("/second")
+})

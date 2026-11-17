@@ -4,16 +4,13 @@
     min-width: 0;
   }
   .workspace-header {
-    background: color-mix(in oklch, var(--card) 35%, transparent);
-    backdrop-filter: blur(var(--glass-blur));
     display: flex;
     min-height: --spacing(20);
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: --spacing(3);
-    padding: --spacing(4) --spacing(6);
-    border-bottom: 1px solid var(--border);
+    padding: --spacing(6) --spacing(8);
   }
   .workspace-page {
     width: 100%;
@@ -32,13 +29,6 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: --spacing(4);
-  }
-  .workspace-title {
-    font-family: var(--font-heading);
-    font-size: var(--text-3xl);
-    line-height: 1.25;
-    letter-spacing: -0.04em;
-    font-weight: 500;
   }
   .workspace-eyebrow {
     color: var(--muted-foreground);
@@ -137,10 +127,7 @@
       padding: --spacing(5);
     }
     .workspace-header {
-      padding: --spacing(3) --spacing(4);
-    }
-    .workspace-title {
-      font-size: var(--text-2xl);
+      padding: --spacing(4) --spacing(5);
     }
   }
   @media (width < 25rem) {
@@ -184,6 +171,7 @@
     .site-search-expand {
       position: fixed;
       inset: --spacing(4) --spacing(4) auto;
+      width: auto;
       padding: --spacing(2);
       border-radius: var(--radius-3xl);
       background: var(--popover);
@@ -208,7 +196,7 @@
     color: var(--foreground);
     box-shadow: var(--naum-shadow-toast);
   }
-  [data-slot="dialog-content"].workspace-overlay {
+  .workspace-dialog {
     max-height: calc(100dvh - --spacing(8));
     overflow-y: auto;
   }

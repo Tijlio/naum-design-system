@@ -32,6 +32,12 @@ export type Appointment = {
 
 // A stable demo week keeps examples and visual reviews reproducible.
 export const DEMO_DATE = "2026-11-17"
+// Illustrative previous-period values for the demo KPI comparisons.
+export const CRM_COMPARISON = {
+  pipelineValue: 70000,
+  activeContacts: 6,
+  wonValue: 24000,
+}
 export const CONTACT_STAGES: ContactStage[] = [
   "Lead",
   "Customer",
@@ -272,9 +278,3 @@ export const REVENUE_SERIES = [
   { month: "Oct", revenue: 48, target: 42 },
   { month: "Nov", revenue: 57, target: 45 },
 ]
-export const formatMoney = (value: number) =>
-  new Intl.NumberFormat("en-BE", {
-    style: "currency",
-    currency: "EUR",
-    maximumFractionDigits: 0,
-  }).format(value)

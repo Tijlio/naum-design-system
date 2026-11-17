@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright"
 import { expect, test } from "@playwright/test"
+import { captureVisualEvidence } from "./visual-evidence"
 
 test("examples have accessible controls and no hydration errors", async ({
   page,
@@ -73,7 +74,9 @@ test("command palette opens, filters and changes the theme", async ({
 })
 
 for (const theme of ["light", "dark"] as const) {
-  test(`visual variants and states in ${theme} mode`, async ({ page }) => {
+  test(`visual variants and states in ${theme} mode`, async ({
+    page,
+  }, testInfo) => {
     await page.goto("/preview")
     if (theme === "dark")
       await page
@@ -86,18 +89,29 @@ for (const theme of ["light", "dark"] as const) {
     await expect(buttons).toHaveScreenshot(`buttons-${theme}.png`, {
       animations: "disabled",
     })
+    await captureVisualEvidence(
+      buttons,
+      testInfo,
+      `preview-buttons-${theme}.png`,
+    )
     const forms = page
       .locator('[data-slot="card"]')
       .filter({ has: page.getByText("Form Inputs", { exact: true }) })
     await expect(forms).toHaveScreenshot(`forms-${theme}.png`, {
       animations: "disabled",
     })
+    await captureVisualEvidence(forms, testInfo, `preview-forms-${theme}.png`)
     const surfaces = page.locator('[data-slot="card"]').filter({
       has: page.getByText("Card Surfaces Side by Side", { exact: true }),
     })
     await expect(surfaces).toHaveScreenshot(`surfaces-${theme}.png`, {
       animations: "disabled",
     })
+    await captureVisualEvidence(
+      surfaces,
+      testInfo,
+      `preview-surfaces-${theme}.png`,
+    )
     await expect(page.locator("body")).toHaveJSProperty(
       "scrollWidth",
       await page.locator("body").evaluate((body) => body.clientWidth),

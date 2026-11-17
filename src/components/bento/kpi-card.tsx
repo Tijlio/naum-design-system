@@ -3,7 +3,7 @@
 import { useReducedMotionConfig } from "motion/react"
 
 import * as React from "react"
-import { ArrowDown, ArrowUp, ArrowUpRight } from "lucide-react"
+import { ArrowUpRight } from "lucide-react"
 import {
   Area,
   AreaChart,
@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/chart"
 import type { KpiCardItem } from "./bento-data"
 import { BentoMetricValue } from "./metric-value"
+import { BentoMetricTrend } from "./metric-trend"
 
 function KpiChart({
   kpi,
@@ -226,20 +227,11 @@ export function KpiCard({ kpi }: { kpi: KpiCardItem }) {
 
       <CardContent className="flex flex-col gap-4">
         <div className="flex items-center gap-2">
-          <BentoMetricValue value={`${kpi.major}${kpi.minor}`} currency="$" />
-          <span
-            className={
-              kpi.trend === "up"
-                ? "inline-flex size-5 items-center justify-center rounded-full bg-emerald-500 text-white"
-                : "inline-flex size-5 items-center justify-center rounded-full bg-orange-600 text-white"
-            }
-          >
-            {kpi.trend === "up" ? (
-              <ArrowUp className="size-3" />
-            ) : (
-              <ArrowDown className="size-3" />
-            )}
-          </span>
+          <BentoMetricValue major={kpi.major} minor={kpi.minor} currency="$" />
+          <BentoMetricTrend
+            direction={kpi.trend}
+            label={`${kpi.delta} compared with last week`}
+          />
         </div>
 
         <div className="relative flex flex-col gap-2">

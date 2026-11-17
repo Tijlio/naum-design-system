@@ -183,6 +183,9 @@
     opacity: 0.85;
     line-height: 1.4;
   }
+  .calendar-event-compact .calendar-event-title {
+    white-space: nowrap;
+  }
   .calendar-month {
     overflow: auto;
   }
@@ -286,7 +289,6 @@
       var(--event-background)
     );
     border: 1px solid var(--border);
-    border-left: 3px solid var(--event-foreground);
     border-radius: var(--radius-xl);
     box-shadow: var(--naum-shadow-card);
   }

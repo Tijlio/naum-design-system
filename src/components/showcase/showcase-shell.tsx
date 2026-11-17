@@ -32,6 +32,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { WorkspaceSearch } from "./workspace-search"
+import { cn } from "@/lib/utils"
+import { navigationItemVariants } from "@/lib/navigation-styles"
 
 const NAVIGATION = [
   { label: "Calendar", href: "/showcase/calendar", icon: CalendarDays },
@@ -48,7 +50,10 @@ const WorkspaceNavigation = () => {
       variant="inset"
       collapsible="icon"
       aria-label="Workspace navigation"
-      className="[&_[data-slot=sidebar-inner]]:bg-transparent"
+      className={cn(
+        "[&_[data-slot=sidebar-inner]]:bg-transparent group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4)))]",
+        isMobile && "workspace-overlay",
+      )}
     >
       <SidebarHeader className="p-3 group-data-[collapsible=icon]:p-2">
         <SidebarMenu>
@@ -68,12 +73,15 @@ const WorkspaceNavigation = () => {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Workspace</SidebarGroupLabel>
-          <SidebarMenu className="gap-2">
+          <SidebarMenu className="gap-2.5 group-data-[collapsible=icon]:items-center">
             {NAVIGATION.map(({ label, href, icon: Icon }) => (
               <SidebarMenuItem key={href}>
                 <SidebarMenuButton
                   tooltip={label}
-                  className="relative isolate rounded-full bg-surface-frosted ring-1 ring-white/40 backdrop-blur-md hover:bg-card/70 data-active:bg-transparent dark:ring-white/10 dark:data-active:text-black"
+                  className={cn(
+                    navigationItemVariants({ active: path === href }),
+                    "group-data-[collapsible=icon]:size-10! group-data-[collapsible=icon]:justify-center",
+                  )}
                   isActive={path === href}
                   aria-current={path === href ? "page" : undefined}
                   render={<Link href={href} />}
@@ -89,7 +97,9 @@ const WorkspaceNavigation = () => {
                     />
                   )}
                   <Icon />
-                  <span>{label}</span>
+                  <span className="group-data-[collapsible=icon]:sr-only">
+                    {label}
+                  </span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
@@ -97,15 +107,21 @@ const WorkspaceNavigation = () => {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="p-3 group-data-[collapsible=icon]:p-2">
-        <SidebarMenu>
+        <SidebarMenu className="group-data-[collapsible=icon]:items-center">
           <SidebarMenuItem>
             <SidebarMenuButton
               tooltip="Component library"
+              className={cn(
+                navigationItemVariants(),
+                "group-data-[collapsible=icon]:size-10! group-data-[collapsible=icon]:justify-center",
+              )}
               render={<Link href="/preview" />}
             >
               <Layers />
-              <span>Component library</span>
-              <ArrowUpRight className="ml-auto" />
+              <span className="group-data-[collapsible=icon]:sr-only">
+                Component library
+              </span>
+              <ArrowUpRight className="ml-auto group-data-[collapsible=icon]:hidden" />
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
@@ -133,7 +149,7 @@ export const ShowcaseShell = ({ children }: { children: ReactNode }) => (
       <AmbientBackdrop />
       <SidebarProvider className="relative z-10 has-data-[variant=inset]:bg-transparent">
         <WorkspaceNavigation />
-        <SidebarInset className="workspace-inset bg-transparent">
+        <SidebarInset className="workspace-inset bg-transparent md:peer-data-[variant=inset]:shadow-none">
           <header className="workspace-header">
             <div className="flex min-w-0 items-center gap-3">
               <SidebarTrigger />
@@ -156,7 +172,7 @@ export const ShowcaseShell = ({ children }: { children: ReactNode }) => (
               </Button>
             </div>
           </header>
-          <main className="workspace-page">{children}</main>
+          <div className="workspace-page">{children}</div>
         </SidebarInset>
       </SidebarProvider>
     </div>

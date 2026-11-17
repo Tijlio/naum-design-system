@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test"
+import { captureVisualEvidence } from "./visual-evidence"
 
 const SCENES = [
+  { name: "bento", path: "/" },
   { name: "crm", path: "/showcase/crm" },
   { name: "contacts", path: "/showcase/crm/contacts" },
   { name: "calendar", path: "/showcase/calendar" },
@@ -22,6 +24,7 @@ for (const scene of SCENES) {
       fullPage: true,
       animations: "disabled",
     })
+    await captureVisualEvidence(page, testInfo, `${scene.name}-light.png`, true)
     await page
       .getByRole("button", { name: "Toggle light or dark theme" })
       .click()
@@ -30,6 +33,7 @@ for (const scene of SCENES) {
       fullPage: true,
       animations: "disabled",
     })
+    await captureVisualEvidence(page, testInfo, `${scene.name}-dark.png`, true)
   })
 }
 

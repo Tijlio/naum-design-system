@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Make popup menus opaque, flatten form dialogs to one surface, and share Bento navigation borders/sizing and metric trend indicators across the application. Keep search results outside the animated input clipping boundary.
+
+- Complete a cross-app visual/code quality pass: transparent header, shared page typography, responsive tables, consistent contact avatars/stages, accessible search dismissal and stable result identity.
+- Separate CRM projections and currency formatting from rendering; share calendar bounds and prevent short appointment cards from visually overlapping or exceeding a day.
+- Forward mobile Sidebar styling and retain fresh screenshot evidence alongside expanded regression coverage.
+
 - Reuse Bento KPI typography, default Card surfaces and the amber InsightCard in CRM; extend the same surfaces to contact details, forms and calendar controls/events. Cover opened panels and forms with light/dark browser and screenshot checks.
 
 - Carry Bento mesh cards, glass surfaces, ambient depth and animated sidebar navigation into the application showcase. Keep contact totals compact, search out of document flow, and resize grips inside appointment cards.

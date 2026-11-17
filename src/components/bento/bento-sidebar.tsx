@@ -11,6 +11,7 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { MotionPill } from "@/components/ui/motion"
+import { navigationItemVariants } from "@/lib/navigation-styles"
 
 const SIDEBAR_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: LayoutGrid },
@@ -39,11 +40,7 @@ export function BentoSidebar() {
             aria-label={label}
             aria-current={active ? "page" : undefined}
             onClick={() => setActiveNav(id)}
-            className={
-              active
-                ? "relative rounded-full text-foreground hover:bg-transparent dark:text-black"
-                : "relative rounded-full bg-surface-frosted text-foreground/65 ring-1 ring-white/50 backdrop-blur-md hover:bg-card/80 hover:text-foreground dark:ring-white/10"
-            }
+            className={navigationItemVariants({ active })}
           >
             {active && (
               <MotionPill

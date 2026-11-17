@@ -162,6 +162,17 @@
   }
 }
 
+@utility naum-page-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-4xl);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  @media (width < 48rem) {
+    font-size: var(--text-2xl);
+  }
+}
+
 @utility naum-glass-card {
   background: linear-gradient(
     145deg,
@@ -238,18 +249,7 @@
 
 @utility naum-popup-surface {
   position: relative;
-  background-color: color-mix(in oklch, var(--popover) 70%, transparent);
-
-  &::before {
-    content: "";
-    pointer-events: none;
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    border-radius: inherit;
-    backdrop-filter: blur(40px) saturate(1.5);
-    -webkit-backdrop-filter: blur(40px) saturate(1.5);
-  }
+  background-color: var(--popover);
 
   & [data-slot$="-item"]:focus,
   & [data-slot$="-item"][data-highlighted] {

@@ -1,5 +1,7 @@
 "use client"
 
+import { formatMoney } from "@/lib/money-format"
+
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import { useReducedMotionConfig } from "motion/react"
 import {
@@ -7,7 +9,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { formatMoney } from "../showcase-data"
 
 export const MetricBreakdown = ({
   data,

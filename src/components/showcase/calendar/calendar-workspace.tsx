@@ -91,7 +91,7 @@ export const CalendarWorkspace = () => {
         <div className="workspace-heading">
           <div>
             <p className="workspace-eyebrow">Your week, at a glance</p>
-            <h1 className="workspace-title">Calendar</h1>
+            <h1 className="naum-page-title">Calendar</h1>
           </div>
           <Button onClick={() => create(date, 9)}>
             <Plus />

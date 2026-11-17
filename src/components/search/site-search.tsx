@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useId, useRef, useState } from "react"
+import { useCallback, useEffect, useId, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { ArrowUpRight, Search, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -12,7 +12,11 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command"
-import { MotionExpand, MotionPresence } from "@/components/ui/motion"
+import {
+  MotionExpand,
+  MotionFadeUp,
+  MotionPresence,
+} from "@/components/ui/motion"
 import { PAGE_ENTRIES, type SearchEntry } from "./search-entries"
 
 const GROUPS = ["Pages", "Contacts", "Deals", "Appointments"] as const
@@ -23,30 +27,30 @@ export const SiteSearch = ({
   entries?: SearchEntry[]
 }) => {
   const [open, setOpen] = useState(false)
-  const [expanded, setExpanded] = useState(false)
   const [query, setQuery] = useState("")
   const trigger = useRef<HTMLButtonElement>(null)
   const container = useRef<HTMLDivElement>(null)
   const router = useRouter()
   const panelId = useId()
-  const close = () => {
-    setExpanded(false)
+  const close = useCallback(() => {
     setOpen(false)
     setQuery("")
     trigger.current?.focus()
-  }
+  }, [])
 
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault()
-        setExpanded(false)
-        setOpen((value) => !value)
+        if (open) close()
+        else {
+          setOpen(true)
+        }
       }
     }
     document.addEventListener("keydown", keydown)
     return () => document.removeEventListener("keydown", keydown)
-  }, [])
+  }, [open, close])
 
   useEffect(() => {
     if (!open) return
@@ -84,7 +88,6 @@ export const SiteSearch = ({
         onClick={() => {
           if (open) close()
           else {
-            setExpanded(false)
             setOpen(true)
           }
         }}
@@ -93,46 +96,36 @@ export const SiteSearch = ({
       </Button>
       <MotionPresence initial={false}>
         {open && (
-          <MotionExpand
+          <MotionFadeUp
             id={panelId}
-            axis="x"
-            className={
-              expanded
-                ? "site-search-expand overflow-visible"
-                : "site-search-expand"
-            }
-            onAnimationComplete={(definition) => {
-              if (
-                typeof definition === "object" &&
-                "opacity" in definition &&
-                definition.opacity === 1
-              )
-                setExpanded(true)
-            }}
+            className="site-search-expand"
+            exit={{ opacity: 0 }}
             key="search"
           >
             <Command
               label="Search workspace"
               className="w-80 overflow-visible rounded-full bg-transparent p-0 max-[80rem]:w-full"
             >
-              <div className="flex items-center gap-1">
-                <CommandInput
-                  variant="inline"
-                  autoFocus
-                  aria-label="Search workspace"
-                  placeholder="Search anything…"
-                  value={query}
-                  onValueChange={setQuery}
-                />
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  aria-label="Close search"
-                  onClick={close}
-                >
-                  <X />
-                </Button>
-              </div>
+              <MotionExpand axis="x" className="min-w-full">
+                <div className="flex items-center gap-1">
+                  <CommandInput
+                    variant="inline"
+                    autoFocus
+                    aria-label="Search workspace"
+                    placeholder="Search anything…"
+                    value={query}
+                    onValueChange={setQuery}
+                  />
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    aria-label="Close search"
+                    onClick={close}
+                  >
+                    <X />
+                  </Button>
+                </div>
+              </MotionExpand>
               <CommandList className="site-search-results">
                 <CommandEmpty>No results found.</CommandEmpty>
                 {GROUPS.filter((group) =>
@@ -144,7 +137,8 @@ export const SiteSearch = ({
                       .map((entry) => (
                         <CommandItem
                           key={entry.id}
-                          value={`${entry.title} ${entry.description ?? ""}`}
+                          value={entry.id}
+                          keywords={[entry.title, entry.description ?? ""]}
                           onSelect={() => {
                             close()
                             router.push(entry.href)
@@ -165,7 +159,7 @@ export const SiteSearch = ({
                 ))}
               </CommandList>
             </Command>
-          </MotionExpand>
+          </MotionFadeUp>
         )}
       </MotionPresence>
     </div>

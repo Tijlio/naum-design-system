@@ -1,11 +1,12 @@
 "use client"
 
+import { formatMoney } from "@/lib/money-format"
+
 import { useMemo, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { ArrowDownUp, Archive, Search, Users } from "lucide-react"
 import { format, parseISO } from "date-fns"
 import { toast } from "sonner"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
@@ -33,8 +34,9 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { MotionFadeUp } from "@/components/ui/motion"
-import { CONTACT_STAGES, formatMoney } from "../showcase-data"
+import { CONTACT_STAGES } from "../showcase-data"
 import { useShowcase } from "../showcase-provider"
+import { ContactAvatar } from "./contact-avatar"
 import { ContactDetail } from "./contact-detail"
 import { ContactForm } from "./contact-form"
 
@@ -82,7 +84,7 @@ export const ContactsWorkspace = () => {
         <div className="workspace-heading">
           <div>
             <p className="workspace-eyebrow">Relationships</p>
-            <h1 className="workspace-title flex items-center gap-3">
+            <h1 className="naum-page-title flex items-center gap-3">
               Contacts
               <Badge
                 variant="secondary"
@@ -152,7 +154,7 @@ export const ContactsWorkspace = () => {
           </div>
         </div>
         <CardContent className="px-0">
-          <Table aria-label="Workspace contacts">
+          <Table aria-label="Workspace contacts" className="table-fixed">
             <TableHeader>
               <TableRow>
                 <TableHead className="w-12 pl-6">
@@ -191,10 +193,16 @@ export const ContactsWorkspace = () => {
                     <ArrowDownUp />
                   </Button>
                 </TableHead>
-                <TableHead>Relationship</TableHead>
-                <TableHead>Owner</TableHead>
-                <TableHead>Last contacted</TableHead>
-                <TableHead className="pr-6 text-right">Value</TableHead>
+                <TableHead className="w-28 md:w-36">Relationship</TableHead>
+                <TableHead className="hidden w-32 md:table-cell">
+                  Owner
+                </TableHead>
+                <TableHead className="hidden w-40 lg:table-cell">
+                  Last contacted
+                </TableHead>
+                <TableHead className="hidden w-28 pr-6 text-right md:table-cell">
+                  Value
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -228,19 +236,12 @@ export const ContactsWorkspace = () => {
                         )
                       }
                     >
-                      <Avatar>
-                        <AvatarFallback>
-                          {contact.name
-                            .split(" ")
-                            .map((part) => part[0])
-                            .join("")}
-                        </AvatarFallback>
-                      </Avatar>
-                      <span>
-                        <span className="block font-medium">
+                      <ContactAvatar name={contact.name} />
+                      <span className="min-w-0">
+                        <span className="block truncate font-medium">
                           {contact.name}
                         </span>
-                        <span className="block text-xs font-normal text-muted-foreground">
+                        <span className="block truncate text-xs font-normal text-muted-foreground">
                           {contact.company}
                         </span>
                       </span>
@@ -255,11 +256,13 @@ export const ContactsWorkspace = () => {
                       {contact.stage}
                     </Badge>
                   </TableCell>
-                  <TableCell>{contact.owner}</TableCell>
-                  <TableCell className="text-muted-foreground">
+                  <TableCell className="hidden md:table-cell">
+                    {contact.owner}
+                  </TableCell>
+                  <TableCell className="hidden text-muted-foreground lg:table-cell">
                     {format(parseISO(contact.lastContact), "d MMM yyyy")}
                   </TableCell>
-                  <TableCell className="pr-6 text-right tabular-nums">
+                  <TableCell className="hidden pr-6 text-right tabular-nums md:table-cell">
                     {formatMoney(contact.value)}
                   </TableCell>
                 </TableRow>

@@ -136,7 +136,7 @@ Recharts animation is separate from MotionConfig. The examples use `useReducedMo
 
 Always give dialogs and drawers a title within their content. `CommandDialog` includes its hidden accessible title and description inside the popup. Supply meaningful values when its purpose differs from a generic command palette. Bind keyboard shortcuts to actual actions; shortcut labels alone do not register handlers.
 
-Popup primitives share `naum-popup-surface`; each component retains its own positioning, focus and selection behavior. Theme changes should be made to that utility instead of copying long selector strings into components.
+Popup primitives share the opaque `naum-popup-surface`; each component retains its own positioning, focus and selection behavior. Theme changes should be made to that utility instead of copying long selector strings into components.
 
 `ChartContainer` supplies size, context and theme colors; `ChartTooltipContent` and the legend consume the config. Provide textual meaning for charts and do not rely on color alone. Application-owned series and formatting remain outside the generic container.
 
@@ -147,6 +147,8 @@ Popup primitives share `naum-popup-surface`; each component retains its own posi
 ## Tokens and extension
 
 `src/styles/naum.css` is the source for the showcase and registry theme. It contains semantic colors, light/dark values, typography, radii, glass, shadows, easing/durations and shared surface utilities. `src/app/globals.css` imports it after framework CSS.
+
+`naum-page-title` provides the shared page-heading font, weight, tracking and responsive size used by Bento, the app shell and preview.
 
 Change semantic tokens rather than scattering palette values in screens. Existing extension points include `--surface-frosted`, `--glass-*`, `--naum-shadow-*`, `--naum-duration-*`, `--radius` and `--font-naum`. Use CVA variants for actual repeated component styles. Keep domain-specific data and form behavior out of generic primitives.
 

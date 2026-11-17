@@ -1,9 +1,9 @@
 "use client"
 
+import { formatMoney } from "@/lib/money-format"
+
 import { format, parseISO } from "date-fns"
 import { toast } from "sonner"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
@@ -21,10 +21,11 @@ import {
   CONTACT_STAGES,
   DEALS,
   DEMO_DATE,
-  formatMoney,
   type Contact,
 } from "../showcase-data"
 import { useShowcase } from "../showcase-provider"
+import { ContactAvatar } from "./contact-avatar"
+import { DealStageBadge } from "./deal-stage-badge"
 
 export const ContactDetail = ({
   contact,
@@ -49,14 +50,11 @@ export const ContactDetail = ({
               className="naum-mesh-indigo mx-4 mt-4 shrink-0 gap-0 py-0"
             >
               <SheetHeader className="pr-12">
-                <Avatar className="mb-3 size-14">
-                  <AvatarFallback className="bg-white/20 text-white">
-                    {contact.name
-                      .split(" ")
-                      .map((part) => part[0])
-                      .join("")}
-                  </AvatarFallback>
-                </Avatar>
+                <ContactAvatar
+                  name={contact.name}
+                  className="mb-3 size-14"
+                  onMesh
+                />
                 <SheetTitle className="text-xl font-normal text-white">
                   {contact.name}
                 </SheetTitle>
@@ -98,6 +96,12 @@ export const ContactDetail = ({
                       <dd>{contact.owner}</dd>
                     </div>
                     <div>
+                      <dt>Last contacted</dt>
+                      <dd>
+                        {format(parseISO(contact.lastContact), "d MMM yyyy")}
+                      </dd>
+                    </div>
+                    <div>
                       <dt>Relationship value</dt>
                       <dd>{formatMoney(contact.value)}</dd>
                     </div>
@@ -112,7 +116,7 @@ export const ContactDetail = ({
                       <CardContent>
                         <p className="text-sm font-medium">{deal.title}</p>
                         <div className="mt-2 flex items-center justify-between">
-                          <Badge variant="outline">{deal.stage}</Badge>
+                          <DealStageBadge stage={deal.stage} />
                           <span className="text-sm tabular-nums">
                             {formatMoney(deal.value)}
                           </span>

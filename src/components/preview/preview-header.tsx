@@ -33,9 +33,7 @@ export function PreviewHeader({
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <h1 className="font-heading text-3xl font-normal tracking-tight">
-          Design System Preview
-        </h1>
+        <h1 className="naum-page-title">Design System Preview</h1>
       </div>
 
       <div className="flex flex-wrap items-center gap-2">

@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import {
   Dialog,
   DialogContent,
@@ -31,7 +30,7 @@ export const ContactForm = () => {
         <Plus />
         New contact
       </DialogTrigger>
-      <DialogContent className="workspace-overlay">
+      <DialogContent className="workspace-dialog">
         <DialogHeader className="workspace-overlay-heading">
           <DialogTitle>New contact</DialogTitle>
           <DialogDescription>Add someone to your workspace.</DialogDescription>
@@ -72,52 +71,48 @@ export const ContactForm = () => {
             toast.success("Contact added")
           }}
         >
-          <Card size="sm">
-            <CardContent className="workspace-form">
-              <div className="workspace-field">
-                <Label htmlFor="contact-name">Full name</Label>
-                <Input
-                  id="contact-name"
-                  name="name"
-                  required
-                  maxLength={100}
-                  autoComplete="name"
-                />
-              </div>
-              <div className="workspace-field">
-                <Label htmlFor="contact-email">Email</Label>
-                <Input
-                  id="contact-email"
-                  name="email"
-                  type="email"
-                  required
-                  autoComplete="email"
-                />
-              </div>
-              <div className="workspace-field">
-                <Label htmlFor="contact-company">Company</Label>
-                <Input
-                  id="contact-company"
-                  name="company"
-                  required
-                  maxLength={100}
-                  autoComplete="organization"
-                />
-              </div>
-              <div className="workspace-field">
-                <Label htmlFor="contact-stage">Relationship</Label>
-                <SelectControl
-                  id="contact-stage"
-                  name="stage"
-                  defaultValue="Lead"
-                  className="w-full"
-                  items={CONTACT_STAGES.filter(
-                    (stage) => stage !== "Archived",
-                  ).map((stage) => ({ value: stage, label: stage }))}
-                />
-              </div>
-            </CardContent>
-          </Card>
+          <div className="workspace-field">
+            <Label htmlFor="contact-name">Full name</Label>
+            <Input
+              id="contact-name"
+              name="name"
+              required
+              maxLength={100}
+              autoComplete="name"
+            />
+          </div>
+          <div className="workspace-field">
+            <Label htmlFor="contact-email">Email</Label>
+            <Input
+              id="contact-email"
+              name="email"
+              type="email"
+              required
+              autoComplete="email"
+            />
+          </div>
+          <div className="workspace-field">
+            <Label htmlFor="contact-company">Company</Label>
+            <Input
+              id="contact-company"
+              name="company"
+              required
+              maxLength={100}
+              autoComplete="organization"
+            />
+          </div>
+          <div className="workspace-field">
+            <Label htmlFor="contact-stage">Relationship</Label>
+            <SelectControl
+              id="contact-stage"
+              name="stage"
+              defaultValue="Lead"
+              className="w-full"
+              items={CONTACT_STAGES.filter((stage) => stage !== "Archived").map(
+                (stage) => ({ value: stage, label: stage }),
+              )}
+            />
+          </div>
           <div className="flex justify-end gap-2">
             <Button
               variant="outline"

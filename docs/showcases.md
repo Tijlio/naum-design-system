@@ -9,6 +9,8 @@
 
 The application shell reuses Bento’s indigo/cyan ambient backdrop, translucent surfaces and animated active navigation pill. CRM metrics use the same default Card surface, muted labels and shared BentoMetricValue typography as Bento KPI cards. Their small charts show current workspace breakdowns, not historical trends. The appointment metric reuses Bento’s amber InsightCard, including its illustration and white text. Contact totals use a compact Badge beside the title.
 
+The app header is transparent, without a dividing line or backdrop blur. Page titles share the theme’s `naum-page-title` utility with Bento and preview. Contact avatars and opportunity-stage badges use shared domain components. Navigation variants and trend circles are reused directly from Bento; comparison arrows derive from the explicit `CRM_COMPARISON` demo snapshot. On small screens, tables wrap opportunity names and show secondary contact information in the detail sheet.
+
 The sidebar collapses to icons on desktop and opens as a sheet on mobile. Calendar defaults to the week on desktop and agenda on mobile. The mini calendar moves out of the main grid on smaller screens to preserve readable event columns.
 
 Search is shared between Bento and the application shell. Click its icon or press Cmd/Ctrl+K. Search covers pages, contacts, deals and appointments; results support arrow keys and Enter. Escape restores focus to the search trigger. The mobile search surface uses a compact overlay. Outside clicks dismiss it. The expanding search surface floats above the layout so opening it cannot wrap the header or move page content.
@@ -23,7 +25,7 @@ This is a showcase scheduler, not a recurrence/time-zone engine. Recurring serie
 
 ## Component and motion reuse
 
-Pages compose Naum Sidebar, Card, Table, Checkbox, InputGroup, SelectControl, DateTimePicker, Calendar, Dialog, Sheet, Avatar, Badge, Button and Sonner. Business data, actions and event placement stay outside the generic UI primitives. Contact details use an indigo mesh header with white text above default Card sections. Contact and appointment dialogs share `workspace-overlay` and default Card field groups, including viewport height limits for small screens. Calendar controls use a frosted Card; appointment chips share Card shadows and radii with calendar color accents.
+Pages compose Naum Sidebar, Card, Table, Checkbox, InputGroup, SelectControl, DateTimePicker, Calendar, Dialog, Sheet, Avatar, Badge, Button and Sonner. Business data, actions and event placement stay outside the generic UI primitives. Contact details use an indigo mesh header with white text above default Card sections. Contact and appointment dialogs share `workspace-dialog` layout rules, including viewport height limits for small screens. Dialogs use the primitive’s single opaque surface; the colored background remains on the page and detail sheet. Calendar controls use a frosted Card; appointment chips share Card shadows and radii with calendar color accents.
 
 Showcase layout styles live in `showcase.css` and `calendar-showcase.css`; installable theme styles remain in `naum.css`.
 
@@ -32,5 +34,7 @@ Page entrances use `MotionFadeUp`, metric groups use `MotionStagger`/`MotionStag
 ## Verification
 
 Browser coverage exercises contact creation/notes/archive, search focus and navigation, calendar views and filters, invalid event times, event CRUD and undo, all-day end dates, desktop drag/drop, pointer and keyboard resizing, and the custom date/time popup. Axe and overflow checks run in light and dark mode at desktop/mobile sizes. Screenshot baselines cover all three application pages, contact details, contact/appointment forms and the month calendar; the visual tests fix the browser clock for reproducibility. Geometry assertions guard motif and collapsed-sidebar logo centering.
+
+The latest cross-app review is documented in [quality-review.md](quality-review.md).
 
 Only test sources and reviewed reference PNGs are committed. Run reports and traces remain in ignored build storage or temporary CI artifacts.

@@ -4,8 +4,8 @@ import Link from "next/link"
 import { ArrowUpRight, ArrowRight, CalendarDays } from "lucide-react"
 import { InsightCard } from "@/components/bento/insight-card"
 import { BentoMetricValue } from "@/components/bento/metric-value"
+import { BentoMetricTrend } from "@/components/bento/metric-trend"
 import { format, parseISO } from "date-fns"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -29,67 +29,25 @@ import {
   MotionStagger,
   MotionStaggerItem,
 } from "@/components/ui/motion"
-import { DEALS, DEMO_DATE, formatMoney } from "../showcase-data"
+import { formatMoney, formatMoneyParts } from "@/lib/money-format"
 import { useShowcase } from "../showcase-provider"
+import { ContactAvatar } from "./contact-avatar"
+import { DealStageBadge } from "./deal-stage-badge"
 import { RevenueChart } from "./revenue-chart"
 import { MetricBreakdown } from "./metric-breakdown"
+import { getCrmOverview } from "./crm-overview-data"
 
 export const CrmOverview = () => {
   const { contacts, appointments } = useShowcase()
-  const active = contacts.filter((contact) => contact.stage !== "Archived")
-  const openDeals = DEALS.filter((deal) => deal.stage !== "Won")
-  const metrics = [
-    {
-      label: "Pipeline value",
-      value: formatMoney(openDeals.reduce((sum, deal) => sum + deal.value, 0)),
-      detail: `${openDeals.length} open opportunities`,
-      breakdown: openDeals.map((deal) => ({
-        label: deal.title,
-        value: deal.value,
-      })),
-      breakdownLabel: "Pipeline value by opportunity, in euros",
-      color: "var(--chart-3)",
-      currency: true,
-    },
-    {
-      label: "Active contacts",
-      value: String(active.length),
-      detail: `${active.filter((contact) => contact.stage === "Lead").length} leads to follow up`,
-      breakdown: ["Lead", "Customer", "Partner"].map((stage) => ({
-        label: stage,
-        value: active.filter((contact) => contact.stage === stage).length,
-      })),
-      breakdownLabel: "Active contacts by relationship",
-      color: "var(--chart-1)",
-      currency: false,
-    },
-    {
-      label: "Won this month",
-      value: formatMoney(
-        DEALS.filter((deal) => deal.stage === "Won").reduce(
-          (sum, deal) => sum + deal.value,
-          0,
-        ),
-      ),
-      detail: "November 2026",
-      breakdown: ["Won", "Open"].map((stage) => ({
-        label: stage,
-        value: DEALS.filter((deal) =>
-          stage === "Won" ? deal.stage === "Won" : deal.stage !== "Won",
-        ).reduce((sum, deal) => sum + deal.value, 0),
-      })),
-      breakdownLabel: "Won versus open opportunity value, in euros",
-      color: "var(--chart-5)",
-      currency: true,
-    },
-  ]
+  const { openDeals, metrics, appointmentCount, upcoming, recentContacts } =
+    getCrmOverview(contacts, appointments)
   return (
     <div className="workspace-stack">
       <MotionFadeUp>
         <div className="workspace-heading">
           <div>
             <p className="workspace-eyebrow">Tuesday, 17 November 2026</p>
-            <h1 className="workspace-title">Good morning, Alex</h1>
+            <h1 className="naum-page-title">Good morning, Alex</h1>
           </div>
           <Button
             nativeButton={false}
@@ -124,11 +82,13 @@ export const CrmOverview = () => {
                 </CardAction>
               </CardHeader>
               <CardContent className="space-y-3">
-                <p>
+                <p className="flex items-center gap-2">
                   <BentoMetricValue
-                    value={metric.value.replace("€", "")}
-                    currency={metric.value.startsWith("€") ? "€" : undefined}
+                    {...(metric.currency
+                      ? formatMoneyParts(metric.value)
+                      : { major: String(metric.value) })}
                   />
+                  <BentoMetricTrend {...metric.trend} />
                 </p>
                 <MetricBreakdown
                   data={metric.breakdown}
@@ -159,11 +119,7 @@ export const CrmOverview = () => {
             <div className="space-y-1">
               <p className="text-xs text-white/85">Tuesday, 17 November</p>
               <p className="text-3xl font-normal tracking-tight tabular-nums">
-                {
-                  appointments.filter(
-                    (event) => event.start.slice(0, 10) === DEMO_DATE,
-                  ).length
-                }
+                {appointmentCount}
               </p>
             </div>
           </InsightCard>
@@ -179,36 +135,33 @@ export const CrmOverview = () => {
             <CardDescription>Your next conversations</CardDescription>
           </CardHeader>
           <CardContent className="space-y-5">
-            {appointments
-              .filter((event) => event.contactId && event.start >= DEMO_DATE)
-              .slice(0, 3)
-              .map((event) => (
-                <div className="flex items-start gap-3" key={event.id}>
-                  <span
-                    className="workspace-icon crm-accent"
-                    data-tone="lavender"
+            {upcoming.map((event) => (
+              <div className="flex items-start gap-3" key={event.id}>
+                <span
+                  className="workspace-icon crm-accent"
+                  data-tone="lavender"
+                >
+                  <CalendarDays className="size-4" />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <Button
+                    variant="link"
+                    className="h-auto justify-start whitespace-normal p-0 text-left"
+                    nativeButton={false}
+                    render={
+                      <Link
+                        href={`/showcase/crm/contacts?contact=${event.contactId}`}
+                      />
+                    }
                   >
-                    <CalendarDays className="size-4" />
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <Button
-                      variant="link"
-                      className="h-auto justify-start whitespace-normal p-0 text-left"
-                      nativeButton={false}
-                      render={
-                        <Link
-                          href={`/showcase/crm/contacts?contact=${event.contactId}`}
-                        />
-                      }
-                    >
-                      {event.title}
-                    </Button>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      {format(parseISO(event.start), "EEE d MMM · HH:mm")}
-                    </p>
-                  </div>
+                    {event.title}
+                  </Button>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {format(parseISO(event.start), "EEE d MMM · HH:mm")}
+                  </p>
                 </div>
-              ))}
+              </div>
+            ))}
           </CardContent>
         </Card>
       </div>
@@ -226,21 +179,23 @@ export const CrmOverview = () => {
             </CardAction>
           </CardHeader>
           <CardContent>
-            <Table>
+            <Table className="table-fixed">
               <TableHeader>
                 <TableRow>
                   <TableHead>Opportunity</TableHead>
-                  <TableHead>Stage</TableHead>
-                  <TableHead className="text-right">Value</TableHead>
+                  <TableHead className="hidden w-28 sm:table-cell">
+                    Stage
+                  </TableHead>
+                  <TableHead className="w-24 text-right">Value</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {openDeals.map((deal) => (
                   <TableRow key={deal.id}>
-                    <TableCell>
+                    <TableCell className="whitespace-normal">
                       <Button
                         variant="link"
-                        className="h-auto p-0"
+                        className="h-auto justify-start p-0 text-left whitespace-normal"
                         nativeButton={false}
                         render={
                           <Link
@@ -250,21 +205,12 @@ export const CrmOverview = () => {
                       >
                         {deal.title}
                       </Button>
+                      <div className="mt-2 sm:hidden">
+                        <DealStageBadge stage={deal.stage} />
+                      </div>
                     </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant="outline"
-                        className="crm-accent"
-                        data-tone={
-                          deal.stage === "Negotiation"
-                            ? "lavender"
-                            : deal.stage === "Proposal"
-                              ? "amber"
-                              : "mint"
-                        }
-                      >
-                        {deal.stage}
-                      </Badge>
+                    <TableCell className="hidden sm:table-cell">
+                      <DealStageBadge stage={deal.stage} />
                     </TableCell>
                     <TableCell className="text-right tabular-nums">
                       {formatMoney(deal.value)}
@@ -283,20 +229,13 @@ export const CrmOverview = () => {
             <CardDescription>Recently in touch</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {active.slice(0, 4).map((contact) => (
+            {recentContacts.map((contact) => (
               <Link
                 key={contact.id}
                 href={`/showcase/crm/contacts?contact=${contact.id}`}
                 className="workspace-person"
               >
-                <Avatar>
-                  <AvatarFallback className="crm-accent" data-tone="lavender">
-                    {contact.name
-                      .split(" ")
-                      .map((part) => part[0])
-                      .join("")}
-                  </AvatarFallback>
-                </Avatar>
+                <ContactAvatar name={contact.name} />
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-sm font-medium">
                     {contact.name}
