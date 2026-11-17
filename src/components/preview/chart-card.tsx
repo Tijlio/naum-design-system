@@ -60,6 +60,13 @@ export function ChartCard() {
                   stopOpacity={0.02}
                 />
               </linearGradient>
+              <filter id="naum-chart-glow" x="-10%" y="-10%" width="120%" height="120%">
+                <feGaussianBlur stdDeviation="3.5" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
             </defs>
             <CartesianGrid vertical={false} strokeDasharray="3 3" />
             <XAxis
@@ -76,6 +83,7 @@ export function ChartCard() {
               fill="transparent"
               strokeWidth={1.5}
               strokeDasharray="4 4"
+              animationDuration={650}
             />
             <Area
               dataKey="actual"
@@ -83,6 +91,8 @@ export function ChartCard() {
               stroke="var(--color-actual)"
               fill="url(#fillActual)"
               strokeWidth={2}
+              filter="url(#naum-chart-glow)"
+              animationDuration={850}
             />
           </AreaChart>
         </ChartContainer>

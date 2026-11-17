@@ -1,6 +1,14 @@
 "use client"
 
 import { ArrowDown, ArrowUp, ArrowUpRight } from "lucide-react"
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  ReferenceLine,
+  XAxis,
+  YAxis,
+} from "recharts"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -10,10 +18,26 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { MotionDrawPath } from "@/components/ui/motion"
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@/components/ui/chart"
 import type { KpiCardItem } from "./bento-data"
 
 export function KpiCard({ kpi }: { kpi: KpiCardItem }) {
+  const chartConfig = {
+    lastWeek: {
+      label: "Last Week",
+      color: "var(--foreground)",
+    },
+    thisWeek: {
+      label: "This Week",
+      color: kpi.lineColor,
+    },
+  } satisfies ChartConfig
+
   return (
     <Card
       variant="default"
@@ -35,7 +59,7 @@ export function KpiCard({ kpi }: { kpi: KpiCardItem }) {
         </CardAction>
       </CardHeader>
 
-      <CardContent className="flex flex-col gap-5">
+      <CardContent className="flex flex-col gap-4">
         <div className="flex items-center gap-2">
           <span className="text-3xl font-normal tracking-tight tabular-nums">
             <span className="mr-1 text-lg text-muted-foreground">$</span>
@@ -57,81 +81,76 @@ export function KpiCard({ kpi }: { kpi: KpiCardItem }) {
           </span>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <div className="relative flex items-center gap-2">
-            <div className="flex h-16 flex-col justify-between py-0.5 text-[10px] leading-none text-muted-foreground/70 tabular-nums">
-              <span>160</span>
-              <span>120</span>
-              <span>80</span>
-              <span>40</span>
-            </div>
-            <svg
-              viewBox="0 0 190 48"
-              preserveAspectRatio="none"
-              className="h-16 min-w-0 flex-1"
-              fill="none"
+        <div className="relative flex flex-col gap-2">
+          <Badge
+            variant="secondary"
+            className={
+              kpi.trend === "up"
+                ? "pointer-events-none absolute -top-1 right-3 z-10 h-5 rounded-full bg-emerald-500/15 px-2 text-[10px] font-medium text-emerald-700 dark:text-emerald-300"
+                : "pointer-events-none absolute -top-1 right-3 z-10 h-5 rounded-full bg-orange-500/15 px-2 text-[10px] font-medium text-orange-700 dark:text-orange-300"
+            }
+          >
+            {kpi.delta}
+          </Badge>
+
+          <ChartContainer config={chartConfig} className="h-24 w-full">
+            <LineChart
+              data={kpi.series}
+              margin={{ top: 8, right: 6, left: -12, bottom: 0 }}
             >
-              <line
-                x1="0"
-                y1="12"
-                x2="190"
-                y2="12"
+              <CartesianGrid
+                vertical={false}
                 stroke="currentColor"
-                strokeOpacity="0.08"
+                strokeOpacity={0.08}
                 strokeDasharray="2 3"
               />
-              <line
-                x1="0"
-                y1="26"
-                x2="190"
-                y2="26"
-                stroke="currentColor"
-                strokeOpacity="0.08"
-                strokeDasharray="2 3"
+              <XAxis dataKey="day" hide />
+              <YAxis
+                domain={[30, 170]}
+                ticks={[40, 80, 120, 160]}
+                width={32}
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 10, fill: "var(--muted-foreground)" }}
               />
-              <line
-                x1="0"
-                y1="40"
-                x2="190"
-                y2="40"
+              <ReferenceLine
+                x="Fri"
                 stroke="currentColor"
-                strokeOpacity="0.08"
-                strokeDasharray="2 3"
-              />
-              <line
-                x1="138"
-                y1="4"
-                x2="138"
-                y2="44"
-                stroke="currentColor"
-                strokeOpacity="0.25"
+                strokeOpacity={0.22}
                 strokeDasharray="2 2"
               />
-              <MotionDrawPath
-                d={kpi.pathLastWeek}
-                stroke="currentColor"
-                strokeOpacity="0.55"
-                strokeWidth="1.15"
-                delay={0.1}
+              <ChartTooltip
+                cursor={{
+                  stroke: "currentColor",
+                  strokeOpacity: 0.2,
+                  strokeDasharray: "2 2",
+                }}
+                content={<ChartTooltipContent />}
               />
-              <MotionDrawPath
-                d={kpi.pathThisWeek}
-                stroke={kpi.lineColor}
-                strokeWidth="1.25"
-                delay={0.2}
+              <Line
+                dataKey="lastWeek"
+                type="monotone"
+                stroke="var(--color-lastWeek)"
+                strokeOpacity={0.55}
+                strokeWidth={1.2}
+                dot={false}
+                activeDot={{ r: 3 }}
+                animationDuration={650}
+                animationEasing="ease-out"
               />
-            </svg>
-            <Badge
-              variant="secondary"
-              className={
-                kpi.trend === "up"
-                  ? "absolute -top-1 right-6 h-5 rounded-full bg-emerald-500/15 px-2 text-[10px] font-medium text-emerald-700 dark:text-emerald-300"
-                  : "absolute -top-1 right-6 h-5 rounded-full bg-orange-500/15 px-2 text-[10px] font-medium text-orange-700 dark:text-orange-300"
-              }
-            >
-              {kpi.delta}
-            </Badge>
-          </div>
+              <Line
+                dataKey="thisWeek"
+                type="monotone"
+                stroke="var(--color-thisWeek)"
+                strokeWidth={1.6}
+                dot={false}
+                activeDot={{ r: 4 }}
+                animationDuration={800}
+                animationEasing="ease-out"
+              />
+            </LineChart>
+          </ChartContainer>
+
           <div className="flex items-center justify-between text-[11px] text-muted-foreground">
             <span className="inline-flex items-center gap-1.5">
               <span className="size-1.5 rounded-full bg-foreground" />

@@ -20,6 +20,12 @@ export const ACTIVITY_FILTERS = [
   "Payments",
 ] as const
 
+export interface KpiSeriesPoint {
+  day: string
+  lastWeek: number
+  thisWeek: number
+}
+
 export interface KpiCardItem {
   title: string
   major: string
@@ -27,8 +33,7 @@ export interface KpiCardItem {
   trend: "up" | "down"
   delta: string
   lineColor: string
-  pathThisWeek: string
-  pathLastWeek: string
+  series: KpiSeriesPoint[]
 }
 
 export const KPI_CARDS: KpiCardItem[] = [
@@ -39,8 +44,15 @@ export const KPI_CARDS: KpiCardItem[] = [
     trend: "down",
     delta: "-12%",
     lineColor: "#e14d2a",
-    pathThisWeek: "M 0 38 C 35 42, 65 18, 100 28 C 135 38, 155 12, 190 18",
-    pathLastWeek: "M 0 28 C 40 24, 70 34, 100 22 C 130 12, 160 28, 190 26",
+    series: [
+      { day: "Mon", lastWeek: 88, thisWeek: 62 },
+      { day: "Tue", lastWeek: 82, thisWeek: 66 },
+      { day: "Wed", lastWeek: 72, thisWeek: 78 },
+      { day: "Thu", lastWeek: 92, thisWeek: 64 },
+      { day: "Fri", lastWeek: 108, thisWeek: 72 },
+      { day: "Sat", lastWeek: 94, thisWeek: 98 },
+      { day: "Sun", lastWeek: 86, thisWeek: 106 },
+    ],
   },
   {
     title: "Overdue Sales Invoice",
@@ -49,8 +61,15 @@ export const KPI_CARDS: KpiCardItem[] = [
     trend: "up",
     delta: "+36%",
     lineColor: "#16a34a",
-    pathThisWeek: "M 0 36 C 30 34, 65 24, 100 26 C 135 28, 155 10, 190 14",
-    pathLastWeek: "M 0 26 C 40 32, 75 18, 110 24 C 145 30, 165 20, 190 22",
+    series: [
+      { day: "Mon", lastWeek: 90, thisWeek: 58 },
+      { day: "Tue", lastWeek: 80, thisWeek: 64 },
+      { day: "Wed", lastWeek: 68, thisWeek: 94 },
+      { day: "Thu", lastWeek: 96, thisWeek: 112 },
+      { day: "Fri", lastWeek: 84, thisWeek: 104 },
+      { day: "Sat", lastWeek: 74, thisWeek: 132 },
+      { day: "Sun", lastWeek: 82, thisWeek: 126 },
+    ],
   },
   {
     title: "Overdue Purchase Invoice",
@@ -59,8 +78,15 @@ export const KPI_CARDS: KpiCardItem[] = [
     trend: "up",
     delta: "+24%",
     lineColor: "#16a34a",
-    pathThisWeek: "M 0 34 C 35 22, 70 30, 105 18 C 140 8, 165 20, 190 12",
-    pathLastWeek: "M 0 24 C 35 28, 70 20, 105 32 C 140 42, 165 26, 190 28",
+    series: [
+      { day: "Mon", lastWeek: 92, thisWeek: 68 },
+      { day: "Tue", lastWeek: 84, thisWeek: 72 },
+      { day: "Wed", lastWeek: 64, thisWeek: 112 },
+      { day: "Thu", lastWeek: 78, thisWeek: 124 },
+      { day: "Fri", lastWeek: 94, thisWeek: 114 },
+      { day: "Sat", lastWeek: 88, thisWeek: 138 },
+      { day: "Sun", lastWeek: 78, thisWeek: 146 },
+    ],
   },
 ]
 

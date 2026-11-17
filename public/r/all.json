@@ -10,7 +10,8 @@
     "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/command.json",
     "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/sonner.json",
     "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/ambient-backdrop.json",
-    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/motion.json"
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/motion.json",
+    "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/chart.json"
   ],
   "type": "registry:style"
 }
