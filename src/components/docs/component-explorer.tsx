@@ -20,7 +20,10 @@ import { MotionFadeUp, MotionProvider } from "@/components/ui/motion"
 import { SourceReference } from "./source-reference"
 import { BlockExamples } from "./block-examples"
 import { CodeSample } from "./code-sample"
-import { ComponentExamples, INTERACTIVE_COMPONENTS } from "./component-examples"
+import {
+  InteractiveExamples,
+  INTERACTIVE_COMPONENTS,
+} from "./interactive-examples"
 
 export type CatalogEntry = {
   name: string
@@ -152,7 +155,7 @@ export const ComponentExplorer = ({ entries }: { entries: CatalogEntry[] }) => {
                   {entry.block ? (
                     <BlockExamples key={entry.name} name={entry.name} />
                   ) : INTERACTIVE_COMPONENTS.includes(entry.name) ? (
-                    <ComponentExamples key={entry.name} name={entry.name} />
+                    <InteractiveExamples key={entry.name} name={entry.name} />
                   ) : (
                     <div className="space-y-3">
                       <h2 className="font-medium">Reference & examples</h2>
