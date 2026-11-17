@@ -1,59 +1,81 @@
 "use client"
 
-import { createContext, useContext, useState, type ReactNode } from "react"
 import {
-  INITIAL_CONTACTS,
-  INITIAL_APPOINTMENTS,
-  type Contact,
-  type Appointment,
-} from "./showcase-data"
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useSyncExternalStore,
+  type ReactNode,
+} from "react"
+import type { Appointment, Contact, Deal } from "./showcase-data"
+import { createWorkspaceStore, type Persistence } from "./workspace-storage"
+import type { DemoWorkspace } from "./workspace-schema"
 
-type Workspace = {
-  contacts: Contact[]
+type Workspace = DemoWorkspace & {
   saveContact: (contact: Contact) => void
   archiveContacts: (ids: string[]) => void
-  appointments: Appointment[]
   saveAppointment: (appointment: Appointment) => void
   removeAppointment: (id: string) => void
+  saveDeal: (deal: Deal) => void
+  resetDemo: () => void
+  persistence: Persistence
 }
 const WorkspaceContext = createContext<Workspace | null>(null)
+const upsert = <T extends { id: string }>(records: T[], record: T): T[] =>
+  records.some((entry) => entry.id === record.id)
+    ? records.map((entry) => (entry.id === record.id ? record : entry))
+    : [...records, record]
 
 export const ShowcaseProvider = ({ children }: { children: ReactNode }) => {
-  const [contacts, setContacts] = useState(INITIAL_CONTACTS)
-  const [appointments, setAppointments] = useState(INITIAL_APPOINTMENTS)
-  const saveContact = (contact: Contact) =>
-    setContacts((current) =>
-      current.some((entry) => entry.id === contact.id)
-        ? current.map((entry) => (entry.id === contact.id ? contact : entry))
-        : [contact, ...current],
-    )
-  const archiveContacts = (ids: string[]) =>
-    setContacts((current) =>
-      current.map((contact) =>
-        ids.includes(contact.id) ? { ...contact, stage: "Archived" } : contact,
-      ),
-    )
-  const saveAppointment = (appointment: Appointment) =>
-    setAppointments((current) =>
-      current.some((entry) => entry.id === appointment.id)
-        ? current.map((entry) =>
-            entry.id === appointment.id ? appointment : entry,
-          )
-        : [...current, appointment],
-    )
-  const removeAppointment = (id: string) =>
-    setAppointments((current) =>
-      current.filter((appointment) => appointment.id !== id),
-    )
+  const [store] = useState(() =>
+    createWorkspaceStore(() => window.localStorage),
+  )
+  const { data, persistence } = useSyncExternalStore(
+    store.subscribe,
+    store.getSnapshot,
+    store.getServerSnapshot,
+  )
+  useEffect(() => {
+    store.restore()
+  }, [store])
   return (
     <WorkspaceContext.Provider
       value={{
-        contacts,
-        saveContact,
-        archiveContacts,
-        appointments,
-        saveAppointment,
-        removeAppointment,
+        ...data,
+        persistence,
+        saveContact: (contact) =>
+          store.update((current) => ({
+            ...current,
+            contacts: upsert(current.contacts, contact),
+          })),
+        archiveContacts: (ids) =>
+          store.update((current) => ({
+            ...current,
+            contacts: current.contacts.map((contact) =>
+              ids.includes(contact.id)
+                ? { ...contact, stage: "Archived" }
+                : contact,
+            ),
+          })),
+        saveAppointment: (appointment) =>
+          store.update((current) => ({
+            ...current,
+            appointments: upsert(current.appointments, appointment),
+          })),
+        removeAppointment: (id) =>
+          store.update((current) => ({
+            ...current,
+            appointments: current.appointments.filter(
+              (appointment) => appointment.id !== id,
+            ),
+          })),
+        saveDeal: (deal) =>
+          store.update((current) => ({
+            ...current,
+            deals: upsert(current.deals, deal),
+          })),
+        resetDemo: store.reset,
       }}
     >
       {children}

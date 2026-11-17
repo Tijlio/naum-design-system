@@ -17,12 +17,7 @@ import {
 } from "@/components/ui/sheet"
 import { Textarea } from "@/components/ui/textarea"
 import { MotionFadeUp } from "@/components/ui/motion"
-import {
-  CONTACT_STAGES,
-  DEALS,
-  DEMO_DATE,
-  type Contact,
-} from "../showcase-data"
+import { CONTACT_STAGES, DEMO_DATE, type Contact } from "../showcase-data"
 import { useShowcase } from "../showcase-provider"
 import { ContactAvatar } from "./contact-avatar"
 import { DealStageBadge } from "./deal-stage-badge"
@@ -34,7 +29,7 @@ export const ContactDetail = ({
   contact?: Contact
   onClose: () => void
 }) => {
-  const { saveContact } = useShowcase()
+  const { saveContact, deals } = useShowcase()
   return (
     <Sheet
       open={Boolean(contact)}
@@ -110,8 +105,9 @@ export const ContactDetail = ({
               </Card>
               <section className="space-y-3" aria-label="Contact opportunities">
                 <h3 className="font-medium">Opportunities</h3>
-                {DEALS.filter((deal) => deal.contactId === contact.id).map(
-                  (deal) => (
+                {deals
+                  .filter((deal) => deal.contactId === contact.id)
+                  .map((deal) => (
                     <Card size="sm" key={deal.id}>
                       <CardContent>
                         <p className="text-sm font-medium">{deal.title}</p>
@@ -123,9 +119,8 @@ export const ContactDetail = ({
                         </div>
                       </CardContent>
                     </Card>
-                  ),
-                )}
-                {!DEALS.some((deal) => deal.contactId === contact.id) && (
+                  ))}
+                {!deals.some((deal) => deal.contactId === contact.id) && (
                   <p className="text-sm text-muted-foreground">
                     No opportunities yet.
                   </p>

@@ -37,9 +37,9 @@ import { MetricBreakdown } from "./metric-breakdown"
 import { getCrmOverview } from "./crm-overview-data"
 
 export const CrmOverview = () => {
-  const { contacts, appointments } = useShowcase()
+  const { contacts, appointments, deals } = useShowcase()
   const { openDeals, metrics, appointmentCount, upcoming, recentContacts } =
-    getCrmOverview(contacts, appointments)
+    getCrmOverview(contacts, appointments, deals)
   return (
     <div className="workspace-stack">
       <MotionFadeUp>

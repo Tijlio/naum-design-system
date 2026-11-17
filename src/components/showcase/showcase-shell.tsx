@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/sidebar"
 import { navigationItemVariants } from "@/lib/navigation-styles"
 import { cn } from "@/lib/utils"
+import { DemoControls } from "./demo-controls"
 import { WorkspaceSearch } from "./workspace-search"
 
 const NAVIGATION = [
@@ -99,6 +100,7 @@ export const ShowcaseShell = ({ children }: { children: ReactNode }) => {
       }
       actions={
         <>
+          <DemoControls />
           <WorkspaceSearch />
           <ThemeToggle />
           <Button

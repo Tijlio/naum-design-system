@@ -5,11 +5,10 @@ import {
   PAGE_ENTRIES,
   type SearchEntry,
 } from "@/components/search/search-entries"
-import { DEALS } from "./showcase-data"
 import { useShowcase } from "./showcase-provider"
 
 export const WorkspaceSearch = () => {
-  const { contacts, appointments } = useShowcase()
+  const { contacts, appointments, deals } = useShowcase()
   const entries: SearchEntry[] = [
     ...PAGE_ENTRIES,
     ...contacts
@@ -21,7 +20,7 @@ export const WorkspaceSearch = () => {
         group: "Contacts",
         href: `/showcase/crm/contacts?contact=${contact.id}`,
       })),
-    ...DEALS.map((deal): SearchEntry => ({
+    ...deals.map((deal): SearchEntry => ({
       id: deal.id,
       title: deal.title,
       group: "Deals",

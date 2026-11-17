@@ -17,7 +17,7 @@ Search is shared between Bento and the application shell. Click its icon or pres
 
 ## Data and boundaries
 
-`ShowcaseProvider` owns the demo workspace in memory. Contacts, notes and appointments survive client navigation between these pages and appear in search immediately. Reloading the application resets the demo. There is no external CRM, calendar service or upload request.
+`ShowcaseProvider` owns a versioned local demo workspace. Contacts, notes, appointments and opportunities survive navigation and refresh in the same browser. Loaded records are validated before use; malformed or incompatible data falls back to the original fixtures without crashing. If storage is unavailable, interactions remain usable for the current session and the header shows “Session only”. The reset action asks for confirmation and removes only `naum-demo-workspace`, preserving theme settings and other browser data. There is no external CRM, calendar service or upload request.
 
 `showcase-data.ts` provides a reproducible November 2026 demo week. Appointment strings represent local wall-clock dates/times. Timed events have an exclusive end; all-day event end dates are also exclusive internally, while the editor displays an inclusive final day. `calendar-layout.ts` clips overnight events to each visible day and allocates columns to overlapping groups.
 
