@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
+  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -23,6 +24,8 @@ import {
 } from "@/components/ui/sidebar"
 import { navigationItemVariants } from "@/lib/navigation-styles"
 import { cn } from "@/lib/utils"
+
+export type AppNavigationVariant = "collapsible" | "section"
 
 type NavigationBase = {
   id: string
@@ -51,33 +54,39 @@ const NavigationBranch = ({
   item,
   navigationId,
   depth = 0,
+  variant,
 }: {
   item: AppNavigationItem
   navigationId: string
   depth?: number
+  variant: AppNavigationVariant
 }) => {
   const { isMobile, state, setOpenMobile } = useSidebar()
   const [manualOpen, setManualOpen] = useState<boolean | undefined>(undefined)
   const active = isActive(item)
   const compact = state === "collapsed" && !isMobile
   const open = manualOpen ?? active
+  const showActive =
+    active &&
+    (!item.children || compact || (variant === "collapsible" && !open))
   const className = cn(
     navigationItemVariants({
-      active: item.children ? compact && active : active,
+      active: showActive,
     }),
     "group-data-[collapsible=icon]:size-10! group-data-[collapsible=icon]:justify-center",
-    depth > 0 && "h-9 w-full",
+    depth > 0 && variant === "collapsible" && "h-9 w-full",
   )
   const pill = (
     <MotionPill
-      layoutId={`${navigationId}-active-${depth}`}
+      data-slot="navigation-active"
+      layoutId={`${navigationId}-active`}
       aria-hidden
       className="bg-white shadow-sm ring-1 ring-foreground/5"
     />
   )
   const content = (
     <>
-      {(!item.children || compact) && active && pill}
+      {showActive && pill}
       {item.icon}
       <span className="group-data-[collapsible=icon]:sr-only">
         {item.label}
@@ -122,20 +131,50 @@ const NavigationBranch = ({
             side="right"
             align="start"
             aria-label={`${item.label} navigation`}
+            className="naum-navigation-popup space-y-1"
           >
             {leaves(item.children).map(({ item: child, label }) => (
               <DropdownMenuItem
                 key={child.id}
                 render={child.render}
+                className={cn(
+                  navigationItemVariants({ active: !!child.active }),
+                  "h-10 px-3",
+                )}
                 aria-current={child.active ? "page" : undefined}
                 onClick={navigate}
               >
+                {child.active && (
+                  <MotionPill
+                    data-slot="navigation-flyout-active"
+                    layoutId={`${navigationId}-flyout-${item.id}`}
+                    aria-hidden
+                    className="bg-white shadow-sm ring-1 ring-foreground/5"
+                  />
+                )}
                 {child.icon}
                 {label}
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
+      </SidebarMenuItem>
+    )
+  if (variant === "section")
+    return (
+      <SidebarMenuItem>
+        <SidebarGroupLabel className="h-8 px-3">{item.label}</SidebarGroupLabel>
+        <SidebarMenuSub className="m-0 gap-2.5 border-0 p-0">
+          {item.children.map((child) => (
+            <NavigationBranch
+              key={child.id}
+              item={child}
+              navigationId={navigationId}
+              depth={depth + 1}
+              variant={variant}
+            />
+          ))}
+        </SidebarMenuSub>
       </SidebarMenuItem>
     )
   return (
@@ -162,6 +201,7 @@ const NavigationBranch = ({
               item={child}
               navigationId={navigationId}
               depth={depth + 1}
+              variant={variant}
             />
           ))}
         </SidebarMenuSub>
@@ -172,8 +212,10 @@ const NavigationBranch = ({
 
 export const AppNavigation = ({
   items,
+  variant = "collapsible",
 }: {
   items: readonly AppNavigationItem[]
+  variant?: AppNavigationVariant
 }) => {
   const navigationId = useId()
   return (
@@ -183,6 +225,7 @@ export const AppNavigation = ({
           key={item.id}
           item={item}
           navigationId={navigationId}
+          variant={variant}
         />
       ))}
     </SidebarMenu>

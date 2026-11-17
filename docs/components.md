@@ -72,7 +72,7 @@ Install an item with `pnpm dlx shadcn@4.23.0 add @naum/<name>`. Every UI item in
 | `use-mobile` | `useIsMobile` | [Source](../src/hooks/use-mobile.ts) |
 | `theme-provider` | `ThemeProvider` | [Source](../src/components/theme-provider.tsx) |
 | `activity-timeline` | `TimelineEntry`, `ActivityTimeline` | [Source](../src/components/blocks/activity-timeline.tsx) |
-| `app-navigation` | `AppNavigationItem`, `AppNavigation` | [Source](../src/components/blocks/app-navigation.tsx) |
+| `app-navigation` | `AppNavigationVariant`, `AppNavigationItem`, `AppNavigation` | [Source](../src/components/blocks/app-navigation.tsx) |
 | `app-shell` | `AppShellProps`, `AppShell` | [Source](../src/components/blocks/app-shell.tsx) |
 | `bento-stat-card` | `BentoStatCardProps`, `BentoStatCard` | [Source](../src/components/blocks/bento-stat-card.tsx) |
 | `data-table-views` | `DataTableViewItem`, `DataTableViewsProps`, `DataTableViews` | [Source](../src/components/blocks/data-table-views.tsx) |

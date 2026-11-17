@@ -240,6 +240,17 @@
             "height": "0",
             "opacity": "0"
           }
+        },
+        "@utility naum-navigation-popup": {
+          "animation": "none !important",
+          "translate": "none",
+          "opacity": "1",
+          "scale": "1",
+          "transition": "opacity var(--naum-duration-fast) var(--ease-naum),\n    scale var(--naum-duration-fast) var(--ease-naum)",
+          "&[data-starting-style],\n  &[data-ending-style]": {
+            "opacity": "0",
+            "scale": "0.98"
+          }
         }
       },
       "type": "registry:style"

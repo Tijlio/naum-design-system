@@ -17,12 +17,14 @@ import {
 import {
   AppNavigation,
   type AppNavigationItem,
+  type AppNavigationVariant,
 } from "@/components/blocks/app-navigation"
 
 export type AppShellProps = {
   brand: ReactNode
   navigation: readonly AppNavigationItem[]
   navigationLabel?: string
+  navigationVariant?: AppNavigationVariant
   footer?: ReactNode
   header?: ReactNode
   actions?: ReactNode
@@ -33,6 +35,7 @@ export const AppShell = ({
   brand,
   navigation,
   navigationLabel = "Workspace",
+  navigationVariant = "collapsible",
   footer,
   header,
   actions,
@@ -54,7 +57,7 @@ export const AppShell = ({
           <SidebarContent>
             <SidebarGroup>
               <SidebarGroupLabel>{navigationLabel}</SidebarGroupLabel>
-              <AppNavigation items={navigation} />
+              <AppNavigation items={navigation} variant={navigationVariant} />
             </SidebarGroup>
           </SidebarContent>
           {footer && (

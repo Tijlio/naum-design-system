@@ -3,7 +3,10 @@
 import { useState, type CSSProperties } from "react"
 import { CalendarDays, LayoutDashboard, Users } from "lucide-react"
 import { BentoStatCard } from "@/components/blocks/bento-stat-card"
-import { AppNavigation } from "@/components/blocks/app-navigation"
+import {
+  AppNavigation,
+  type AppNavigationVariant,
+} from "@/components/blocks/app-navigation"
 import { InsightCard } from "@/components/bento/insight-card"
 import { Button } from "@/components/ui/button"
 import { SidebarProvider } from "@/components/ui/sidebar"
@@ -16,12 +19,13 @@ import { CodeSample } from "./code-sample"
 
 export const BlockExamples = ({ name }: { name: string }) => {
   const [direction, setDirection] = useState<"up" | "down" | "flat">("up")
+  const [navigationVariant, setNavigationVariant] =
+    useState<AppNavigationVariant>("collapsible")
   const [active, setActive] = useState("overview")
   const [opened, setOpened] = useState(false)
   const navigation = [
     { id: "overview", label: "Overview", icon: <LayoutDashboard /> },
     { id: "contacts", label: "Contacts", icon: <Users /> },
-    { id: "calendar", label: "Calendar", icon: <CalendarDays /> },
   ]
   if (name === "activity-timeline") return <TimelineExample />
   if (name === "data-table") return <DataTableExample />
@@ -32,7 +36,7 @@ export const BlockExamples = ({ name }: { name: string }) => {
       : name === "bento-insight-card"
         ? 'import { InsightCard } from "@/components/bento/insight-card"\nimport { Button } from "@/components/ui/button"\n\n<InsightCard title="Appointments" action={<Button nativeButton={false} render={<a href="/calendar" />}>Open calendar</Button>}>\n  <p>4 appointments this week</p>\n</InsightCard>'
         : name === "app-navigation"
-          ? 'import { AppNavigation } from "@/components/blocks/app-navigation"\nimport { LayoutDashboard } from "lucide-react"\n\n// Inside SidebarProvider and MotionProvider:\n<AppNavigation items={[{ id: "overview", label: "Overview",\n  icon: <LayoutDashboard />, render: <a href="/overview" />, active: true }]} />'
+          ? `import { AppNavigation } from "@/components/blocks/app-navigation"\nimport { CalendarDays, LayoutDashboard, Users } from "lucide-react"\n\n// Inside SidebarProvider and MotionProvider:\n<AppNavigation variant="${navigationVariant}" items={[{ id: "calendar", label: "Calendar", icon: <CalendarDays />, render: <a href="/calendar" /> },\n{ id: "crm", label: "CRM", icon: <Users />,\n  children: [{ id: "overview", label: "Overview", icon: <LayoutDashboard />,\n    render: <a href="/overview" />, active: true }] }]} />`
           : 'import { AppShell } from "@/components/blocks/app-shell"\nimport { LayoutDashboard } from "lucide-react"\n\n<AppShell brand={<span>Acme</span>}\n  navigation={[{ id: "overview", label: "Overview", icon: <LayoutDashboard />,\n    render: <a href="/overview" />, active: true }]}\n  header={<span>Workspace</span>}>\n  <h1 className="naum-page-title">Overview</h1>\n</AppShell>'
   return (
     <div className="space-y-6">
@@ -47,6 +51,20 @@ export const BlockExamples = ({ name }: { name: string }) => {
               { value: "up", label: "Up" },
               { value: "down", label: "Down" },
               { value: "flat", label: "Unchanged" },
+            ]}
+          />
+        </div>
+      )}
+      {name === "app-navigation" && (
+        <div className="max-w-xs space-y-2">
+          <Label htmlFor="navigation-variant">Navigation style</Label>
+          <SelectControl
+            id="navigation-variant"
+            value={navigationVariant}
+            onValueChange={(value) => value && setNavigationVariant(value)}
+            items={[
+              { value: "collapsible", label: "Collapsible" },
+              { value: "section", label: "Sections" },
             ]}
           />
         </div>
@@ -95,7 +113,15 @@ export const BlockExamples = ({ name }: { name: string }) => {
           >
             <div className="w-full max-w-xs">
               <AppNavigation
+                variant={navigationVariant}
                 items={[
+                  {
+                    id: "calendar",
+                    label: "Calendar",
+                    icon: <CalendarDays />,
+                    active: active === "calendar",
+                    render: <button onClick={() => setActive("calendar")} />,
+                  },
                   {
                     id: "crm",
                     label: "CRM",
@@ -127,8 +153,12 @@ export const BlockExamples = ({ name }: { name: string }) => {
         Blocks compose Naum primitives and ship with their theme and
         dependencies. Pass application-owned data and actions through props.
         AppShell includes MotionProvider; wrap standalone navigation and
-        animated cards in MotionProvider. Supply named actions, meaningful trend
-        labels and accessible chart content.
+        animated cards in MotionProvider. AppNavigation supports
+        <code>{'variant="section"'}</code> for persistent route groups or the
+        default
+        <code>collapsible</code> accordion; AppShell forwards this as
+        navigationVariant. Compact groups retain flyouts. Supply named actions,
+        meaningful trend labels and accessible chart content.
       </p>
     </div>
   )

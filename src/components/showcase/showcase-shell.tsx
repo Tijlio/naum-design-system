@@ -50,6 +50,7 @@ export const ShowcaseShell = ({ children }: { children: ReactNode }) => {
   const path = usePathname()
   return (
     <AppShell
+      navigationVariant="section"
       navigation={[
         {
           id: "calendar",

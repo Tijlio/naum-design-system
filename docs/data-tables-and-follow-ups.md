@@ -24,6 +24,6 @@ Storage version 3 adds task and activity collections. Version 1 records and vers
 
 ## Nested navigation
 
-`AppNavigationItem` is a leaf (`render`) or a group (`children`). Groups can nest recursively. Expanded navigation uses Collapsible and the shared `naum-collapsible-panel` height/opacity transition; compact desktop navigation uses a keyboard-accessible DropdownMenu with descendant destinations. Mobile links close the sidebar sheet. Active descendants open their ancestry unless the user explicitly toggles the group. Breadcrumbs and the CRM route tree share `workspace-routes.ts`.
+`AppNavigationItem` is a leaf (`render`) or a group (`children`). Groups can nest recursively. The default `variant="collapsible"` uses Collapsible and the shared `naum-collapsible-panel` height/opacity transition. `variant="section"` keeps group labels and equal-height routes visible, without an accordion or indent; compact desktop navigation uses a keyboard-accessible DropdownMenu with descendant destinations. Mobile links close the sidebar sheet. In the collapsible variant, active descendants open their ancestry unless the user explicitly toggles the group. The showcase selects `navigationVariant="section"` on AppShell to keep route positions stable. Breadcrumbs and the CRM route tree share `workspace-routes.ts`.
 
-Layout, page entrances and timelines reuse Naum MotionProvider, MotionLayout and MotionStagger. The shared motion policy honors reduced motion; no animation dependency was added.
+Layout, page entrances and timelines reuse Naum MotionProvider, MotionLayout and MotionFadeUp. The shared motion policy honors reduced motion; no animation dependency was added.

@@ -41,4 +41,4 @@ The latest cross-app review is documented in [quality-review.md](quality-review.
 
 Only test sources and reviewed reference PNGs are committed. Run reports and traces remain in ignored build storage or temporary CI artifacts.
 
-Contacts, pipeline tables and tasks share the installable DataTable and view controls. Views persist locally and in validated URL state. CRM routes are nested under one expandable group, with flyout destinations in the compact sidebar. See [data-tables-and-follow-ups.md](data-tables-and-follow-ups.md) for migrations and contracts.
+Contacts, pipeline tables and tasks share the installable DataTable and view controls. Views persist locally and in validated URL state. CRM routes share a fixed labeled section in expanded/mobile navigation and flyout destinations in the compact sidebar. The installable navigation also retains an optional collapsible variant. See [data-tables-and-follow-ups.md](data-tables-and-follow-ups.md) for migrations and contracts.

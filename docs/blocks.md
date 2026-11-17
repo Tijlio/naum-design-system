@@ -24,3 +24,7 @@ Registry generation discovers block sources and registers alias-aware file targe
 `data-table-views` installs the saved-view picker and save-name dialog. The host owns snapshots, URL integration and storage. Read-only presets cannot be changed or deleted. `data-table-view` supplies the serializable state type and runtime guard. Live examples in `/docs` demonstrate sorting, selection, filtering, loading/retry and named views.
 
 `activity-timeline` installs the portable `ActivityTimeline` and `TimelineEntry` contract. The host owns chronological ordering, date formatting, icons and optional actions. CRM contact history is one consumer. [Table, view and follow-up integration](data-tables-and-follow-ups.md) documents the application contracts.
+
+`AppNavigation` accepts `variant="collapsible"` (default) or `variant="section"`. Sections keep route groups visible and aligned; compact desktop groups expose the same descendants through a flyout. `AppShell` forwards the choice through `navigationVariant`. The playground in `/docs` demonstrates both styles.
+
+One scoped active pill moves across navigation depths, with visible overflow so the shared layout animation can travel between buttons. A collapsed active accordion group retains its indicator. Compact flyouts use the same active/inactive surfaces and anchor-based opacity/scale transition, without directional slides. MotionProvider and the theme honor reduced motion.
