@@ -1,6 +1,6 @@
 "use client"
 
-import type { ComponentProps } from "react"
+import { useRef, type ComponentProps } from "react"
 
 import {
   AlertDialog,
@@ -23,21 +23,24 @@ export const DiscardChangesDialog = ({
   onOpenChange: (open: boolean) => void
   onDiscard: () => void
   finalFocus?: ComponentProps<typeof AlertDialogContent>["finalFocus"]
-}) => (
-  <AlertDialog open={open} onOpenChange={onOpenChange}>
-    <AlertDialogContent finalFocus={finalFocus}>
-      <AlertDialogHeader>
-        <AlertDialogTitle>Discard changes?</AlertDialogTitle>
-        <AlertDialogDescription>
-          Your changes have not been saved.
-        </AlertDialogDescription>
-      </AlertDialogHeader>
-      <AlertDialogFooter>
-        <AlertDialogCancel>Keep editing</AlertDialogCancel>
-        <AlertDialogAction variant="destructive" onClick={onDiscard}>
-          Discard changes
-        </AlertDialogAction>
-      </AlertDialogFooter>
-    </AlertDialogContent>
-  </AlertDialog>
-)
+}) => {
+  const keepEditing = useRef<HTMLButtonElement>(null)
+  return (
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      <AlertDialogContent initialFocus={keepEditing} finalFocus={finalFocus}>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Discard changes?</AlertDialogTitle>
+          <AlertDialogDescription>
+            Your changes have not been saved.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel ref={keepEditing}>Keep editing</AlertDialogCancel>
+          <AlertDialogAction variant="destructive" onClick={onDiscard}>
+            Discard changes
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  )
+}

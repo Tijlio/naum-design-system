@@ -37,6 +37,7 @@ import {
 import { navigationItemVariants } from "@/lib/navigation-styles"
 import { cn } from "@/lib/utils"
 import { DemoControls } from "./demo-controls"
+import { WorkspaceRouteFocus } from "./workspace-route-focus"
 import { WorkspaceSearch } from "./workspace-search"
 
 const ICONS = {
@@ -166,6 +167,7 @@ export const ShowcaseShell = ({ children }: { children: ReactNode }) => {
         </>
       }
     >
+      <WorkspaceRouteFocus />
       {children}
     </AppShell>
   )
