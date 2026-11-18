@@ -49,19 +49,19 @@ export const AppShell = ({
           variant="inset"
           collapsible="icon"
           aria-label="Workspace navigation"
-          className="data-[mobile=true]:naum-app-overlay [&_[data-slot=sidebar-inner]]:bg-transparent group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4)))] md:bg-transparent md:shadow-none"
+          className="data-[mobile=true]:naum-app-overlay [&_[data-slot=sidebar-inner]]:bg-transparent group-data-[collapsible=icon]:data-[side=left]:left-4 md:bg-transparent md:shadow-none"
         >
-          <SidebarHeader className="p-3 group-data-[collapsible=icon]:p-2">
+          <SidebarHeader className="p-3 group-data-[collapsible=icon]:h-20 group-data-[collapsible=icon]:shrink-0 group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:[&_[data-slot=sidebar-menu]]:items-center">
             {brand}
           </SidebarHeader>
           <SidebarContent>
-            <SidebarGroup>
+            <SidebarGroup className="group-data-[collapsible=icon]:px-0">
               <SidebarGroupLabel>{navigationLabel}</SidebarGroupLabel>
               <AppNavigation items={navigation} variant={navigationVariant} />
             </SidebarGroup>
           </SidebarContent>
           {footer && (
-            <SidebarFooter className="p-3 group-data-[collapsible=icon]:p-2">
+            <SidebarFooter className="p-3 group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:py-2 group-data-[collapsible=icon]:[&_[data-slot=sidebar-menu]]:items-center">
               {footer}
             </SidebarFooter>
           )}

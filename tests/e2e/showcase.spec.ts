@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test"
 import AxeBuilder from "@axe-core/playwright"
 import { chooseOption } from "./showcase-controls"
+import { settleAnimations } from "./ui-stability"
 
 const navigationAppearance = (element: Element) => {
   const style = getComputedStyle(element)
@@ -225,27 +226,47 @@ test("sidebar collapse keeps identity centered and mobile navigation works", asy
     await expect(
       page.locator('[data-state="collapsed"][data-slot="sidebar"]'),
     ).toBeVisible()
-    const offsets = await page
+    await settleAnimations(page)
+    const geometry = await page
       .locator('[data-slot="sidebar"]')
       .evaluate((sidebar) => {
-        const rail = sidebar.getBoundingClientRect()
+        const rail = sidebar
+          .querySelector('[data-slot="sidebar-container"]')
+          ?.getBoundingClientRect()
+        const toggle = document
+          .querySelector('[data-slot="sidebar-trigger"]')
+          ?.getBoundingClientRect()
         const logo = sidebar
           .querySelector(".workspace-logo")
           ?.getBoundingClientRect()
         const avatar = sidebar
           .querySelector('[data-slot="sidebar-footer"] [data-slot="avatar"]')
           ?.getBoundingClientRect()
-        if (!logo || !avatar) throw new Error("Workspace identity is missing")
-        return [logo, avatar].map((box) =>
-          Math.abs(box.x + box.width / 2 - rail.x - rail.width / 2),
-        )
+        if (!rail || !toggle || !logo || !avatar)
+          throw new Error("Workspace geometry is missing")
+        const leftGap = rail.left - sidebar.getBoundingClientRect().left
+        return {
+          railWidth: rail.width,
+          leftGap,
+          gapDifference: Math.abs(leftGap - (toggle.left - rail.right)),
+          headerOffset: Math.abs(
+            logo.y + logo.height / 2 - (toggle.y + toggle.height / 2),
+          ),
+          offsets: [logo, avatar].map((box) =>
+            Math.abs(box.x + box.width / 2 - rail.x - rail.width / 2),
+          ),
+        }
       })
-    for (const offset of offsets) expect(offset).toBeLessThan(1)
+    expect(geometry.railWidth).toBeLessThanOrEqual(48)
+    expect(geometry.leftGap).toBeGreaterThan(0)
+    expect(geometry.gapDifference).toBeLessThan(1)
+    expect(geometry.headerOffset).toBeLessThan(1)
+    for (const offset of geometry.offsets) expect(offset).toBeLessThan(1)
     const calendar = page.getByRole("link", { name: "Calendar", exact: true })
     const centering = await calendar.evaluate((element) => {
       const button = element.getBoundingClientRect()
       const rail = element
-        .closest('[data-slot="sidebar"]')
+        .closest('[data-slot="sidebar-container"]')
         ?.getBoundingClientRect()
       const icon = element.querySelector("svg")?.getBoundingClientRect()
       if (!rail || !icon) throw new Error("Navigation geometry is missing")
