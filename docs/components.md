@@ -28,6 +28,7 @@ Install an item with `pnpm dlx shadcn@4.23.0 add @naum/<name>`. Every UI item in
 | `command` | `Command`, `CommandDialog`, `CommandInput`, `CommandList`, `CommandEmpty`, `CommandGroup`, `CommandItem`, `CommandShortcut`, `CommandSeparator` | [Source](../src/components/ui/command.tsx) |
 | `context-menu` | `ContextMenu`, `ContextMenuTrigger`, `ContextMenuContent`, `ContextMenuItem`, `ContextMenuCheckboxItem`, `ContextMenuRadioItem`, `ContextMenuLabel`, `ContextMenuSeparator`, `ContextMenuShortcut`, `ContextMenuGroup`, `ContextMenuPortal`, `ContextMenuSub`, `ContextMenuSubContent`, `ContextMenuSubTrigger`, `ContextMenuRadioGroup` | [Source](../src/components/ui/context-menu.tsx) |
 | `date-time-picker` | `DateTimePicker` | [Source](../src/components/ui/date-time-picker.tsx) |
+| `day-timeline` | `DayTimelineEntry`, `DayTimeline` | [Source](../src/components/ui/day-timeline.tsx) |
 | `dialog` | `Dialog`, `DialogClose`, `DialogContent`, `DialogDescription`, `DialogFooter`, `DialogHeader`, `DialogOverlay`, `DialogPortal`, `DialogTitle`, `DialogTrigger` | [Source](../src/components/ui/dialog.tsx) |
 | `direction` | `DirectionProvider`, `useDirection` | [Source](../src/components/ui/direction.tsx) |
 | `drawer` | `Drawer`, `DrawerPortal`, `DrawerOverlay`, `DrawerSwipeHandle`, `DrawerTrigger`, `DrawerClose`, `DrawerContent`, `DrawerHeader`, `DrawerFooter`, `DrawerTitle`, `DrawerDescription` | [Source](../src/components/ui/drawer.tsx) |

@@ -764,6 +764,22 @@
       "type": "registry:ui"
     },
     {
+      "name": "day-timeline",
+      "title": "Naum Day Timeline",
+      "description": "Naum day-timeline for React and Tailwind CSS v4.",
+      "registryDependencies": [
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/theme.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/tone.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/day-timeline.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "type": "registry:ui"
+    },
+    {
       "name": "dialog",
       "title": "Naum Dialog",
       "description": "Naum dialog for React and Tailwind CSS v4.",
@@ -1916,6 +1932,7 @@
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/command.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/context-menu.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/date-time-picker.json",
+        "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/day-timeline.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/dialog.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/direction.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/drawer.json",
