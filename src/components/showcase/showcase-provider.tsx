@@ -12,6 +12,9 @@ import {
   saveContactRecord,
   saveDealRecord,
   removeDealRecord,
+  restoreDealRecord,
+  restoreTaskRecord,
+  restoreAppointmentRecord,
   saveAppointmentRecord,
   removeAppointmentRecord,
   saveTaskRecord,
@@ -28,13 +31,13 @@ type Workspace = DemoWorkspace & {
   saveContact: (contact: Contact) => void
   archiveContacts: (ids: string[]) => void
   saveAppointment: (appointment: Appointment) => void
-  removeAppointment: (id: string) => void
+  removeAppointment: (id: string) => () => void
   saveDeal: (deal: Deal) => void
-  removeDeal: (id: string) => void
+  removeDeal: (id: string) => () => void
   saveView: (view: WorkspaceSavedView) => void
   removeView: (id: string) => void
   saveTask: (task: FollowUpTask) => void
-  removeTask: (id: string) => void
+  removeTask: (id: string) => () => void
   resetDemo: () => void
   persistence: Persistence
 }
@@ -84,16 +87,34 @@ export const ShowcaseProvider = ({ children }: { children: ReactNode }) => {
           store.update((current) =>
             saveAppointmentRecord(current, appointment),
           ),
-        removeAppointment: (id) =>
-          store.update((current) => removeAppointmentRecord(current, id)),
+        removeAppointment: (id) => {
+          const appointment = store
+            .getSnapshot()
+            .data.appointments.find((entry) => entry.id === id)
+          store.update((current) => removeAppointmentRecord(current, id))
+          return () => {
+            if (appointment)
+              store.update((current) =>
+                restoreAppointmentRecord(current, appointment),
+              )
+          }
+        },
         saveDeal: (deal) =>
           store.update((current) => saveDealRecord(current, deal)),
-        removeDeal: (id) =>
-          store.update((current) => removeDealRecord(current, id)),
+        removeDeal: (id) => {
+          const before = store.getSnapshot().data
+          store.update((current) => removeDealRecord(current, id))
+          return () =>
+            store.update((current) => restoreDealRecord(current, before, id))
+        },
         saveTask: (task) =>
           store.update((current) => saveTaskRecord(current, task)),
-        removeTask: (id) =>
-          store.update((current) => removeTaskRecord(current, id)),
+        removeTask: (id) => {
+          const before = store.getSnapshot().data
+          store.update((current) => removeTaskRecord(current, id))
+          return () =>
+            store.update((current) => restoreTaskRecord(current, before, id))
+        },
         saveView: (view) =>
           store.update((current) => ({
             ...current,

@@ -60,10 +60,10 @@ export const DealEditor = ({
   }
   const remove = () => {
     if (!deal) return
-    removeDeal(deal.id)
+    const undo = removeDeal(deal.id)
     onClose()
     toast.success("Opportunity deleted", {
-      action: { label: "Undo", onClick: () => saveDeal(deal) },
+      action: { label: "Undo", onClick: undo },
     })
   }
   return (

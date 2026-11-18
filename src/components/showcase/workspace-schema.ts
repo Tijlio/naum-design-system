@@ -1,5 +1,10 @@
 import { type FollowUpTask, type WorkspaceActivity } from "./tasks/task-data"
 import { isWorkspaceSavedView, type WorkspaceSavedView } from "./table-views"
+import {
+  isLocalDate,
+  isLocalDateTime,
+  validateRelationships,
+} from "./workspace-validation"
 import { isValid, parseISO } from "date-fns"
 import {
   CALENDARS,
@@ -19,21 +24,13 @@ export type DemoWorkspace = {
   activities: WorkspaceActivity[]
 }
 export const DEMO_STORAGE_KEY = "naum-demo-workspace"
-export const DEMO_STORAGE_VERSION = 3
+export const DEMO_STORAGE_VERSION = 4
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null && !Array.isArray(value)
 const hasStrings = (value: Record<string, unknown>, keys: string[]) =>
   keys.every((key) => typeof value[key] === "string")
 const isAmount = (value: unknown): value is number =>
   typeof value === "number" && Number.isFinite(value) && value >= 0
-const isDate = (value: unknown): value is string =>
-  typeof value === "string" &&
-  /^\d{4}-\d{2}-\d{2}$/.test(value) &&
-  isValid(parseISO(value))
-const isDateTime = (value: unknown): value is string =>
-  typeof value === "string" &&
-  /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(value) &&
-  isValid(parseISO(value))
 const includes = (values: readonly string[], value: unknown): value is string =>
   typeof value === "string" && values.includes(value)
 const isContact = (value: unknown): value is Contact =>
@@ -41,11 +38,13 @@ const isContact = (value: unknown): value is Contact =>
   hasStrings(value, ["id", "name", "company", "role", "email", "owner"]) &&
   includes(CONTACT_STAGES, value.stage) &&
   isAmount(value.value) &&
-  isDate(value.lastContact) &&
+  isLocalDate(value.lastContact) &&
   Array.isArray(value.notes) &&
   value.notes.every(
     (note) =>
-      isRecord(note) && hasStrings(note, ["id", "text"]) && isDate(note.date),
+      isRecord(note) &&
+      hasStrings(note, ["id", "text"]) &&
+      isLocalDate(note.date),
   )
 const isAppointment = (value: unknown): value is Appointment =>
   isRecord(value) &&
@@ -53,8 +52,10 @@ const isAppointment = (value: unknown): value is Appointment =>
   includes(CALENDARS, value.calendar) &&
   typeof value.allDay === "boolean" &&
   (value.contactId === undefined || typeof value.contactId === "string") &&
-  isDateTime(value.start) &&
-  isDateTime(value.end) &&
+  (value.dealId === undefined || typeof value.dealId === "string") &&
+  (value.taskId === undefined || typeof value.taskId === "string") &&
+  isLocalDateTime(value.start) &&
+  isLocalDateTime(value.end) &&
   value.end > value.start
 const isDeal = (value: unknown): value is Deal =>
   isRecord(value) &&
@@ -66,7 +67,7 @@ const isTask = (value: unknown): value is FollowUpTask =>
   hasStrings(value, ["id", "title", "contactId"]) &&
   typeof value.title === "string" &&
   value.title.trim().length > 0 &&
-  isDate(value.dueDate) &&
+  isLocalDate(value.dueDate) &&
   typeof value.completed === "boolean" &&
   (value.dealId === undefined || typeof value.dealId === "string")
 const isActivity = (value: unknown): value is WorkspaceActivity =>
@@ -87,6 +88,7 @@ export const parseWorkspace = (raw: string): DemoWorkspace | null => {
       !isRecord(value) ||
       (value.version !== 1 &&
         value.version !== 2 &&
+        value.version !== 3 &&
         value.version !== DEMO_STORAGE_VERSION) ||
       !isRecord(value.data)
     )
@@ -120,7 +122,7 @@ export const parseWorkspace = (raw: string): DemoWorkspace | null => {
     )
       return null
     const deals = new Map(data.deals.map((deal) => [deal.id, deal]))
-    const legacy = value.version !== DEMO_STORAGE_VERSION
+    const legacy = value.version === 1 || value.version === 2
     const tasks = legacy ? [] : data.tasks
     const activities = legacy ? [] : data.activities
     if (
@@ -136,6 +138,14 @@ export const parseWorkspace = (raw: string): DemoWorkspace | null => {
       !activities.every(isActivity) ||
       !uniqueIds(activities) ||
       activities.some((event) => !contacts.has(event.contactId))
+    )
+      return null
+    const relations = { contacts: data.contacts, deals: data.deals, tasks }
+    if (
+      data.appointments.some(
+        (appointment) =>
+          Object.keys(validateRelationships(relations, appointment)).length,
+      )
     )
       return null
     return {

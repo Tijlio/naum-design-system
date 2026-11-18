@@ -226,11 +226,11 @@ export const EventEditor = ({
                 variant="destructive"
                 type="button"
                 onClick={() => {
-                  removeAppointment(appointment.id)
+                  const undo = removeAppointment(appointment.id)
                   toast.success("Appointment deleted", {
                     action: {
                       label: "Undo",
-                      onClick: () => saveAppointment(appointment),
+                      onClick: undo,
                     },
                   })
                   onClose()

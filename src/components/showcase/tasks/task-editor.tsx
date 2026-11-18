@@ -166,10 +166,10 @@ export const TaskEditor = ({
                 type="button"
                 variant="destructive"
                 onClick={() => {
-                  removeTask(task.id)
+                  const undo = removeTask(task.id)
                   onClose()
                   toast.success("Task deleted", {
-                    action: { label: "Undo", onClick: () => saveTask(task) },
+                    action: { label: "Undo", onClick: undo },
                   })
                 }}
               >

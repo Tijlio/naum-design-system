@@ -32,6 +32,8 @@ export type Appointment = {
   end: string
   calendar: "Sales" | "Team" | "Personal"
   contactId?: string
+  dealId?: string
+  taskId?: string
   allDay: boolean
   description: string
 }
