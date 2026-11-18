@@ -44,3 +44,32 @@ it("date/time pickers use a named Naum trigger and hidden form transport", () =>
   if (!form) throw new Error("Missing form")
   expect(new FormData(form).get("start")).toBe("2026-11-17T09:30")
 })
+
+it("distinguishes an explicit empty option from an unselected placeholder", () => {
+  const items = [
+    { value: "", label: "No opportunity" },
+    { value: "d1", label: "Launch" },
+  ]
+  const { rerender } = render(
+    <SelectControl
+      aria-label="Opportunity"
+      value=""
+      placeholder="Choose an opportunity"
+      items={items}
+    />,
+  )
+  expect(
+    screen.getByRole("combobox", { name: "Opportunity" }).textContent,
+  ).toContain("No opportunity")
+  rerender(
+    <SelectControl
+      aria-label="Opportunity"
+      value={null}
+      placeholder="Choose an opportunity"
+      items={items}
+    />,
+  )
+  expect(
+    screen.getByRole("combobox", { name: "Opportunity" }).textContent,
+  ).toContain("Choose an opportunity")
+})

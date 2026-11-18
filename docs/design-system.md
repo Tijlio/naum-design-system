@@ -114,7 +114,7 @@ const regions = [{ value: "eu-west", label: "EU West" }]
 </Select>
 ```
 
-`SelectControl` composes the shared Select parts for a labeled string option list. Supply `items`, a controlled `value`/`onValueChange` pair or `defaultValue`, and optionally `name` for form submission. It forwards trigger labeling, invalid and disabled states. Use the compound Select API when the popup needs custom content.
+`SelectControl` composes the shared Select parts for a labeled string option list. Supply `items`, a controlled `value`/`onValueChange` pair or `defaultValue`, and optionally `name` for form submission. It forwards trigger labeling, invalid and disabled states. Use the compound Select API when the popup needs custom content. An explicit empty-string option retains its label (for example “No opportunity”); `null` represents an unselected placeholder.
 
 `DateTimePicker` composes Calendar, Popover and SelectControl. Its controlled value is a local ISO date/time string (`yyyy-MM-ddTHH:mm`); `dateOnly` hides the time controls and emits midnight for the chosen date. Supply an accessible `label` and connect any external Label with `id`. An optional `name` adds hidden form transport. Validation and timezone conversion belong to the consuming form.
 

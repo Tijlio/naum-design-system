@@ -48,7 +48,13 @@ export const SelectControl = <Value extends string>({
     disabled={triggerProps.disabled}
   >
     <SelectTrigger {...triggerProps}>
-      <SelectValue placeholder={placeholder} />
+      <SelectValue
+        placeholder={
+          value === "" || (value === undefined && defaultValue === "")
+            ? (items.find((item) => item.value === "")?.label ?? placeholder)
+            : placeholder
+        }
+      />
     </SelectTrigger>
     <SelectContent>
       {items.map((item) => (
