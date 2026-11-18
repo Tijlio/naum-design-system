@@ -20,7 +20,7 @@ import {
   startOfWeek,
 } from "date-fns"
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react"
-import { toast } from "sonner"
+import { useWorkspaceNotice } from "../workspace-notice"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import { ButtonGroup } from "@/components/ui/button-group"
@@ -44,6 +44,7 @@ type View = (typeof VIEWS)[number]
 type Editor = { appointment?: Appointment; start: string }
 
 export const CalendarWorkspace = () => {
+  const notify = useWorkspaceNotice()
   const { appointments, saveAppointment, persistence } = useShowcase()
   const { captureFocus, restoreFocus } = useRecordFocus()
   const params = useSearchParams()
@@ -103,7 +104,13 @@ export const CalendarWorkspace = () => {
     setEditor({ appointment, start: appointment.start })
   }
   const close = () => {
-    setDate(date)
+    if (selectedEvent) {
+      setDateState((current) =>
+        current.eventId === selectedEvent.id
+          ? current
+          : { date, eventId: selectedEvent.id },
+      )
+    }
     setEditor(null)
     if (params.has("event"))
       router.replace("/showcase/calendar", { scroll: false })
@@ -255,9 +262,11 @@ export const CalendarWorkspace = () => {
                         (event) => event.id === next.id,
                       )
                       saveAppointment(next)
-                      toast.success("Appointment resized", {
+                      notify("Appointment resized", {
+                        description: `${next.title}, ${next.start.slice(11)}–${next.end.slice(11)}`,
                         action: {
                           label: "Undo",
+                          confirmation: "Appointment change undone",
                           onClick: () => {
                             if (original) saveAppointment(original)
                           },
@@ -282,9 +291,11 @@ export const CalendarWorkspace = () => {
                           "yyyy-MM-dd'T'HH:mm",
                         ),
                       })
-                      toast.success("Appointment moved", {
+                      notify("Appointment moved", {
+                        description: `${appointment.title}, ${format(start, "d MMM yyyy, HH:mm")}`,
                         action: {
                           label: "Undo",
+                          confirmation: "Appointment change undone",
                           onClick: () => saveAppointment(appointment),
                         },
                       })

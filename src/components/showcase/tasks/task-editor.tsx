@@ -2,7 +2,6 @@
 
 import { useId, useState, type ComponentProps } from "react"
 import { useRouter } from "next/navigation"
-import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { DateTimePicker } from "@/components/ui/date-time-picker"
@@ -18,13 +17,13 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { SelectControl } from "@/components/ui/select-control"
 import { DEMO_DATE } from "../showcase-data"
+import { WorkspaceNotice, useWorkspaceNotice } from "../workspace-notice"
 import { useShowcase } from "../showcase-provider"
 import { assertValid, validateTask } from "../workspace-validation"
 import { useWorkspaceForm } from "../forms/use-workspace-form"
 import { WorkspaceFieldError } from "../forms/workspace-field-error"
 import { DiscardChangesDialog } from "../forms/discard-changes-dialog"
 import { RelatedAppointments } from "../calendar/related-appointments"
-import { withWorkspaceRecovery } from "../workspace-feedback"
 import { CustomerContext } from "../customer-context"
 import type { FollowUpTask } from "./task-data"
 
@@ -42,6 +41,7 @@ export const TaskEditor = ({
   onClose,
   finalFocus,
 }: TaskEditorProps) => {
+  const notify = useWorkspaceNotice()
   const workspace = useShowcase()
   const { contacts, deals, saveTask, removeTask } = workspace
   const options = contacts.filter(
@@ -102,7 +102,7 @@ export const TaskEditor = ({
                 : {}),
             })
             saveTask(saved)
-            toast.success(task ? "Task updated" : "Task created", {
+            notify(task ? "Task updated" : "Task created", {
               action: {
                 label: "View task",
                 onClick: () =>
@@ -210,10 +210,11 @@ export const TaskEditor = ({
                 disabled={form.saving}
                 onClick={() => {
                   const undo = removeTask(task.id)
-                  toast.success("Task deleted", {
+                  notify("Task deleted", {
                     action: {
                       label: "Undo",
-                      onClick: withWorkspaceRecovery(undo),
+                      confirmation: "Task restored",
+                      onClick: undo,
                     },
                   })
                   onClose()
@@ -242,15 +243,17 @@ export const TaskEditor = ({
           dealId={dealId}
           onNavigate={navigate}
         />
-        {task && (
-          <RelatedAppointments
-            contactId={task.contactId}
-            dealId={task.dealId}
-            taskId={task.id}
-            disabled={form.dirty}
-            onNavigate={navigate}
-          />
-        )}
+        <WorkspaceNotice>
+          {task && (
+            <RelatedAppointments
+              contactId={task.contactId}
+              dealId={task.dealId}
+              taskId={task.id}
+              disabled={form.dirty}
+              onNavigate={navigate}
+            />
+          )}
+        </WorkspaceNotice>
         <DiscardChangesDialog {...form.discardProps} />
       </DialogContent>
     </Dialog>

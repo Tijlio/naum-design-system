@@ -88,13 +88,12 @@ export const ResizableCalendarEvent = ({
     if (event.key !== "ArrowUp" && event.key !== "ArrowDown") return
     event.preventDefault()
     event.stopPropagation()
-    onResize(
-      resizeAppointment(
-        placement.event,
-        edge,
-        event.key === "ArrowUp" ? -15 : 15,
-      ),
+    const next = resizeAppointment(
+      placement.event,
+      edge,
+      event.key === "ArrowUp" ? -15 : 15,
     )
+    if (next[edge] !== placement.event[edge]) onResize(next)
   }
   return (
     <div
@@ -114,7 +113,8 @@ export const ResizableCalendarEvent = ({
         onClick={() => onEdit(placement.event)}
       />
       <span id={hintId} className="sr-only">
-        Drag to resize, or use Up and Down arrows to adjust by 15 minutes.
+        Use Up and Down arrows to adjust by 15 minutes, or press Enter to edit
+        the appointment.
       </span>
       {(["start", "end"] as const).map((edge) => (
         <Button
@@ -123,7 +123,11 @@ export const ResizableCalendarEvent = ({
           className={`calendar-resize-handle absolute inset-x-1 z-20 h-3 touch-none cursor-ns-resize rounded-sm p-0 hover:bg-foreground/10 ${edge === "start" ? "top-0.5" : "bottom-1"}`}
           aria-label={`Resize ${edge} ${placement.event.title}`}
           aria-describedby={hintId}
-          onClick={(event) => event.stopPropagation()}
+          aria-keyshortcuts="ArrowUp ArrowDown"
+          onClick={(event) => {
+            event.stopPropagation()
+            if (event.detail === 0) onEdit(placement.event)
+          }}
           onKeyDown={(event) => keyboard(event, edge)}
           onPointerDown={(event) => start(event, edge)}
           onPointerMove={(event) => {

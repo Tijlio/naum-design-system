@@ -2,7 +2,6 @@
 
 import { useId, useState, type ComponentProps } from "react"
 import { useRouter } from "next/navigation"
-import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -17,13 +16,13 @@ import { Label } from "@/components/ui/label"
 import { SelectControl } from "@/components/ui/select-control"
 import { DEAL_STAGES, type Deal } from "../showcase-data"
 import { RelatedTasks } from "../tasks/related-tasks"
+import { WorkspaceNotice, useWorkspaceNotice } from "../workspace-notice"
 import { useShowcase } from "../showcase-provider"
 import { assertValid, validateDeal } from "../workspace-validation"
 import { useWorkspaceForm } from "../forms/use-workspace-form"
 import { WorkspaceFieldError } from "../forms/workspace-field-error"
 import { DiscardChangesDialog } from "../forms/discard-changes-dialog"
 import { RelatedAppointments } from "../calendar/related-appointments"
-import { withWorkspaceRecovery } from "../workspace-feedback"
 import { CustomerContext } from "../customer-context"
 
 export const DealEditor = ({
@@ -37,6 +36,7 @@ export const DealEditor = ({
   onClose: () => void
   finalFocus?: ComponentProps<typeof DialogContent>["finalFocus"]
 }) => {
+  const notify = useWorkspaceNotice()
   const workspace = useShowcase()
   const { contacts, saveDeal, removeDeal } = workspace
   const options = contacts.filter(
@@ -57,8 +57,12 @@ export const DealEditor = ({
   const remove = () => {
     if (!deal) return
     const undo = removeDeal(deal.id)
-    toast.success("Opportunity deleted", {
-      action: { label: "Undo", onClick: withWorkspaceRecovery(undo) },
+    notify("Opportunity deleted", {
+      action: {
+        label: "Undo",
+        confirmation: "Opportunity restored",
+        onClick: undo,
+      },
     })
     onClose()
   }
@@ -103,16 +107,13 @@ export const DealEditor = ({
                 : {}),
             })
             saveDeal(saved)
-            toast.success(
-              deal ? "Opportunity updated" : "Opportunity created",
-              {
-                action: {
-                  label: "View opportunity",
-                  onClick: () =>
-                    router.push(`/showcase/crm/pipeline?deal=${saved.id}`),
-                },
+            notify(deal ? "Opportunity updated" : "Opportunity created", {
+              action: {
+                label: "View opportunity",
+                onClick: () =>
+                  router.push(`/showcase/crm/pipeline?deal=${saved.id}`),
               },
-            )
+            })
           })}
         >
           <div className="naum-field">
@@ -209,15 +210,17 @@ export const DealEditor = ({
           </DialogFooter>
         </form>
         <CustomerContext contactId={contactId} onNavigate={navigate} />
-        {deal && <RelatedTasks contactId={deal.contactId} dealId={deal.id} />}
-        {deal && (
-          <RelatedAppointments
-            contactId={deal.contactId}
-            dealId={deal.id}
-            disabled={form.dirty}
-            onNavigate={navigate}
-          />
-        )}
+        <WorkspaceNotice>
+          {deal && <RelatedTasks contactId={deal.contactId} dealId={deal.id} />}
+          {deal && (
+            <RelatedAppointments
+              contactId={deal.contactId}
+              dealId={deal.id}
+              disabled={form.dirty}
+              onNavigate={navigate}
+            />
+          )}
+        </WorkspaceNotice>
         <DiscardChangesDialog {...form.discardProps} />
       </DialogContent>
     </Dialog>

@@ -1,6 +1,6 @@
 "use client"
 
-import type { ComponentProps } from "react"
+import { useRef, useState, type ComponentProps } from "react"
 
 import { formatMoney } from "@/lib/money-format"
 
@@ -13,7 +13,6 @@ import { DiscardChangesDialog } from "../forms/discard-changes-dialog"
 import { WorkspaceFieldError } from "../forms/workspace-field-error"
 import { WorkspaceValidationError } from "../workspace-validation"
 import { format, parseISO } from "date-fns"
-import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
@@ -29,6 +28,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { RelatedTasks } from "../tasks/related-tasks"
 import { ContactTimeline } from "./contact-timeline"
 import { CONTACT_STAGES, DEMO_DATE, type Contact } from "../showcase-data"
+import { WorkspaceNotice } from "../workspace-notice"
 import { useShowcase } from "../showcase-provider"
 import { ContactAvatar } from "./contact-avatar"
 import { DealStageBadge } from "./deal-stage-badge"
@@ -43,16 +43,31 @@ export const ContactDetail = ({
   finalFocus?: ComponentProps<typeof SheetContent>["finalFocus"]
 }) => {
   const { saveContact, deals } = useShowcase()
+  const [status, setStatus] = useState("")
+  const title = useRef<HTMLHeadingElement>(null)
   const form = useWorkspaceForm(onClose)
   const router = useRouter()
   return (
     <Sheet
       open={Boolean(contact)}
+      onOpenChangeComplete={(open) => {
+        if (!open) return
+        const panel = title.current?.closest('[data-slot="sheet-content"]')
+        // A notification can restore its previous focus while the sheet opens.
+        if (
+          panel &&
+          !panel.hasAttribute("data-nested-dialog-open") &&
+          !panel.contains(document.activeElement)
+        ) {
+          title.current?.focus()
+        }
+      }}
       onOpenChange={(open) => {
         if (!open) form.requestClose()
       }}
     >
       <SheetContent
+        initialFocus={title}
         finalFocus={finalFocus}
         className="workspace-overlay workspace-detail-sheet overflow-y-auto sm:max-w-lg"
       >
@@ -68,7 +83,11 @@ export const ContactDetail = ({
                   className="mb-3 size-14"
                   onMesh
                 />
-                <SheetTitle className="text-xl font-normal text-white">
+                <SheetTitle
+                  ref={title}
+                  tabIndex={-1}
+                  className="text-xl font-normal text-white"
+                >
                   {contact.name}
                 </SheetTitle>
                 <SheetDescription className="text-white/85">
@@ -76,7 +95,10 @@ export const ContactDetail = ({
                 </SheetDescription>
               </SheetHeader>
             </Card>
-            <div className="workspace-stack px-4 pt-6 pb-4">
+            <WorkspaceNotice className="workspace-stack px-4 pt-6 pb-4">
+              <p role="status" className={status ? "text-sm" : "sr-only"}>
+                {status}
+              </p>
               <Card size="sm">
                 <CardContent className="naum-form">
                   <div className="naum-field">
@@ -92,7 +114,7 @@ export const ContactDetail = ({
                       onValueChange={(stage) => {
                         if (stage) {
                           saveContact({ ...contact, stage })
-                          toast.success("Relationship updated")
+                          setStatus("Relationship updated")
                         }
                       }}
                     />
@@ -205,7 +227,7 @@ export const ContactDetail = ({
                               ...contact.notes,
                             ],
                           })
-                          toast.success("Note added")
+                          setStatus("Note added")
                         },
                         { closeOnSuccess: false },
                       )}
@@ -239,7 +261,7 @@ export const ContactDetail = ({
                   }
                 />
               </section>
-            </div>
+            </WorkspaceNotice>
           </>
         )}
         <DiscardChangesDialog {...form.discardProps} />

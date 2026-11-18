@@ -51,12 +51,12 @@ export const useWorkspaceForm = (onClose: () => void) => {
     window.addEventListener("beforeunload", preventLoss)
     return () => window.removeEventListener("beforeunload", preventLoss)
   }, [dirty])
-  const markDirty = (field?: string) => {
+  const markDirty = (...fields: (string | undefined)[]) => {
     setDirty(true)
-    if (field)
+    if (fields.some(Boolean))
       setErrors((current) => {
         const next = { ...current }
-        delete next[field]
+        for (const field of fields) if (field) delete next[field]
         delete next._form
         return next
       })

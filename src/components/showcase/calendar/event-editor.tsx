@@ -2,8 +2,16 @@
 
 import { useId, useState, type ComponentProps } from "react"
 import { useRouter } from "next/navigation"
-import { addDays, addHours, format, isValid, parseISO } from "date-fns"
-import { toast } from "sonner"
+import {
+  addDays,
+  addHours,
+  addMinutes,
+  differenceInCalendarDays,
+  differenceInMinutes,
+  format,
+  isValid,
+  parseISO,
+} from "date-fns"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
@@ -19,12 +27,12 @@ import { Label } from "@/components/ui/label"
 import { SelectControl } from "@/components/ui/select-control"
 import { Textarea } from "@/components/ui/textarea"
 import { CALENDARS, type Appointment } from "../showcase-data"
+import { useWorkspaceNotice } from "../workspace-notice"
 import { useShowcase } from "../showcase-provider"
 import { assertValid, validateAppointment } from "../workspace-validation"
 import { useWorkspaceForm } from "../forms/use-workspace-form"
 import { WorkspaceFieldError } from "../forms/workspace-field-error"
 import { DiscardChangesDialog } from "../forms/discard-changes-dialog"
-import { withWorkspaceRecovery } from "../workspace-feedback"
 import { CustomerContext } from "../customer-context"
 
 export type EventEditorProps = {
@@ -49,6 +57,7 @@ export const EventEditor = ({
   onSaved,
   finalFocus,
 }: EventEditorProps) => {
+  const notify = useWorkspaceNotice()
   const workspace = useShowcase()
   const { contacts, deals, tasks, saveAppointment, removeAppointment } =
     workspace
@@ -139,16 +148,13 @@ export const EventEditor = ({
             })
             saveAppointment(saved)
             onSaved?.(saved)
-            toast.success(
-              appointment ? "Appointment updated" : "Appointment added",
-              {
-                action: {
-                  label: "View appointment",
-                  onClick: () =>
-                    router.push(`/showcase/calendar?event=${saved.id}`),
-                },
+            notify(appointment ? "Appointment updated" : "Appointment added", {
+              action: {
+                label: "View appointment",
+                onClick: () =>
+                  router.push(`/showcase/calendar?event=${saved.id}`),
               },
-            )
+            })
           })}
         >
           <div className="naum-field">
@@ -184,8 +190,26 @@ export const EventEditor = ({
                 value={start}
                 dateOnly={allDay}
                 onValueChange={(value) => {
+                  const from = parseISO(start)
+                  const to = parseISO(end)
+                  const next = parseISO(value)
+                  if ([from, to, next].every(isValid)) {
+                    const duration = allDay
+                      ? differenceInCalendarDays(to, from)
+                      : differenceInMinutes(to, from)
+                    if (allDay ? duration >= 0 : duration > 0) {
+                      setEnd(
+                        format(
+                          allDay
+                            ? addDays(next, duration)
+                            : addMinutes(next, duration),
+                          "yyyy-MM-dd'T'HH:mm",
+                        ),
+                      )
+                    }
+                  }
                   setStart(value)
-                  form.markDirty("start")
+                  form.markDirty("start", "end")
                 }}
                 {...form.field("start")}
               />
@@ -334,10 +358,11 @@ export const EventEditor = ({
                 disabled={form.saving}
                 onClick={() => {
                   const undo = removeAppointment(appointment.id)
-                  toast.success("Appointment deleted", {
+                  notify("Appointment deleted", {
                     action: {
                       label: "Undo",
-                      onClick: withWorkspaceRecovery(undo),
+                      confirmation: "Appointment restored",
+                      onClick: undo,
                     },
                   })
                   onClose()
