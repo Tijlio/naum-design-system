@@ -139,7 +139,7 @@ const NavigationBranch = ({
                 render={child.render}
                 className={cn(
                   navigationItemVariants({ active: !!child.active }),
-                  "h-10 px-3",
+                  "h-10 w-full cursor-pointer px-3",
                 )}
                 aria-current={child.active ? "page" : undefined}
                 onClick={navigate}

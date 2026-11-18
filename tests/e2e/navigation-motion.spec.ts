@@ -78,3 +78,42 @@ test("the Bento pill travels between route levels without clipping", async ({
     fullPage: true,
   })
 })
+
+test("collapsed navigation rows fill the flyout", async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name === "mobile",
+    "The icon rail is desktop-only.",
+  )
+
+  await page.goto("/showcase/crm")
+  await page.getByRole("button", { name: "Toggle Sidebar" }).click()
+  await page.getByRole("button", { name: "CRM", exact: true }).press("Enter")
+  const menu = page.getByRole("menu", { name: "CRM navigation" })
+  await settleAnimations(page)
+  const active = menu.getByRole("menuitem", { name: "Overview", exact: true })
+  const contacts = menu.getByRole("menuitem", { name: "Contacts", exact: true })
+  await expect(active).toHaveAttribute("aria-current", "page")
+  await page.keyboard.press("ArrowDown")
+  await expect(contacts).toBeFocused()
+
+  const sizes = await menu.evaluate((popup) => {
+    const style = getComputedStyle(popup)
+    const available =
+      popup.clientWidth -
+      parseFloat(style.paddingLeft) -
+      parseFloat(style.paddingRight)
+    const rows = Array.from(popup.querySelectorAll('[role="menuitem"]'))
+    const pill = popup.querySelector('[data-slot="navigation-flyout-active"]')
+    return {
+      available,
+      rowWidths: rows.map((row) => row.getBoundingClientRect().width),
+      pillWidth: pill?.getBoundingClientRect().width ?? 0,
+    }
+  })
+  expect(sizes.rowWidths.length).toBeGreaterThan(1)
+  for (const rowWidth of sizes.rowWidths)
+    expect(Math.abs(rowWidth - sizes.available)).toBeLessThan(1)
+  expect(Math.abs(sizes.pillWidth - sizes.available)).toBeLessThanOrEqual(2)
+})
