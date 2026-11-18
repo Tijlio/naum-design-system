@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, type FormEvent } from "react"
+import { useId, useState } from "react"
+import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import {
@@ -17,60 +18,46 @@ import { SelectControl } from "@/components/ui/select-control"
 import { DEAL_STAGES, type Deal } from "../showcase-data"
 import { RelatedTasks } from "../tasks/related-tasks"
 import { useShowcase } from "../showcase-provider"
+import { assertValid, validateDeal } from "../workspace-validation"
+import { useWorkspaceForm } from "../forms/use-workspace-form"
+import { WorkspaceFieldError } from "../forms/workspace-field-error"
+import { DiscardChangesDialog } from "../forms/discard-changes-dialog"
+import { CustomerContext } from "../customer-context"
 
 export const DealEditor = ({
   deal,
+  contactId: initialContact,
   onClose,
 }: {
   deal: Deal | null
+  contactId?: string
   onClose: () => void
 }) => {
-  const { contacts, saveDeal, removeDeal } = useShowcase()
+  const workspace = useShowcase()
+  const { contacts, saveDeal, removeDeal } = workspace
   const options = contacts.filter(
     (contact) => contact.stage !== "Archived" || contact.id === deal?.contactId,
   )
   const [contactId, setContactId] = useState(
-    deal?.contactId ?? options[0]?.id ?? "",
+    deal?.contactId ?? initialContact ?? options[0]?.id ?? "",
   )
   const [stage, setStage] = useState<Deal["stage"]>(deal?.stage ?? "Discovery")
-  const [error, setError] = useState("")
-  const submit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const values = new FormData(event.currentTarget)
-    const title = String(values.get("title") ?? "").trim()
-    const value = Number(values.get("value"))
-    if (
-      !title ||
-      !Number.isFinite(value) ||
-      value < 0 ||
-      !options.some((contact) => contact.id === contactId)
-    ) {
-      setError("Enter a title, valid value and contact.")
-      return
-    }
-    saveDeal({
-      id: deal?.id ?? crypto.randomUUID(),
-      title,
-      value,
-      contactId,
-      stage,
-    })
-    toast.success(deal ? "Opportunity updated" : "Opportunity created")
-    onClose()
-  }
+  const form = useWorkspaceForm(onClose)
+  const id = useId()
+  const router = useRouter()
   const remove = () => {
     if (!deal) return
     const undo = removeDeal(deal.id)
-    onClose()
     toast.success("Opportunity deleted", {
       action: { label: "Undo", onClick: undo },
     })
+    onClose()
   }
   return (
     <Dialog
       open
       onOpenChange={(open) => {
-        if (!open) onClose()
+        if (!open) form.requestClose()
       }}
     >
       <DialogContent className="workspace-dialog sm:max-w-lg">
@@ -85,25 +72,47 @@ export const DealEditor = ({
           </DialogDescription>
         </DialogHeader>
         <form
+          {...form.formProps}
           className="naum-form"
-          onSubmit={submit}
-          aria-describedby={error ? "deal-error" : undefined}
+          onSubmit={form.submit((data) => {
+            const saved: Deal = {
+              id: deal?.id ?? crypto.randomUUID(),
+              title: String(data.get("title") ?? "").trim(),
+              value: Number(data.get("value")),
+              contactId,
+              stage,
+            }
+            assertValid(validateDeal(saved, workspace))
+            saveDeal(saved)
+            toast.success(
+              deal ? "Opportunity updated" : "Opportunity created",
+              {
+                action: {
+                  label: "View opportunity",
+                  onClick: () =>
+                    router.push(`/showcase/crm/pipeline?deal=${saved.id}`),
+                },
+              },
+            )
+          })}
         >
           <div className="naum-field">
-            <Label htmlFor="deal-title">Title</Label>
+            <Label htmlFor={`${id}-title`}>Title</Label>
             <Input
-              id="deal-title"
+              id={`${id}-title`}
               name="title"
               defaultValue={deal?.title}
               required
               maxLength={160}
               autoFocus
+              {...form.field("title")}
             />
+            <WorkspaceFieldError {...form.error("title")} />
           </div>
           <div className="naum-field">
-            <Label htmlFor="deal-value">Value (€)</Label>
+            <Label htmlFor={`${id}-value`}>Value (€)</Label>
             <Input
-              id="deal-value"
+              id={`${id}-value`}
               name="value"
               type="number"
               min={0}
@@ -111,55 +120,81 @@ export const DealEditor = ({
               step="0.01"
               defaultValue={deal?.value ?? 0}
               required
+              {...form.field("value")}
             />
+            <WorkspaceFieldError {...form.error("value")} />
           </div>
           <div className="naum-field">
-            <Label htmlFor="deal-contact">Contact</Label>
+            <Label htmlFor={`${id}-contact`}>Contact</Label>
             <SelectControl
-              id="deal-contact"
+              id={`${id}-contact`}
               className="w-full"
-              value={contactId}
-              onValueChange={(value) => value && setContactId(value)}
+              value={
+                options.some((contact) => contact.id === contactId)
+                  ? contactId
+                  : null
+              }
+              placeholder="Choose a contact"
+              onValueChange={(value) => {
+                setContactId(value ?? "")
+                form.markDirty("contact")
+              }}
               items={options.map((contact) => ({
                 value: contact.id,
                 label: contact.name,
               }))}
+              {...form.field("contact")}
             />
+            <WorkspaceFieldError {...form.error("contact")} />
           </div>
           <div className="naum-field">
-            <Label htmlFor="deal-stage">Stage</Label>
+            <Label htmlFor={`${id}-stage`}>Stage</Label>
             <SelectControl
-              id="deal-stage"
+              id={`${id}-stage`}
               className="w-full"
               value={stage}
-              onValueChange={(value) => value && setStage(value)}
+              onValueChange={(value) => {
+                if (value) setStage(value)
+                form.markDirty("stage")
+              }}
               items={DEAL_STAGES.map((value) => ({ value, label: value }))}
+              {...form.field("stage")}
             />
+            <WorkspaceFieldError {...form.error("stage")} />
           </div>
-          {error && (
-            <p
-              id="deal-error"
-              role="alert"
-              className="text-sm text-destructive"
-            >
-              {error}
-            </p>
-          )}
+          <WorkspaceFieldError {...form.error("_form")} />
           <DialogFooter className="flex-wrap sm:justify-between">
             {deal && (
-              <Button type="button" variant="destructive" onClick={remove}>
+              <Button
+                type="button"
+                variant="destructive"
+                disabled={form.saving}
+                onClick={remove}
+              >
                 Delete
               </Button>
             )}
-            <div className="flex flex-wrap justify-end gap-2">
-              <Button type="button" variant="outline" onClick={onClose}>
+            <div className="flex flex-wrap justify-end gap-(--naum-space-inline)">
+              <Button
+                type="button"
+                variant="outline"
+                disabled={form.saving}
+                onClick={form.requestClose}
+              >
                 Cancel
               </Button>
-              <Button type="submit">Save opportunity</Button>
+              <Button type="submit" disabled={form.saving}>
+                Save opportunity
+              </Button>
             </div>
           </DialogFooter>
         </form>
+        <CustomerContext
+          contactId={contactId}
+          onNavigate={(href) => form.requestLeave(() => router.push(href))}
+        />
         {deal && <RelatedTasks contactId={deal.contactId} dealId={deal.id} />}
+        <DiscardChangesDialog {...form.discardProps} />
       </DialogContent>
     </Dialog>
   )

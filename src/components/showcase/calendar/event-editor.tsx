@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useId, useState } from "react"
+import { useRouter } from "next/navigation"
 import { addDays, addHours, format, isValid, parseISO } from "date-fns"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
@@ -19,19 +20,38 @@ import { SelectControl } from "@/components/ui/select-control"
 import { Textarea } from "@/components/ui/textarea"
 import { CALENDARS, type Appointment } from "../showcase-data"
 import { useShowcase } from "../showcase-provider"
+import { assertValid, validateAppointment } from "../workspace-validation"
+import { useWorkspaceForm } from "../forms/use-workspace-form"
+import { WorkspaceFieldError } from "../forms/workspace-field-error"
+import { DiscardChangesDialog } from "../forms/discard-changes-dialog"
+import { CustomerContext } from "../customer-context"
 
+export type EventEditorProps = {
+  appointment?: Appointment
+  defaultStart: string
+  contactId?: string
+  dealId?: string
+  taskId?: string
+  defaultTitle?: string
+  onClose: () => void
+  onSaved?: (appointment: Appointment) => void
+}
 export const EventEditor = ({
   appointment,
   defaultStart,
+  contactId: initialContact,
+  dealId: initialDeal,
+  taskId: initialTask,
+  defaultTitle,
   onClose,
   onSaved,
-}: {
-  appointment?: Appointment
-  defaultStart: string
-  onClose: () => void
-  onSaved: (appointment: Appointment) => void
-}) => {
-  const { contacts, saveAppointment, removeAppointment } = useShowcase()
+}: EventEditorProps) => {
+  const workspace = useShowcase()
+  const { contacts, deals, tasks, saveAppointment, removeAppointment } =
+    workspace
+  const form = useWorkspaceForm(onClose)
+  const id = useId()
+  const router = useRouter()
   const [allDay, setAllDay] = useState(appointment?.allDay ?? false)
   const [start, setStart] = useState(appointment?.start ?? defaultStart)
   const [end, setEnd] = useState(
@@ -41,12 +61,28 @@ export const EventEditor = ({
         : appointment.end
       : format(addHours(parseISO(defaultStart), 1), "yyyy-MM-dd'T'HH:mm"),
   )
-  const [error, setError] = useState("")
+  const [contactId, setContactId] = useState(
+    appointment?.contactId ?? initialContact ?? "",
+  )
+  const [dealId, setDealId] = useState(appointment?.dealId ?? initialDeal ?? "")
+  const [taskId, setTaskId] = useState(appointment?.taskId ?? initialTask ?? "")
+  const [calendar, setCalendar] = useState<Appointment["calendar"]>(
+    appointment?.calendar ?? "Sales",
+  )
+  const contactOptions = contacts.filter(
+    (contact) =>
+      contact.stage !== "Archived" || contact.id === appointment?.contactId,
+  )
+  const availableDeals = deals.filter((deal) => deal.contactId === contactId)
+  const availableTasks = tasks.filter(
+    (task) =>
+      task.contactId === contactId && task.dealId === (dealId || undefined),
+  )
   return (
     <Dialog
       open
       onOpenChange={(open) => {
-        if (!open) onClose()
+        if (!open) form.requestClose()
       }}
     >
       <DialogContent className="workspace-dialog sm:max-w-xl">
@@ -61,177 +97,227 @@ export const EventEditor = ({
           </DialogDescription>
         </DialogHeader>
         <form
+          {...form.formProps}
           className="naum-form"
-          onSubmit={(event) => {
-            event.preventDefault()
-            const data = new FormData(event.currentTarget)
-            const title = data.get("title"),
-              description = data.get("description"),
-              contactId = data.get("contact"),
-              calendar = CALENDARS.find(
-                (calendar) => calendar === data.get("calendar"),
-              )
-            if (
-              typeof title !== "string" ||
-              !title.trim() ||
-              typeof description !== "string" ||
-              typeof contactId !== "string" ||
-              !calendar
-            )
-              return
+          onSubmit={form.submit((data) => {
             const startValue = allDay ? `${start.slice(0, 10)}T00:00` : start
-            const endValue = allDay
-              ? format(
-                  addDays(parseISO(end.slice(0, 10)), 1),
-                  "yyyy-MM-dd'T'HH:mm",
-                )
-              : end
-            if (
-              !isValid(parseISO(startValue)) ||
-              !isValid(parseISO(endValue)) ||
-              parseISO(endValue) <= parseISO(startValue)
-            ) {
-              setError("Choose an end after the start.")
-              return
-            }
+            const endDate = parseISO(end.slice(0, 10))
+            const endValue =
+              allDay && isValid(endDate)
+                ? format(addDays(endDate, 1), "yyyy-MM-dd'T'HH:mm")
+                : end
             const saved: Appointment = {
               id: appointment?.id ?? crypto.randomUUID(),
-              title: title.trim(),
-              description: description.trim(),
+              title: String(data.get("title") ?? "").trim(),
+              description: String(data.get("description") ?? "").trim(),
               start: startValue,
               end: endValue,
               allDay,
               calendar,
-              ...(contactId ? { contactId } : {}),
+              contactId: contactId || undefined,
+              dealId: dealId || undefined,
+              taskId: taskId || undefined,
             }
+            assertValid(validateAppointment(saved, workspace))
             saveAppointment(saved)
-            onSaved(saved)
+            onSaved?.(saved)
             toast.success(
               appointment ? "Appointment updated" : "Appointment added",
+              {
+                action: {
+                  label: "View appointment",
+                  onClick: () =>
+                    router.push(`/showcase/calendar?event=${saved.id}`),
+                },
+              },
             )
-            onClose()
-          }}
+          })}
         >
           <div className="naum-field">
-            <Label htmlFor="event-title">Title</Label>
+            <Label htmlFor={`${id}-title`}>Title</Label>
             <Input
-              id="event-title"
+              id={`${id}-title`}
               name="title"
               required
               maxLength={120}
-              defaultValue={appointment?.title}
+              defaultValue={appointment?.title ?? defaultTitle}
               autoFocus
+              {...form.field("title")}
             />
+            <WorkspaceFieldError {...form.error("title")} />
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-(--naum-space-inline)">
             <Checkbox
-              id="event-all-day"
+              id={`${id}-all-day`}
               checked={allDay}
               onCheckedChange={(checked) => {
                 setAllDay(checked)
-                setError("")
+                form.markDirty("end")
               }}
             />
-            <Label htmlFor="event-all-day">All day</Label>
+            <Label htmlFor={`${id}-all-day`}>All day</Label>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-(--naum-space-section) sm:grid-cols-2">
             <div className="naum-field">
-              <Label htmlFor="event-start">Start</Label>
+              <Label htmlFor={`${id}-start`}>Start</Label>
               <DateTimePicker
-                id="event-start"
+                id={`${id}-start`}
                 label="Start"
                 value={start}
                 dateOnly={allDay}
                 onValueChange={(value) => {
                   setStart(value)
-                  setError("")
+                  form.markDirty("start")
                 }}
+                {...form.field("start")}
               />
+              <WorkspaceFieldError {...form.error("start")} />
             </div>
             <div className="naum-field">
-              <Label htmlFor="event-end">End</Label>
+              <Label htmlFor={`${id}-end`}>End</Label>
               <DateTimePicker
-                id="event-end"
+                id={`${id}-end`}
                 label="End"
                 value={end}
                 dateOnly={allDay}
-                aria-invalid={Boolean(error)}
-                aria-describedby={error ? "event-time-error" : undefined}
                 onValueChange={(value) => {
                   setEnd(value)
-                  setError("")
+                  form.markDirty("end")
                 }}
+                {...form.field("end")}
               />
+              <WorkspaceFieldError {...form.error("end")} />
             </div>
           </div>
-          {error && (
-            <p
-              id="event-time-error"
-              role="alert"
-              className="text-sm text-destructive"
-            >
-              {error}
-            </p>
-          )}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid gap-(--naum-space-section) sm:grid-cols-2">
             <div className="naum-field">
-              <Label htmlFor="event-calendar">Calendar</Label>
+              <Label htmlFor={`${id}-calendar`}>Calendar</Label>
               <SelectControl
-                id="event-calendar"
-                name="calendar"
+                id={`${id}-calendar`}
                 className="w-full"
-                defaultValue={appointment?.calendar ?? "Sales"}
+                value={calendar}
+                onValueChange={(value) => {
+                  if (value) setCalendar(value)
+                  form.markDirty("calendar")
+                }}
                 items={CALENDARS.map((calendar) => ({
                   value: calendar,
                   label: calendar,
                 }))}
+                {...form.field("calendar")}
               />
+              <WorkspaceFieldError {...form.error("calendar")} />
             </div>
             <div className="naum-field">
-              <Label htmlFor="event-contact">Contact</Label>
+              <Label htmlFor={`${id}-contact`}>Contact</Label>
               <SelectControl
-                id="event-contact"
-                name="contact"
+                id={`${id}-contact`}
                 className="w-full"
-                defaultValue={appointment?.contactId ?? ""}
+                value={
+                  !contactId ||
+                  contactOptions.some((contact) => contact.id === contactId)
+                    ? contactId
+                    : null
+                }
+                placeholder="Choose a contact"
+                onValueChange={(value) => {
+                  setContactId(value ?? "")
+                  setDealId("")
+                  setTaskId("")
+                  form.markDirty("contact")
+                }}
                 items={[
                   { value: "", label: "No contact" },
-                  ...contacts
-                    .filter(
-                      (contact) =>
-                        contact.stage !== "Archived" ||
-                        contact.id === appointment?.contactId,
-                    )
-                    .map((contact) => ({
-                      value: contact.id,
-                      label: contact.name,
-                    })),
+                  ...contactOptions.map((contact) => ({
+                    value: contact.id,
+                    label: contact.name,
+                  })),
                 ]}
+                {...form.field("contact")}
               />
+              <WorkspaceFieldError {...form.error("contact")} />
             </div>
           </div>
+          {contactId && (
+            <div className="grid gap-(--naum-space-section) sm:grid-cols-2">
+              <div className="naum-field">
+                <Label htmlFor={`${id}-deal`}>Opportunity</Label>
+                <SelectControl
+                  id={`${id}-deal`}
+                  className="w-full"
+                  value={
+                    !dealId || availableDeals.some((deal) => deal.id === dealId)
+                      ? dealId
+                      : null
+                  }
+                  placeholder="Choose an opportunity"
+                  onValueChange={(value) => {
+                    setDealId(value ?? "")
+                    setTaskId("")
+                    form.markDirty("deal")
+                  }}
+                  items={[
+                    { value: "", label: "No opportunity" },
+                    ...availableDeals.map((deal) => ({
+                      value: deal.id,
+                      label: deal.title,
+                    })),
+                  ]}
+                  {...form.field("deal")}
+                />
+                <WorkspaceFieldError {...form.error("deal")} />
+              </div>
+              <div className="naum-field">
+                <Label htmlFor={`${id}-task`}>Task</Label>
+                <SelectControl
+                  id={`${id}-task`}
+                  className="w-full"
+                  value={
+                    !taskId || availableTasks.some((task) => task.id === taskId)
+                      ? taskId
+                      : null
+                  }
+                  placeholder="Choose a task"
+                  onValueChange={(value) => {
+                    setTaskId(value ?? "")
+                    form.markDirty("task")
+                  }}
+                  items={[
+                    { value: "", label: "No task" },
+                    ...availableTasks.map((task) => ({
+                      value: task.id,
+                      label: task.title,
+                    })),
+                  ]}
+                  {...form.field("task")}
+                />
+                <WorkspaceFieldError {...form.error("task")} />
+              </div>
+            </div>
+          )}
           <div className="naum-field">
-            <Label htmlFor="event-description">Description</Label>
+            <Label htmlFor={`${id}-description`}>Description</Label>
             <Textarea
-              id="event-description"
+              id={`${id}-description`}
               name="description"
               maxLength={2000}
               defaultValue={appointment?.description}
               rows={2}
+              {...form.field("description")}
             />
+            <WorkspaceFieldError {...form.error("description")} />
           </div>
-          <div className="flex flex-wrap items-center justify-between gap-2">
+          <WorkspaceFieldError {...form.error("_form")} />
+          <div className="flex flex-wrap items-center justify-between gap-(--naum-space-inline)">
             {appointment ? (
               <Button
                 variant="destructive"
                 type="button"
+                disabled={form.saving}
                 onClick={() => {
                   const undo = removeAppointment(appointment.id)
                   toast.success("Appointment deleted", {
-                    action: {
-                      label: "Undo",
-                      onClick: undo,
-                    },
+                    action: { label: "Undo", onClick: undo },
                   })
                   onClose()
                 }}
@@ -241,14 +327,28 @@ export const EventEditor = ({
             ) : (
               <span />
             )}
-            <div className="flex gap-2">
-              <Button type="button" variant="outline" onClick={onClose}>
+            <div className="flex gap-(--naum-space-inline)">
+              <Button
+                type="button"
+                variant="outline"
+                disabled={form.saving}
+                onClick={form.requestClose}
+              >
                 Cancel
               </Button>
-              <Button type="submit">Save appointment</Button>
+              <Button type="submit" disabled={form.saving}>
+                Save appointment
+              </Button>
             </div>
           </div>
         </form>
+        <CustomerContext
+          contactId={contactId}
+          dealId={dealId}
+          taskId={taskId}
+          onNavigate={(href) => form.requestLeave(() => router.push(href))}
+        />
+        <DiscardChangesDialog {...form.discardProps} />
       </DialogContent>
     </Dialog>
   )

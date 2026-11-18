@@ -1,7 +1,7 @@
 "use client"
 
-import { useId, useState, type FormEvent } from "react"
-import { isValid, parseISO } from "date-fns"
+import { useId, useState } from "react"
+import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -19,6 +19,11 @@ import { Label } from "@/components/ui/label"
 import { SelectControl } from "@/components/ui/select-control"
 import { DEMO_DATE } from "../showcase-data"
 import { useShowcase } from "../showcase-provider"
+import { assertValid, validateTask } from "../workspace-validation"
+import { useWorkspaceForm } from "../forms/use-workspace-form"
+import { WorkspaceFieldError } from "../forms/workspace-field-error"
+import { DiscardChangesDialog } from "../forms/discard-changes-dialog"
+import { CustomerContext } from "../customer-context"
 import type { FollowUpTask } from "./task-data"
 
 export type TaskEditorProps = {
@@ -33,12 +38,10 @@ export const TaskEditor = ({
   dealId: initialDeal,
   onClose,
 }: TaskEditorProps) => {
-  const { contacts, deals, saveTask, removeTask } = useShowcase()
-  const id = useId()
+  const workspace = useShowcase()
+  const { contacts, deals, saveTask, removeTask } = workspace
   const options = contacts.filter(
-    (contact) =>
-      contact.stage !== "Archived" ||
-      contact.id === (task?.contactId ?? initialContact),
+    (contact) => contact.stage !== "Archived" || contact.id === task?.contactId,
   )
   const [contactId, setContactId] = useState(
     task?.contactId ?? initialContact ?? options[0]?.id ?? "",
@@ -46,39 +49,15 @@ export const TaskEditor = ({
   const [dealId, setDealId] = useState(task?.dealId ?? initialDeal ?? "")
   const [dueDate, setDueDate] = useState(task?.dueDate ?? DEMO_DATE)
   const [completed, setCompleted] = useState(task?.completed ?? false)
-  const [error, setError] = useState("")
   const available = deals.filter((deal) => deal.contactId === contactId)
-  const submit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    event.stopPropagation()
-    const title = String(
-      new FormData(event.currentTarget).get("title") ?? "",
-    ).trim()
-    if (
-      !title ||
-      !isValid(parseISO(dueDate)) ||
-      !options.some((contact) => contact.id === contactId) ||
-      (dealId && !available.some((deal) => deal.id === dealId))
-    ) {
-      setError("Enter a title, deadline and valid contact or opportunity.")
-      return
-    }
-    saveTask({
-      id: task?.id ?? crypto.randomUUID(),
-      title,
-      contactId,
-      dealId: dealId || undefined,
-      dueDate,
-      completed,
-    })
-    toast.success(task ? "Task updated" : "Task created")
-    onClose()
-  }
+  const form = useWorkspaceForm(onClose)
+  const id = useId()
+  const router = useRouter()
   return (
     <Dialog
       open
       onOpenChange={(open) => {
-        if (!open) onClose()
+        if (!open) form.requestClose()
       }}
     >
       <DialogContent className="workspace-dialog sm:max-w-lg">
@@ -90,17 +69,41 @@ export const TaskEditor = ({
               : "Plan the next step for this relationship."}
           </DialogDescription>
         </DialogHeader>
-        <form className="naum-form" onSubmit={submit}>
+        <form
+          {...form.formProps}
+          className="naum-form"
+          onSubmit={form.submit((data) => {
+            const saved: FollowUpTask = {
+              id: task?.id ?? crypto.randomUUID(),
+              title: String(data.get("title") ?? "").trim(),
+              contactId,
+              dealId: dealId || undefined,
+              dueDate,
+              completed,
+            }
+            assertValid(validateTask(saved, workspace))
+            saveTask(saved)
+            toast.success(task ? "Task updated" : "Task created", {
+              action: {
+                label: "View task",
+                onClick: () =>
+                  router.push(`/showcase/crm/tasks?task=${saved.id}`),
+              },
+            })
+          })}
+        >
           <div className="naum-field">
             <Label htmlFor={`${id}-title`}>Title</Label>
             <Input
-              autoFocus
               id={`${id}-title`}
               name="title"
               required
               maxLength={160}
               defaultValue={task?.title}
+              autoFocus
+              {...form.field("title")}
             />
+            <WorkspaceFieldError {...form.error("title")} />
           </div>
           <div className="naum-field">
             <Label htmlFor={`${id}-due`}>Due date</Label>
@@ -108,35 +111,51 @@ export const TaskEditor = ({
               id={`${id}-due`}
               className="w-full"
               label="Due date"
-              value={`${dueDate}T00:00`}
+              value={dueDate ? `${dueDate}T00:00` : ""}
               dateOnly
-              onValueChange={(value) => setDueDate(value.slice(0, 10))}
+              onValueChange={(value) => {
+                setDueDate(value.slice(0, 10))
+                form.markDirty("due")
+              }}
+              {...form.field("due")}
             />
+            <WorkspaceFieldError {...form.error("due")} />
           </div>
           <div className="naum-field">
             <Label htmlFor={`${id}-contact`}>Contact</Label>
             <SelectControl
               id={`${id}-contact`}
               className="w-full"
-              value={contactId}
+              value={
+                options.some((contact) => contact.id === contactId)
+                  ? contactId
+                  : null
+              }
+              placeholder="Choose a contact"
               items={options.map((contact) => ({
                 value: contact.id,
                 label: contact.name,
               }))}
               onValueChange={(value) => {
-                if (value) {
-                  setContactId(value)
-                  setDealId("")
-                }
+                setContactId(value ?? "")
+                setDealId("")
+                form.markDirty("contact")
               }}
+              {...form.field("contact")}
             />
+            <WorkspaceFieldError {...form.error("contact")} />
           </div>
           <div className="naum-field">
             <Label htmlFor={`${id}-deal`}>Opportunity</Label>
             <SelectControl
               id={`${id}-deal`}
               className="w-full"
-              value={dealId}
+              value={
+                !dealId || available.some((deal) => deal.id === dealId)
+                  ? dealId
+                  : null
+              }
+              placeholder="Choose an opportunity"
               items={[
                 { value: "", label: "No opportunity" },
                 ...available.map((deal) => ({
@@ -144,46 +163,64 @@ export const TaskEditor = ({
                   label: deal.title,
                 })),
               ]}
-              onValueChange={(value) => value !== null && setDealId(value)}
+              onValueChange={(value) => {
+                setDealId(value ?? "")
+                form.markDirty("deal")
+              }}
+              {...form.field("deal")}
             />
+            <WorkspaceFieldError {...form.error("deal")} />
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-(--naum-space-inline)">
             <Checkbox
               id={`${id}-done`}
               checked={completed}
-              onCheckedChange={setCompleted}
+              onCheckedChange={(checked) => {
+                setCompleted(checked)
+                form.markDirty("completed")
+              }}
             />
             <Label htmlFor={`${id}-done`}>Completed</Label>
           </div>
-          {error && (
-            <p role="alert" className="text-sm text-destructive">
-              {error}
-            </p>
-          )}
+          <WorkspaceFieldError {...form.error("_form")} />
           <DialogFooter className="flex-wrap sm:justify-between">
             {task && (
               <Button
                 type="button"
                 variant="destructive"
+                disabled={form.saving}
                 onClick={() => {
                   const undo = removeTask(task.id)
-                  onClose()
                   toast.success("Task deleted", {
                     action: { label: "Undo", onClick: undo },
                   })
+                  onClose()
                 }}
               >
                 Delete
               </Button>
             )}
-            <div className="flex flex-wrap justify-end gap-2">
-              <Button type="button" variant="outline" onClick={onClose}>
+            <div className="flex flex-wrap justify-end gap-(--naum-space-inline)">
+              <Button
+                type="button"
+                variant="outline"
+                disabled={form.saving}
+                onClick={form.requestClose}
+              >
                 Cancel
               </Button>
-              <Button type="submit">Save task</Button>
+              <Button type="submit" disabled={form.saving}>
+                Save task
+              </Button>
             </div>
           </DialogFooter>
         </form>
+        <CustomerContext
+          contactId={contactId}
+          dealId={dealId}
+          onNavigate={(href) => form.requestLeave(() => router.push(href))}
+        />
+        <DiscardChangesDialog {...form.discardProps} />
       </DialogContent>
     </Dialog>
   )
