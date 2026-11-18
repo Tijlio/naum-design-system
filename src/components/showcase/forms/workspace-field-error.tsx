@@ -8,7 +8,7 @@ export const WorkspaceFieldError = ({
   message?: string
 }) =>
   message ? (
-    <MotionFadeUp initial={{ opacity: 0, y: 0 }}>
+    <MotionFadeUp offset={0}>
       <p
         id={id}
         role="alert"

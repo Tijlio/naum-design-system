@@ -70,6 +70,7 @@ export const TaskEditor = ({
       }}
     >
       <DialogContent
+        coverParent
         finalFocus={finalFocus}
         className="workspace-dialog sm:max-w-lg"
       >

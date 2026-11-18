@@ -223,11 +223,7 @@ export const CalendarWorkspace = () => {
           </PageToolbar>
           <CardContent className="px-0">
             <MotionPresence mode="wait" initial={false}>
-              <MotionFadeUp
-                key={view}
-                initial={{ opacity: 0, y: 0 }}
-                exit={{ opacity: 0 }}
-              >
+              <MotionFadeUp key={view} offset={0} exit={{ opacity: 0 }}>
                 {view === "Month" ? (
                   <CalendarMonth
                     date={date}

@@ -66,12 +66,13 @@ export function MotionFadeUp({
   children,
   className,
   delay = 0,
+  offset = motionTokens.offset,
   ...props
-}: HTMLMotionProps<"div"> & { delay?: number }) {
+}: HTMLMotionProps<"div"> & { delay?: number; offset?: number }) {
   const reducedMotion = useReducedMotionConfig()
   return (
     <motion.div
-      initial={reducedMotion ? false : { opacity: 0, y: motionTokens.offset }}
+      initial={reducedMotion ? false : { opacity: 0, y: offset }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
         duration: reducedMotion ? 0 : motionTokens.duration.enter,

@@ -94,6 +94,7 @@ export const EventEditor = ({
       }}
     >
       <DialogContent
+        coverParent
         finalFocus={finalFocus}
         className="workspace-dialog sm:max-w-xl"
       >

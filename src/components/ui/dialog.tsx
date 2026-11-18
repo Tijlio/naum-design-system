@@ -43,13 +43,19 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
+  coverParent = false,
   ...props
 }: DialogPrimitive.Popup.Props & {
   showCloseButton?: boolean
+  /** Show a pointer-blocking backdrop when opened inside another dialog. */
+  coverParent?: boolean
 }) {
   return (
     <DialogPortal>
-      <DialogOverlay />
+      <DialogOverlay
+        forceRender={coverParent}
+        className="has-[~[data-nested]]:bg-black/40 has-[~[data-nested]]:backdrop-blur-none"
+      />
       <DialogPrimitive.Popup
         data-slot="dialog-content"
         className={cn(
