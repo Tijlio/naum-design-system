@@ -41,6 +41,13 @@ export const SiteSearch = ({
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        if (
+          !open &&
+          document.querySelector(
+            '[role="dialog"][data-open], [role="alertdialog"][data-open]',
+          )
+        )
+          return
         event.preventDefault()
         if (open) close()
         else {
@@ -70,7 +77,18 @@ export const SiteSearch = ({
   return (
     <div
       className="site-search"
+      data-open={open ? "" : undefined}
       ref={container}
+      onBlur={(event) => {
+        if (
+          open &&
+          event.relatedTarget &&
+          !event.currentTarget.contains(event.relatedTarget)
+        ) {
+          setOpen(false)
+          setQuery("")
+        }
+      }}
       onKeyDown={(event) => {
         if (event.key === "Escape") {
           event.stopPropagation()
@@ -78,8 +96,10 @@ export const SiteSearch = ({
         }
       }}
     >
+      <div aria-hidden className="site-search-backdrop" onClick={close} />
       <Button
         ref={trigger}
+        className="relative"
         variant="glass"
         size="icon-sm"
         aria-label="Search"
@@ -104,7 +124,7 @@ export const SiteSearch = ({
           >
             <Command
               label="Search workspace"
-              className="w-80 overflow-visible rounded-full bg-transparent p-0 max-[80rem]:w-full"
+              className="w-full overflow-visible rounded-full bg-transparent p-0"
             >
               <MotionExpand axis="x" className="min-w-full">
                 <div className="flex items-center gap-1">

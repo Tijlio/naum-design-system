@@ -73,11 +73,24 @@
     gap: --spacing(1);
     z-index: 40;
   }
+  .site-search-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgb(0 0 0 / 30%);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--naum-duration-fast) var(--ease-naum);
+  }
+  .site-search[data-open] > .site-search-backdrop {
+    opacity: 1;
+    pointer-events: auto;
+  }
   .site-search-expand {
     position: absolute;
     top: calc(100% + --spacing(3));
     right: 0;
-    width: max-content;
+    width: 24rem;
     padding: --spacing(2);
     border-radius: var(--radius-3xl);
     background: var(--popover);
@@ -87,8 +100,7 @@
     position: absolute;
     top: calc(100% + --spacing(3));
     right: 0;
-    width: 24rem;
-    max-width: calc(100vw - --spacing(8));
+    width: 100%;
     border-radius: var(--radius-3xl);
     background: var(--popover);
     border: 1px solid var(--border);
