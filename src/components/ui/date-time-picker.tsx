@@ -1,6 +1,6 @@
 "use client"
 
-import { useId, useState, type ComponentProps } from "react"
+import { useId, useRef, useState, type ComponentProps } from "react"
 import { format, isValid, parseISO } from "date-fns"
 import { CalendarDays } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -44,6 +44,7 @@ export const DateTimePicker = ({
   name?: string
 }) => {
   const [open, setOpen] = useState(false)
+  const trigger = useRef<HTMLButtonElement>(null)
   const generatedId = useId()
   const parsed = parseISO(value)
   const selected = isValid(parsed) ? parsed : undefined
@@ -56,6 +57,7 @@ export const DateTimePicker = ({
       : format(new Date(), "yyyy-MM-dd")
     onValueChange(`${day}T${hour}:${minute}`)
   }
+  const valueId = `${generatedId}-value`
   const hourId = `${props.id ?? generatedId}-hour`
   const minuteId = `${props.id ?? generatedId}-minute`
   return (
@@ -65,6 +67,7 @@ export const DateTimePicker = ({
         <PopoverTrigger
           render={
             <Button
+              ref={trigger}
               variant="outline"
               className={cn(
                 "w-full min-w-0 justify-between border-input bg-input/30 font-normal",
@@ -73,10 +76,13 @@ export const DateTimePicker = ({
               )}
               {...props}
               aria-label={props["aria-label"] ?? label}
+              aria-describedby={[valueId, props["aria-describedby"]]
+                .filter(Boolean)
+                .join(" ")}
             />
           }
         >
-          <span className="truncate">
+          <span id={valueId} className="truncate">
             {selected
               ? format(
                   selected,
@@ -87,6 +93,7 @@ export const DateTimePicker = ({
           <CalendarDays className="size-4 shrink-0 text-muted-foreground" />
         </PopoverTrigger>
         <PopoverContent
+          finalFocus={trigger}
           align="start"
           className="w-auto max-w-[calc(100vw-2rem)] gap-3 p-3"
           aria-label={`${label} picker`}
