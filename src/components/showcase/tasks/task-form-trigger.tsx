@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, type ComponentProps } from "react"
+import { useRef, useState, type ComponentProps } from "react"
 import { Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useShowcase } from "../showcase-provider"
@@ -10,19 +10,22 @@ export const TaskFormTrigger = ({
   contactId,
   dealId,
   variant,
-}: Omit<TaskEditorProps, "onClose"> & {
+}: Omit<TaskEditorProps, "onClose" | "finalFocus"> & {
   variant?: ComponentProps<typeof Button>["variant"]
 }) => {
   const [open, setOpen] = useState(false)
+  const launcher = useRef<HTMLButtonElement>(null)
   const { contacts } = useShowcase()
-  const enabled = contacts.some(
-    (contact) =>
-      contact.stage !== "Archived" ||
-      contact.id === (task?.contactId ?? contactId),
+  const enabled = contacts.some((contact) =>
+    task
+      ? contact.id === task.contactId
+      : contact.stage !== "Archived" &&
+        (!contactId || contact.id === contactId),
   )
   return (
     <>
       <Button
+        ref={launcher}
         type="button"
         variant={variant ?? (task ? "link" : "outline")}
         size="sm"
@@ -46,6 +49,7 @@ export const TaskFormTrigger = ({
       </Button>
       {open && (
         <TaskEditor
+          finalFocus={launcher}
           task={task}
           contactId={contactId}
           dealId={dealId}

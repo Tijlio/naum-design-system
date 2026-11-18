@@ -1,5 +1,7 @@
 "use client"
 
+import { MissingRecordNotice } from "../missing-record-notice"
+import { useRecordFocus } from "../forms/use-record-focus"
 import { AppPage } from "@/components/blocks/app-page"
 import { PageToolbar } from "@/components/blocks/page-toolbar"
 import { PageHeader } from "@/components/blocks/page-header"
@@ -33,11 +35,13 @@ import { ContactDetail } from "./contact-detail"
 import { ContactForm } from "./contact-form"
 
 export const ContactsWorkspace = () => {
-  const { contacts, archiveContacts } = useShowcase()
+  const { contacts, archiveContacts, persistence } = useShowcase()
   const params = useSearchParams()
   const router = useRouter()
+  const { captureFocus, restoreFocus } = useRecordFocus()
   const openContact = useCallback(
     (id?: string) => {
+      if (id) captureFocus()
       const url = new URL(window.location.href)
       if (id) url.searchParams.set("contact", id)
       else url.searchParams.delete("contact")
@@ -45,7 +49,7 @@ export const ContactsWorkspace = () => {
         scroll: false,
       })
     },
-    [router],
+    [router, captureFocus],
   )
   const columns = useMemo<ColumnDef<Contact>[]>(
     () => [
@@ -126,6 +130,14 @@ export const ContactsWorkspace = () => {
     update("filters", (current) => ({ ...current, [key]: value }))
   return (
     <AppPage>
+      {persistence !== "loading" &&
+        params.has("contact") &&
+        !contacts.some((contact) => contact.id === params.get("contact")) && (
+          <MissingRecordNotice
+            record="Contact"
+            onDismiss={() => openContact()}
+          />
+        )}
       <PageHeader
         eyebrow="Relationships"
         title="Contacts"
@@ -231,6 +243,8 @@ export const ContactsWorkspace = () => {
         }
       />
       <ContactDetail
+        finalFocus={restoreFocus}
+        key={params.get("contact") ?? "closed"}
         contact={contacts.find(
           (contact) => contact.id === params.get("contact"),
         )}

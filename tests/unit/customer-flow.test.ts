@@ -6,6 +6,8 @@ import {
 } from "@/components/showcase/workspace-schema"
 import {
   removeDealRecord,
+  removeAppointmentRecord,
+  restoreAppointmentRecord,
   removeTaskRecord,
   restoreDealRecord,
   restoreTaskRecord,
@@ -111,4 +113,19 @@ it("migrates version-three demo data without losing tasks or history", () => {
   const restored = parseWorkspace(JSON.stringify({ version: 3, data }))
   expect(restored?.tasks).toEqual(data.tasks)
   expect(restored?.activities).toEqual(data.activities)
+})
+
+it("restores an appointment against a task's current optional opportunity", () => {
+  const before = chain()
+  const event = before.appointments.find((event) => event.id === "linked-event")
+  const task = before.tasks.find((task) => task.id === "t2")
+  if (!event || !task) throw new Error("Missing fixture")
+  const deleted = removeAppointmentRecord(before, event.id)
+  const changed = saveTaskRecord(deleted, { ...task, dealId: undefined })
+  const restored = restoreAppointmentRecord(changed, event)
+  expect(
+    restored.appointments.find((entry) => entry.id === event.id),
+  ).toMatchObject({ taskId: task.id, dealId: undefined })
+  expect(restored.activities.at(-1)?.title).toBe("Appointment restored")
+  expect(roundTrip(restored)).not.toBeNull()
 })

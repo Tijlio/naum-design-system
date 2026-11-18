@@ -1,6 +1,6 @@
 "use client"
 
-import { useId } from "react"
+import { useId, type ComponentProps } from "react"
 import { useRouter } from "next/navigation"
 import { Plus } from "lucide-react"
 import { toast } from "sonner"
@@ -22,7 +22,13 @@ import { useWorkspaceForm } from "../forms/use-workspace-form"
 import { WorkspaceFieldError } from "../forms/workspace-field-error"
 import { DiscardChangesDialog } from "../forms/discard-changes-dialog"
 
-export const ContactEditor = ({ onClose }: { onClose: () => void }) => {
+export const ContactEditor = ({
+  onClose,
+  finalFocus,
+}: {
+  onClose: () => void
+  finalFocus?: ComponentProps<typeof DialogContent>["finalFocus"]
+}) => {
   const { saveContact } = useShowcase()
   const form = useWorkspaceForm(onClose)
   const router = useRouter()
@@ -34,7 +40,7 @@ export const ContactEditor = ({ onClose }: { onClose: () => void }) => {
         if (!open) form.requestClose()
       }}
     >
-      <DialogContent className="workspace-dialog">
+      <DialogContent finalFocus={finalFocus} className="workspace-dialog">
         <DialogHeader className="workspace-overlay-heading">
           <DialogTitle>New contact</DialogTitle>
           <DialogDescription>Add someone to your workspace.</DialogDescription>

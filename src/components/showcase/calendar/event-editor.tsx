@@ -1,6 +1,6 @@
 "use client"
 
-import { useId, useState } from "react"
+import { useId, useState, type ComponentProps } from "react"
 import { useRouter } from "next/navigation"
 import { addDays, addHours, format, isValid, parseISO } from "date-fns"
 import { toast } from "sonner"
@@ -24,6 +24,7 @@ import { assertValid, validateAppointment } from "../workspace-validation"
 import { useWorkspaceForm } from "../forms/use-workspace-form"
 import { WorkspaceFieldError } from "../forms/workspace-field-error"
 import { DiscardChangesDialog } from "../forms/discard-changes-dialog"
+import { withWorkspaceRecovery } from "../workspace-feedback"
 import { CustomerContext } from "../customer-context"
 
 export type EventEditorProps = {
@@ -35,6 +36,7 @@ export type EventEditorProps = {
   defaultTitle?: string
   onClose: () => void
   onSaved?: (appointment: Appointment) => void
+  finalFocus?: ComponentProps<typeof DialogContent>["finalFocus"]
 }
 export const EventEditor = ({
   appointment,
@@ -45,6 +47,7 @@ export const EventEditor = ({
   defaultTitle,
   onClose,
   onSaved,
+  finalFocus,
 }: EventEditorProps) => {
   const workspace = useShowcase()
   const { contacts, deals, tasks, saveAppointment, removeAppointment } =
@@ -52,6 +55,11 @@ export const EventEditor = ({
   const form = useWorkspaceForm(onClose)
   const id = useId()
   const router = useRouter()
+  const navigate = (href: string) =>
+    form.requestLeave(() => {
+      onClose()
+      router.push(href)
+    })
   const [allDay, setAllDay] = useState(appointment?.allDay ?? false)
   const [start, setStart] = useState(appointment?.start ?? defaultStart)
   const [end, setEnd] = useState(
@@ -85,7 +93,10 @@ export const EventEditor = ({
         if (!open) form.requestClose()
       }}
     >
-      <DialogContent className="workspace-dialog sm:max-w-xl">
+      <DialogContent
+        finalFocus={finalFocus}
+        className="workspace-dialog sm:max-w-xl"
+      >
         <DialogHeader className="workspace-overlay-heading">
           <DialogTitle>
             {appointment ? "Edit appointment" : "New appointment"}
@@ -118,7 +129,13 @@ export const EventEditor = ({
               dealId: dealId || undefined,
               taskId: taskId || undefined,
             }
-            assertValid(validateAppointment(saved, workspace))
+            assertValid({
+              ...validateAppointment(saved, workspace),
+              ...(contactId &&
+              !contactOptions.some((contact) => contact.id === contactId)
+                ? { contact: "Choose an active contact." }
+                : {}),
+            })
             saveAppointment(saved)
             onSaved?.(saved)
             toast.success(
@@ -317,7 +334,10 @@ export const EventEditor = ({
                 onClick={() => {
                   const undo = removeAppointment(appointment.id)
                   toast.success("Appointment deleted", {
-                    action: { label: "Undo", onClick: undo },
+                    action: {
+                      label: "Undo",
+                      onClick: withWorkspaceRecovery(undo),
+                    },
                   })
                   onClose()
                 }}
@@ -346,7 +366,7 @@ export const EventEditor = ({
           contactId={contactId}
           dealId={dealId}
           taskId={taskId}
-          onNavigate={(href) => form.requestLeave(() => router.push(href))}
+          onNavigate={navigate}
         />
         <DiscardChangesDialog {...form.discardProps} />
       </DialogContent>

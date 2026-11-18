@@ -1,6 +1,6 @@
 "use client"
 
-import { useId, useState } from "react"
+import { useId, useState, type ComponentProps } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
@@ -22,16 +22,20 @@ import { assertValid, validateDeal } from "../workspace-validation"
 import { useWorkspaceForm } from "../forms/use-workspace-form"
 import { WorkspaceFieldError } from "../forms/workspace-field-error"
 import { DiscardChangesDialog } from "../forms/discard-changes-dialog"
+import { RelatedAppointments } from "../calendar/related-appointments"
+import { withWorkspaceRecovery } from "../workspace-feedback"
 import { CustomerContext } from "../customer-context"
 
 export const DealEditor = ({
   deal,
   contactId: initialContact,
   onClose,
+  finalFocus,
 }: {
   deal: Deal | null
   contactId?: string
   onClose: () => void
+  finalFocus?: ComponentProps<typeof DialogContent>["finalFocus"]
 }) => {
   const workspace = useShowcase()
   const { contacts, saveDeal, removeDeal } = workspace
@@ -45,11 +49,16 @@ export const DealEditor = ({
   const form = useWorkspaceForm(onClose)
   const id = useId()
   const router = useRouter()
+  const navigate = (href: string) =>
+    form.requestLeave(() => {
+      onClose()
+      router.push(href)
+    })
   const remove = () => {
     if (!deal) return
     const undo = removeDeal(deal.id)
     toast.success("Opportunity deleted", {
-      action: { label: "Undo", onClick: undo },
+      action: { label: "Undo", onClick: withWorkspaceRecovery(undo) },
     })
     onClose()
   }
@@ -60,7 +69,10 @@ export const DealEditor = ({
         if (!open) form.requestClose()
       }}
     >
-      <DialogContent className="workspace-dialog sm:max-w-lg">
+      <DialogContent
+        finalFocus={finalFocus}
+        className="workspace-dialog sm:max-w-lg"
+      >
         <DialogHeader>
           <DialogTitle>
             {deal ? "Edit opportunity" : "New opportunity"}
@@ -82,7 +94,13 @@ export const DealEditor = ({
               contactId,
               stage,
             }
-            assertValid(validateDeal(saved, workspace))
+            assertValid({
+              ...validateDeal(saved, workspace),
+              ...(contactId &&
+              !options.some((contact) => contact.id === contactId)
+                ? { contact: "Choose an active contact." }
+                : {}),
+            })
             saveDeal(saved)
             toast.success(
               deal ? "Opportunity updated" : "Opportunity created",
@@ -189,11 +207,16 @@ export const DealEditor = ({
             </div>
           </DialogFooter>
         </form>
-        <CustomerContext
-          contactId={contactId}
-          onNavigate={(href) => form.requestLeave(() => router.push(href))}
-        />
+        <CustomerContext contactId={contactId} onNavigate={navigate} />
         {deal && <RelatedTasks contactId={deal.contactId} dealId={deal.id} />}
+        {deal && (
+          <RelatedAppointments
+            contactId={deal.contactId}
+            dealId={deal.id}
+            disabled={form.dirty}
+            onNavigate={navigate}
+          />
+        )}
         <DiscardChangesDialog {...form.discardProps} />
       </DialogContent>
     </Dialog>

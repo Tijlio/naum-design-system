@@ -1,5 +1,7 @@
 "use client"
 
+import { MissingRecordNotice } from "../missing-record-notice"
+import { useRecordFocus } from "../forms/use-record-focus"
 import { AppPage } from "@/components/blocks/app-page"
 import { PageHeader } from "@/components/blocks/page-header"
 import { useCallback, useId, useState } from "react"
@@ -33,8 +35,9 @@ import { getPipelineColumns } from "./pipeline-data"
 import { PipelineCard, DEAL_DRAG_TYPE } from "./pipeline-card"
 
 export const PipelineWorkspace = () => {
-  const { contacts, deals, saveDeal } = useShowcase()
+  const { contacts, deals, saveDeal, persistence } = useShowcase()
   const [createOpen, setCreateOpen] = useState(false)
+  const { captureFocus, restoreFocus } = useRecordFocus()
   const params = useSearchParams()
   const router = useRouter()
   const view = readTableView(
@@ -57,11 +60,12 @@ export const PipelineWorkspace = () => {
   }
   const editDeal = useCallback(
     (id: string) => {
+      captureFocus()
       const url = new URL(window.location.href)
       url.searchParams.set("deal", id)
       router.push(`${url.pathname}${url.search}`, { scroll: false })
     },
-    [router],
+    [router, captureFocus],
   )
 
   const selectedDeal = deals.find((deal) => deal.id === params.get("deal"))
@@ -102,12 +106,21 @@ export const PipelineWorkspace = () => {
   const canCreate = contacts.some((contact) => contact.stage !== "Archived")
   return (
     <AppPage>
+      {persistence !== "loading" && params.has("deal") && !selectedDeal && (
+        <MissingRecordNotice record="Opportunity" onDismiss={closeEditor} />
+      )}
       <PageHeader
         eyebrow="Opportunities"
         title="Pipeline"
         count={deals.length}
         actions={
-          <Button onClick={() => setCreateOpen(true)} disabled={!canCreate}>
+          <Button
+            onClick={() => {
+              captureFocus()
+              setCreateOpen(true)
+            }}
+            disabled={!canCreate}
+          >
             <Plus />
             New opportunity
           </Button>
@@ -274,6 +287,7 @@ export const PipelineWorkspace = () => {
       </Tabs>
       {(createOpen || selectedDeal) && (
         <DealEditor
+          finalFocus={restoreFocus}
           key={selectedDeal?.id ?? "new"}
           deal={selectedDeal ?? null}
           onClose={closeEditor}

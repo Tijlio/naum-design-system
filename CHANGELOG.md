@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Complete the contextual contact → opportunity → task → appointment workflow, with related-record navigation, linked appointment lists and correct calendar dates after hydration/reload.
+- Share form validation, field errors, focus recovery, draft-discard confirmation and submission deduplication; preserve failed drafts and reset successful note submissions in place.
+- Add optional opportunity/task appointment links with version-four demo storage migration; keep relationships consistent during edits, deletions and undo without replacing later workspace changes.
+- Distinguish explicit empty SelectControl options from placeholders and offer recovery for missing record URLs.
+
 - Reuse shared surface/tone variants and spacing across page composition, forms, badges, avatars, calendar filters/events and navigation. Align CSS and Motion timing, preserve reduced motion and opaque popups, and remove application palette duplication.
 - Establish a shared design contract for semantic tones, spacing, surfaces and motion. Generate typed Motion defaults from the CSS source and distribute them with the registry.
 

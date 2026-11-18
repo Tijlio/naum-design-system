@@ -40,6 +40,7 @@ export const useWorkspaceForm = (onClose: () => void) => {
   const [discardOpen, setDiscardOpen] = useState(false)
   const locked = useRef(false)
   const leave = useRef(onClose)
+  const discardReturnFocus = useRef<HTMLElement | null>(null)
   const formRef = useRef<HTMLFormElement>(null)
   useEffect(() => {
     if (!dirty) return
@@ -63,11 +64,19 @@ export const useWorkspaceForm = (onClose: () => void) => {
   const requestLeave = (action = onClose) => {
     if (locked.current) return
     leave.current = action
-    if (dirty) setDiscardOpen(true)
-    else action()
+    if (dirty) {
+      discardReturnFocus.current =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null
+      setDiscardOpen(true)
+    } else action()
   }
   const submit =
-    (save: (data: FormData) => void | Promise<void>) =>
+    (
+      save: (data: FormData) => void | Promise<void>,
+      { closeOnSuccess = true } = {},
+    ) =>
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
       event.stopPropagation()
@@ -82,7 +91,12 @@ export const useWorkspaceForm = (onClose: () => void) => {
         setSaving(true)
         await save(new FormData(element))
         setDirty(false)
-        onClose()
+        if (closeOnSuccess) onClose()
+        else {
+          locked.current = false
+          setSaving(false)
+          formRef.current?.reset()
+        }
         // Retain the lock until unmount; a queued second submit cannot duplicate a record.
       } catch (error) {
         setErrors(
@@ -131,7 +145,12 @@ export const useWorkspaceForm = (onClose: () => void) => {
     discardProps: {
       open: discardOpen,
       onOpenChange: setDiscardOpen,
+      finalFocus: () =>
+        discardReturnFocus.current?.isConnected
+          ? discardReturnFocus.current
+          : false,
       onDiscard: () => {
+        discardReturnFocus.current = null
         setDiscardOpen(false)
         setDirty(false)
         leave.current()

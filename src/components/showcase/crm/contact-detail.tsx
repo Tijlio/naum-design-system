@@ -1,8 +1,17 @@
 "use client"
 
+import type { ComponentProps } from "react"
+
 import { formatMoney } from "@/lib/money-format"
 
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { DealFormTrigger } from "./deal-form-trigger"
+import { RelatedAppointments } from "../calendar/related-appointments"
+import { useWorkspaceForm } from "../forms/use-workspace-form"
+import { DiscardChangesDialog } from "../forms/discard-changes-dialog"
+import { WorkspaceFieldError } from "../forms/workspace-field-error"
+import { WorkspaceValidationError } from "../workspace-validation"
 import { format, parseISO } from "date-fns"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
@@ -27,19 +36,26 @@ import { DealStageBadge } from "./deal-stage-badge"
 export const ContactDetail = ({
   contact,
   onClose,
+  finalFocus,
 }: {
   contact?: Contact
   onClose: () => void
+  finalFocus?: ComponentProps<typeof SheetContent>["finalFocus"]
 }) => {
   const { saveContact, deals } = useShowcase()
+  const form = useWorkspaceForm(onClose)
+  const router = useRouter()
   return (
     <Sheet
       open={Boolean(contact)}
       onOpenChange={(open) => {
-        if (!open) onClose()
+        if (!open) form.requestClose()
       }}
     >
-      <SheetContent className="workspace-overlay workspace-detail-sheet overflow-y-auto sm:max-w-lg">
+      <SheetContent
+        finalFocus={finalFocus}
+        className="workspace-overlay workspace-detail-sheet overflow-y-auto sm:max-w-lg"
+      >
         {contact && (
           <>
             <Card
@@ -106,7 +122,10 @@ export const ContactDetail = ({
                 </CardContent>
               </Card>
               <section className="space-y-3" aria-label="Contact opportunities">
-                <h3 className="font-medium">Opportunities</h3>
+                <div className="flex flex-wrap items-center justify-between gap-(--naum-space-inline)">
+                  <h3 className="font-medium">Opportunities</h3>
+                  <DealFormTrigger contactId={contact.id} />
+                </div>
                 {deals
                   .filter((deal) => deal.contactId === contact.id)
                   .map((deal) => (
@@ -119,6 +138,21 @@ export const ContactDetail = ({
                           render={
                             <Link
                               href={`/showcase/crm/pipeline?deal=${deal.id}`}
+                              onClick={(event) => {
+                                if (
+                                  !event.metaKey &&
+                                  !event.ctrlKey &&
+                                  !event.shiftKey &&
+                                  !event.altKey
+                                ) {
+                                  event.preventDefault()
+                                  form.requestLeave(() =>
+                                    router.push(
+                                      `/showcase/crm/pipeline?deal=${deal.id}`,
+                                    ),
+                                  )
+                                }
+                              }}
                             />
                           }
                         >
@@ -140,31 +174,41 @@ export const ContactDetail = ({
                 )}
               </section>
               <RelatedTasks contactId={contact.id} />
+              <RelatedAppointments
+                contactId={contact.id}
+                onNavigate={(href) =>
+                  form.requestLeave(() => router.push(href))
+                }
+              />
               <section className="space-y-4" aria-label="Contact activity">
                 <h3 className="font-medium">Activity</h3>
                 <Card size="sm">
                   <CardContent>
                     <form
                       className="naum-form"
-                      onSubmit={(event) => {
-                        event.preventDefault()
-                        const form = event.currentTarget
-                        const note = new FormData(form).get("note")
-                        if (typeof note !== "string" || !note.trim()) return
-                        saveContact({
-                          ...contact,
-                          notes: [
-                            {
-                              id: crypto.randomUUID(),
-                              text: note.trim(),
-                              date: DEMO_DATE,
-                            },
-                            ...contact.notes,
-                          ],
-                        })
-                        form.reset()
-                        toast.success("Note added")
-                      }}
+                      {...form.formProps}
+                      onSubmit={form.submit(
+                        (data) => {
+                          const note = data.get("note")
+                          if (typeof note !== "string" || !note.trim())
+                            throw new WorkspaceValidationError({
+                              note: "Enter a note.",
+                            })
+                          saveContact({
+                            ...contact,
+                            notes: [
+                              {
+                                id: crypto.randomUUID(),
+                                text: note.trim(),
+                                date: DEMO_DATE,
+                              },
+                              ...contact.notes,
+                            ],
+                          })
+                          toast.success("Note added")
+                        },
+                        { closeOnSuccess: false },
+                      )}
                     >
                       <Label htmlFor="contact-note">Add a note</Label>
                       <Textarea
@@ -173,18 +217,32 @@ export const ContactDetail = ({
                         required
                         maxLength={2000}
                         placeholder="What would you like to remember?"
+                        {...form.field("note")}
                       />
-                      <Button type="submit" size="sm" className="self-end">
+                      <WorkspaceFieldError {...form.error("note")} />
+                      <WorkspaceFieldError {...form.error("_form")} />
+                      <Button
+                        type="submit"
+                        size="sm"
+                        className="self-end"
+                        disabled={form.saving}
+                      >
                         Save note
                       </Button>
                     </form>
                   </CardContent>
                 </Card>
-                <ContactTimeline contact={contact} />
+                <ContactTimeline
+                  contact={contact}
+                  onNavigate={(href) =>
+                    form.requestLeave(() => router.push(href))
+                  }
+                />
               </section>
             </div>
           </>
         )}
+        <DiscardChangesDialog {...form.discardProps} />
       </SheetContent>
     </Sheet>
   )

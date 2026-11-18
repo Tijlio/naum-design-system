@@ -1,19 +1,22 @@
 "use client"
 
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ContactEditor } from "./contact-editor"
 
 export const ContactForm = () => {
   const [open, setOpen] = useState(false)
+  const launcher = useRef<HTMLButtonElement>(null)
   return (
     <>
-      <Button onClick={() => setOpen(true)}>
+      <Button ref={launcher} onClick={() => setOpen(true)}>
         <Plus />
         New contact
       </Button>
-      {open && <ContactEditor onClose={() => setOpen(false)} />}
+      {open && (
+        <ContactEditor finalFocus={launcher} onClose={() => setOpen(false)} />
+      )}
     </>
   )
 }

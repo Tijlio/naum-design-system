@@ -21,7 +21,13 @@ const ICONS = {
   appointment: CalendarDays,
   task: CheckCheck,
 }
-export const ContactTimeline = ({ contact }: { contact: Contact }) => {
+export const ContactTimeline = ({
+  contact,
+  onNavigate,
+}: {
+  contact: Contact
+  onNavigate?: (href: string) => void
+}) => {
   const { appointments, activities, tasks, deals } = useShowcase()
   const entries = getContactTimeline(
     contact,
@@ -49,7 +55,24 @@ export const ContactTimeline = ({ contact }: { contact: Contact }) => {
               size="sm"
               className="h-auto p-0"
               nativeButton={false}
-              render={<Link href={entry.href} />}
+              render={
+                <Link
+                  href={entry.href}
+                  onClick={(event) => {
+                    if (
+                      onNavigate &&
+                      entry.href &&
+                      !event.metaKey &&
+                      !event.ctrlKey &&
+                      !event.shiftKey &&
+                      !event.altKey
+                    ) {
+                      event.preventDefault()
+                      onNavigate(entry.href)
+                    }
+                  }}
+                />
+              }
             >
               Open {entry.kind}
             </Button>

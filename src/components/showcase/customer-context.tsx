@@ -58,6 +58,7 @@ export const CustomerContext = ({
           variant="link"
           size="sm"
           className="h-auto max-w-full p-0 text-left whitespace-normal"
+          role="link"
           nativeButton={false}
           render={
             <Link

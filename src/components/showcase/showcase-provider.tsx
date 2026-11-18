@@ -88,6 +88,7 @@ export const ShowcaseProvider = ({ children }: { children: ReactNode }) => {
             saveAppointmentRecord(current, appointment),
           ),
         removeAppointment: (id) => {
+          store.restore()
           const appointment = store
             .getSnapshot()
             .data.appointments.find((entry) => entry.id === id)
@@ -102,6 +103,7 @@ export const ShowcaseProvider = ({ children }: { children: ReactNode }) => {
         saveDeal: (deal) =>
           store.update((current) => saveDealRecord(current, deal)),
         removeDeal: (id) => {
+          store.restore()
           const before = store.getSnapshot().data
           store.update((current) => removeDealRecord(current, id))
           return () =>
@@ -110,6 +112,7 @@ export const ShowcaseProvider = ({ children }: { children: ReactNode }) => {
         saveTask: (task) =>
           store.update((current) => saveTaskRecord(current, task)),
         removeTask: (id) => {
+          store.restore()
           const before = store.getSnapshot().data
           store.update((current) => removeTaskRecord(current, id))
           return () =>

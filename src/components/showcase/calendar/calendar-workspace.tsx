@@ -1,5 +1,7 @@
 "use client"
 
+import { MissingRecordNotice } from "../missing-record-notice"
+import { useRecordFocus } from "../forms/use-record-focus"
 import { AppPage } from "@/components/blocks/app-page"
 import { PageToolbar } from "@/components/blocks/page-toolbar"
 import { PageHeader } from "@/components/blocks/page-header"
@@ -42,16 +44,28 @@ type View = (typeof VIEWS)[number]
 type Editor = { appointment?: Appointment; start: string }
 
 export const CalendarWorkspace = () => {
-  const { appointments, saveAppointment } = useShowcase()
+  const { appointments, saveAppointment, persistence } = useShowcase()
+  const { captureFocus, restoreFocus } = useRecordFocus()
   const params = useSearchParams()
   const router = useRouter()
   const mobile = useIsMobile()
   const selectedEvent = appointments.find(
     (event) => event.id === params.get("event"),
   )
-  const [date, setDate] = useState(() =>
-    parseISO(selectedEvent?.start ?? DEMO_DATE),
-  )
+  const [dateState, setDateState] = useState(() => ({
+    date: parseISO(selectedEvent?.start ?? DEMO_DATE),
+    eventId: selectedEvent?.id ?? null,
+  }))
+  // A linked event may arrive from local storage after hydration or via a new URL.
+  const date =
+    selectedEvent && dateState.eventId !== selectedEvent.id
+      ? parseISO(selectedEvent.start)
+      : dateState.date
+  const setDate = (value: Date | ((current: Date) => Date)) =>
+    setDateState({
+      date: typeof value === "function" ? value(date) : value,
+      eventId: selectedEvent?.id ?? null,
+    })
   const [chosenView, setChosenView] = useState<View | null>(null)
   const [enabledCalendars, setEnabledCalendars] = useState<string[]>([
     ...CALENDARS,
@@ -78,19 +92,27 @@ export const CalendarWorkspace = () => {
         ? addMonths(current, direction)
         : addDays(current, direction * (view === "Day" ? 1 : 7)),
     )
-  const create = (day: Date, hour: number) =>
+  const create = (day: Date, hour: number) => {
+    captureFocus()
     setEditor({
       start: format(setHours(startOfDay(day), hour), "yyyy-MM-dd'T'HH:mm"),
     })
-  const edit = (appointment: Appointment) =>
+  }
+  const edit = (appointment: Appointment) => {
+    captureFocus()
     setEditor({ appointment, start: appointment.start })
+  }
   const close = () => {
+    setDate(date)
     setEditor(null)
     if (params.has("event"))
       router.replace("/showcase/calendar", { scroll: false })
   }
   return (
     <AppPage className="calendar-workspace">
+      {persistence !== "loading" && params.has("event") && !selectedEvent && (
+        <MissingRecordNotice record="Appointment" onDismiss={close} />
+      )}
       <PageHeader
         eyebrow="Your week, at a glance"
         title="Calendar"
@@ -280,6 +302,7 @@ export const CalendarWorkspace = () => {
       </div>
       {activeEditor && (
         <EventEditor
+          finalFocus={restoreFocus}
           key={activeEditor.appointment?.id ?? activeEditor.start}
           appointment={activeEditor.appointment}
           defaultStart={activeEditor.start}

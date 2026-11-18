@@ -1,6 +1,6 @@
 "use client"
 
-import { useId, useState } from "react"
+import { useId, useState, type ComponentProps } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
@@ -23,6 +23,8 @@ import { assertValid, validateTask } from "../workspace-validation"
 import { useWorkspaceForm } from "../forms/use-workspace-form"
 import { WorkspaceFieldError } from "../forms/workspace-field-error"
 import { DiscardChangesDialog } from "../forms/discard-changes-dialog"
+import { RelatedAppointments } from "../calendar/related-appointments"
+import { withWorkspaceRecovery } from "../workspace-feedback"
 import { CustomerContext } from "../customer-context"
 import type { FollowUpTask } from "./task-data"
 
@@ -31,12 +33,14 @@ export type TaskEditorProps = {
   contactId?: string
   dealId?: string
   onClose: () => void
+  finalFocus?: ComponentProps<typeof DialogContent>["finalFocus"]
 }
 export const TaskEditor = ({
   task,
   contactId: initialContact,
   dealId: initialDeal,
   onClose,
+  finalFocus,
 }: TaskEditorProps) => {
   const workspace = useShowcase()
   const { contacts, deals, saveTask, removeTask } = workspace
@@ -53,6 +57,11 @@ export const TaskEditor = ({
   const form = useWorkspaceForm(onClose)
   const id = useId()
   const router = useRouter()
+  const navigate = (href: string) =>
+    form.requestLeave(() => {
+      onClose()
+      router.push(href)
+    })
   return (
     <Dialog
       open
@@ -60,7 +69,10 @@ export const TaskEditor = ({
         if (!open) form.requestClose()
       }}
     >
-      <DialogContent className="workspace-dialog sm:max-w-lg">
+      <DialogContent
+        finalFocus={finalFocus}
+        className="workspace-dialog sm:max-w-lg"
+      >
         <DialogHeader>
           <DialogTitle>{task ? "Edit task" : "New task"}</DialogTitle>
           <DialogDescription>
@@ -81,7 +93,13 @@ export const TaskEditor = ({
               dueDate,
               completed,
             }
-            assertValid(validateTask(saved, workspace))
+            assertValid({
+              ...validateTask(saved, workspace),
+              ...(contactId &&
+              !options.some((contact) => contact.id === contactId)
+                ? { contact: "Choose an active contact." }
+                : {}),
+            })
             saveTask(saved)
             toast.success(task ? "Task updated" : "Task created", {
               action: {
@@ -192,7 +210,10 @@ export const TaskEditor = ({
                 onClick={() => {
                   const undo = removeTask(task.id)
                   toast.success("Task deleted", {
-                    action: { label: "Undo", onClick: undo },
+                    action: {
+                      label: "Undo",
+                      onClick: withWorkspaceRecovery(undo),
+                    },
                   })
                   onClose()
                 }}
@@ -218,8 +239,17 @@ export const TaskEditor = ({
         <CustomerContext
           contactId={contactId}
           dealId={dealId}
-          onNavigate={(href) => form.requestLeave(() => router.push(href))}
+          onNavigate={navigate}
         />
+        {task && (
+          <RelatedAppointments
+            contactId={task.contactId}
+            dealId={task.dealId}
+            taskId={task.id}
+            disabled={form.dirty}
+            onNavigate={navigate}
+          />
+        )}
         <DiscardChangesDialog {...form.discardProps} />
       </DialogContent>
     </Dialog>

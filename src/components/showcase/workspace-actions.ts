@@ -240,6 +240,13 @@ export const restoreDealRecord = (
   const restored = saveDealRecord(current, deal)
   return {
     ...restored,
+    activities: appendActivity(current, {
+      contactId: deal.contactId,
+      entityId: deal.id,
+      kind: "opportunity",
+      title: "Opportunity restored",
+      description: deal.title,
+    }),
     tasks: restored.tasks.map((task) =>
       !task.dealId &&
       task.contactId === deal.contactId &&
@@ -276,6 +283,13 @@ export const restoreTaskRecord = (
   const restored = saveTaskRecord(current, restoredTask)
   return {
     ...restored,
+    activities: appendActivity(current, {
+      contactId: restoredTask.contactId,
+      entityId: restoredTask.id,
+      kind: "task",
+      title: "Task restored",
+      description: restoredTask.title,
+    }),
     appointments: restored.appointments.map((appointment) =>
       !appointment.taskId &&
       appointment.contactId === restoredTask.contactId &&
@@ -299,18 +313,30 @@ export const restoreAppointmentRecord = (
       task.id === appointment.taskId &&
       task.contactId === appointment.contactId,
   )
-  const dealId =
-    task?.dealId ??
-    (current.deals.some(
-      (deal) =>
-        deal.id === appointment.dealId &&
-        deal.contactId === appointment.contactId,
-    )
+  const dealId = task
+    ? task.dealId
+    : current.deals.some(
+          (deal) =>
+            deal.id === appointment.dealId &&
+            deal.contactId === appointment.contactId,
+        )
       ? appointment.dealId
-      : undefined)
-  return saveAppointmentRecord(current, {
+      : undefined
+  const restored = saveAppointmentRecord(current, {
     ...appointment,
     dealId,
     taskId: task?.id,
   })
+  return {
+    ...restored,
+    activities: appointment.contactId
+      ? appendActivity(current, {
+          contactId: appointment.contactId,
+          entityId: appointment.id,
+          kind: "appointment",
+          title: "Appointment restored",
+          description: appointment.title,
+        })
+      : current.activities,
+  }
 }

@@ -1,5 +1,7 @@
 "use client"
 
+import { MissingRecordNotice } from "../missing-record-notice"
+import { useRecordFocus } from "../forms/use-record-focus"
 import { AppPage } from "@/components/blocks/app-page"
 import { PageToolbar } from "@/components/blocks/page-toolbar"
 import { PageHeader } from "@/components/blocks/page-header"
@@ -24,12 +26,14 @@ import { TaskEditor } from "./task-editor"
 import { TaskFormTrigger } from "./task-form-trigger"
 import type { FollowUpTask } from "./task-data"
 export const TasksWorkspace = () => {
-  const { tasks, contacts, saveTask } = useShowcase()
+  const { tasks, contacts, saveTask, persistence } = useShowcase()
   const { completeTask } = useTaskActions()
+  const { captureFocus, restoreFocus } = useRecordFocus()
   const params = useSearchParams(),
     router = useRouter()
   const edit = useCallback(
     (id?: string) => {
+      if (id) captureFocus()
       const url = new URL(window.location.href)
       if (id) url.searchParams.set("task", id)
       else url.searchParams.delete("task")
@@ -37,7 +41,7 @@ export const TasksWorkspace = () => {
         scroll: false,
       })
     },
-    [router],
+    [router, captureFocus],
   )
   const columns = useMemo<ColumnDef<FollowUpTask>[]>(
     () => [
@@ -127,6 +131,9 @@ export const TasksWorkspace = () => {
   const selected = tasks.find((task) => task.id === params.get("task"))
   return (
     <AppPage>
+      {persistence !== "loading" && params.has("task") && !selected && (
+        <MissingRecordNotice record="Task" onDismiss={() => edit()} />
+      )}
       <PageHeader
         eyebrow="Follow-ups"
         title="Tasks"
@@ -209,7 +216,12 @@ export const TasksWorkspace = () => {
         )}
       />
       {selected && (
-        <TaskEditor key={selected.id} task={selected} onClose={() => edit()} />
+        <TaskEditor
+          finalFocus={restoreFocus}
+          key={selected.id}
+          task={selected}
+          onClose={() => edit()}
+        />
       )}
     </AppPage>
   )

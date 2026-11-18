@@ -1,5 +1,7 @@
 "use client"
 
+import type { ComponentProps } from "react"
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,13 +17,15 @@ export const DiscardChangesDialog = ({
   open,
   onOpenChange,
   onDiscard,
+  finalFocus,
 }: {
   open: boolean
   onOpenChange: (open: boolean) => void
   onDiscard: () => void
+  finalFocus?: ComponentProps<typeof AlertDialogContent>["finalFocus"]
 }) => (
   <AlertDialog open={open} onOpenChange={onOpenChange}>
-    <AlertDialogContent>
+    <AlertDialogContent finalFocus={finalFocus}>
       <AlertDialogHeader>
         <AlertDialogTitle>Discard changes?</AlertDialogTitle>
         <AlertDialogDescription>

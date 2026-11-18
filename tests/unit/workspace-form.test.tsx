@@ -10,9 +10,11 @@ import { WorkspaceValidationError } from "@/components/showcase/workspace-valida
 const Editor = ({
   save,
   close,
+  stayOpen = false,
 }: {
   save: (data: FormData) => void | Promise<void>
   close: () => void
+  stayOpen?: boolean
 }) => {
   const form = useWorkspaceForm(close)
   return (
@@ -20,7 +22,7 @@ const Editor = ({
       <form
         {...form.formProps}
         aria-label="Editor"
-        onSubmit={form.submit(save)}
+        onSubmit={form.submit(save, { closeOnSuccess: !stayOpen })}
       >
         <Label htmlFor="title">Title</Label>
         <Input id="title" name="title" required {...form.field("title")} />
@@ -90,4 +92,18 @@ it("protects changed drafts on cancel and restores editing when discard is decli
     await screen.findByRole("button", { name: "Discard changes" }),
   )
   expect(close).toHaveBeenCalledOnce()
+})
+
+it("resets a saved note draft and unlocks the next submission without closing its sheet", async () => {
+  const close = vi.fn(),
+    save = vi.fn()
+  render(<Editor save={save} close={close} stayOpen />)
+  const input = screen.getByRole("textbox", { name: "Title" })
+  fireEvent.change(input, { target: { value: "First note" } })
+  fireEvent.submit(screen.getByRole("form"))
+  await waitFor(() => expect((input as HTMLInputElement).value).toBe(""))
+  fireEvent.change(input, { target: { value: "Second note" } })
+  fireEvent.submit(screen.getByRole("form"))
+  await waitFor(() => expect(save).toHaveBeenCalledTimes(2))
+  expect(close).not.toHaveBeenCalled()
 })

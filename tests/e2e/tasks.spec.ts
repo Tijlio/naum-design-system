@@ -83,6 +83,10 @@ test("opportunity follow-up submission does not submit the outer opportunity for
   ).toContainText("Forma · Brand platform")
   await form.getByRole("button", { name: "Save task", exact: true }).click()
   await expect(outer).toBeVisible()
+  page.once("dialog", async (dialog) => {
+    expect(dialog.type()).toBe("beforeunload")
+    await dialog.accept()
+  })
   await page.reload()
   await expect(
     page
