@@ -5,7 +5,10 @@ import { PageHeader } from "@/components/blocks/page-header"
 import Link from "next/link"
 import { ArrowUpRight, ArrowRight, CalendarDays } from "lucide-react"
 import { InsightCard } from "@/components/bento/insight-card"
-import { BentoStatCard } from "@/components/blocks/bento-stat-card"
+import {
+  BentoStatCard,
+  BentoStatCardArrow,
+} from "@/components/blocks/bento-stat-card"
 import { format, parseISO } from "date-fns"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -79,7 +82,7 @@ export const CrmOverview = () => {
                     />
                   }
                 >
-                  <ArrowUpRight className="size-3.5" />
+                  <BentoStatCardArrow />
                 </Button>
               }
             >

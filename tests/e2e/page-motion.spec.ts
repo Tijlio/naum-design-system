@@ -44,3 +44,28 @@ test("route pages animate together and query-only updates retain the page bounda
   ).toBeFocused()
   await pageBoundary?.dispose()
 })
+
+test("stat cards lift and animate their action arrow on hover and keyboard focus", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name === "mobile", "Exercises desktop hover.")
+  await page.goto("/showcase/crm")
+  const action = page.getByLabel("Open Pipeline value", { exact: true })
+  const card = page.locator("[data-bento-stat-card]").filter({ has: action })
+  const arrow = card.locator('[data-slot="bento-stat-card-arrow"]')
+  await card.hover({ position: { x: 30, y: 20 } })
+  await expect(card).toHaveCSS("translate", "0px -2px")
+  await expect(arrow).toHaveCSS("translate", "2px -2px")
+
+  await page.mouse.move(0, 0)
+  await expect(card).toHaveCSS("translate", "none")
+  await page.keyboard.press("Tab")
+  await action.focus()
+  await expect(card).toHaveCSS("translate", "0px -2px")
+  await expect(arrow).toHaveCSS("translate", "2px -2px")
+
+  await page.emulateMedia({ reducedMotion: "reduce" })
+  await card.hover({ position: { x: 30, y: 20 } })
+  await expect(card).toHaveCSS("translate", "none")
+  await expect(arrow).toHaveCSS("translate", "none")
+})

@@ -1708,6 +1708,9 @@
       "name": "bento-stat-card",
       "title": "Naum Bento Stat Card",
       "description": "Naum bento-stat-card for React and Tailwind CSS v4.",
+      "dependencies": [
+        "lucide-react@1.74.0"
+      ],
       "registryDependencies": [
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/card.json",
         "https://raw.githubusercontent.com/Tijlio/naum-design-system/main/public/r/metric-trend.json",

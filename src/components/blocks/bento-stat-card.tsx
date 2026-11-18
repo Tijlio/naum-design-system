@@ -1,4 +1,5 @@
 import type { ComponentProps, ReactNode } from "react"
+import { ArrowUpRight } from "lucide-react"
 import {
   Card,
   CardAction,
@@ -9,6 +10,14 @@ import {
 import { BentoMetricValue } from "@/components/bento/metric-value"
 import { BentoMetricTrend } from "@/components/bento/metric-trend"
 import { cn } from "@/lib/utils"
+
+export const BentoStatCardArrow = () => (
+  <ArrowUpRight
+    aria-hidden
+    data-slot="bento-stat-card-arrow"
+    className="size-3.5 transition-transform duration-(--naum-duration-hover) ease-naum motion-safe:group-hover/card:translate-x-0.5 motion-safe:group-hover/card:-translate-y-0.5 motion-safe:group-has-[:focus-visible]/card:translate-x-0.5 motion-safe:group-has-[:focus-visible]/card:-translate-y-0.5"
+  />
+)
 
 export type BentoStatCardProps = {
   title: string
@@ -28,7 +37,11 @@ export const BentoStatCard = ({
   className,
 }: BentoStatCardProps) => (
   <Card
-    className={cn("h-full w-full justify-between naum-card-lift", className)}
+    data-bento-stat-card=""
+    className={cn(
+      "h-full w-full justify-between transition-[translate,box-shadow] duration-(--naum-duration-hover) ease-naum motion-safe:hover:-translate-y-0.5 motion-safe:has-[:focus-visible]:-translate-y-0.5",
+      className,
+    )}
   >
     <CardHeader>
       <CardTitle className="text-sm font-normal text-muted-foreground">

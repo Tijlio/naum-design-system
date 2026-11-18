@@ -3,7 +3,6 @@
 import { useReducedMotionConfig } from "motion/react"
 
 import * as React from "react"
-import { ArrowUpRight } from "lucide-react"
 import {
   Area,
   AreaChart,
@@ -26,7 +25,10 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart"
 import type { KpiCardItem } from "./bento-data"
-import { BentoStatCard } from "@/components/blocks/bento-stat-card"
+import {
+  BentoStatCard,
+  BentoStatCardArrow,
+} from "@/components/blocks/bento-stat-card"
 
 function KpiChart({
   kpi,
@@ -214,7 +216,7 @@ export function KpiCard({ kpi }: { kpi: KpiCardItem }) {
           size="icon-sm"
           aria-label={`Open ${kpi.title}`}
         >
-          <ArrowUpRight className="size-3.5 transition-transform duration-(--naum-duration-hover) motion-safe:group-hover/card:translate-x-0.5 motion-safe:group-hover/card:-translate-y-0.5" />
+          <BentoStatCardArrow />
         </Button>
       }
     >

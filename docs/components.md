@@ -78,7 +78,7 @@ Install an item with `pnpm dlx shadcn@4.23.0 add @naum/<name>`. Every UI item in
 | `app-navigation` | `AppNavigationVariant`, `AppNavigationItem`, `AppNavigation` | [Source](../src/components/blocks/app-navigation.tsx) |
 | `app-page` | `AppPage` | [Source](../src/components/blocks/app-page.tsx) |
 | `app-shell` | `AppShellProps`, `AppShell` | [Source](../src/components/blocks/app-shell.tsx) |
-| `bento-stat-card` | `BentoStatCardProps`, `BentoStatCard` | [Source](../src/components/blocks/bento-stat-card.tsx) |
+| `bento-stat-card` | `BentoStatCardArrow`, `BentoStatCardProps`, `BentoStatCard` | [Source](../src/components/blocks/bento-stat-card.tsx) |
 | `data-table-views` | `DataTableViewItem`, `DataTableViewsProps`, `DataTableViews` | [Source](../src/components/blocks/data-table-views.tsx) |
 | `data-table` | `DataTableProps`, `DataTable` | [Source](../src/components/blocks/data-table.tsx) |
 | `page-header` | `PageHeaderProps`, `PageHeader` | [Source](../src/components/blocks/page-header.tsx) |
