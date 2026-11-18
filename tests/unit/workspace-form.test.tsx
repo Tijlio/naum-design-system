@@ -80,14 +80,14 @@ it("protects changed drafts on cancel and restores editing when discard is decli
   render(<Editor save={vi.fn()} close={close} />)
   const input = screen.getByRole("textbox", { name: "Title" })
   fireEvent.change(input, { target: { value: "Unsaved draft" } })
-  fireEvent.click(screen.getByRole("button", { name: "Cancel", exact: true }))
+  fireEvent.click(screen.getByRole("button", { name: "Cancel" }))
   await screen.findByRole("alertdialog", { name: "Discard changes?" })
   fireEvent.click(screen.getByRole("button", { name: "Keep editing" }))
   expect(close).not.toHaveBeenCalled()
   expect((input as HTMLInputElement).value).toBe("Unsaved draft")
-  fireEvent.click(screen.getByRole("button", { name: "Cancel", exact: true }))
+  fireEvent.click(screen.getByRole("button", { name: "Cancel" }))
   fireEvent.click(
-    await screen.findByRole("button", { name: "Discard changes", exact: true }),
+    await screen.findByRole("button", { name: "Discard changes" }),
   )
   expect(close).toHaveBeenCalledOnce()
 })
