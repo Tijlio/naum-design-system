@@ -28,10 +28,31 @@ import { PageToolbar } from "@/components/blocks/page-toolbar"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 
+const defaultLabels = {
+  controls: (label: string) => `${label} controls`,
+  pages: (label: string) => `${label} pages`,
+  results: (total: number, label: string, selected: number) =>
+    `${total} ${label.toLowerCase()}${selected ? ` · ${selected} selected` : ""}`,
+  selectPage: (label: string) => `Select ${label.toLowerCase()} on this page`,
+  selectRow: (label: string) => `Select ${label}`,
+  columns: "Columns",
+  empty: "No results found",
+  rowsPerPage: "Rows per page",
+  previous: "Previous",
+  next: "Next",
+  retry: "Retry",
+}
+
 export type DataTableProps<T> = {
   table: TableInstance<T>
   label: string
   toolbar?: ReactNode
+  toolbarActions?: ReactNode
+  selectionToolbar?: ReactNode
+  rowSelected?: (record: T) => boolean
+  browse?: boolean
+  tableLayout?: "fixed" | "auto"
+  labels?: Partial<typeof defaultLabels>
   selectable?: boolean
   getRowLabel?: (record: T) => string
   bulkActions?: (records: T[]) => ReactNode
@@ -48,6 +69,12 @@ export const DataTable = <T,>({
   table,
   label,
   toolbar,
+  toolbarActions,
+  selectionToolbar,
+  rowSelected,
+  browse = true,
+  tableLayout = "fixed",
+  labels,
   selectable = false,
   getRowLabel,
   bulkActions,
@@ -61,6 +88,7 @@ export const DataTable = <T,>({
 }: DataTableProps<T>) => {
   "use no memo" // TanStack exposes a mutable table instance; read its current getters.
   const pageSizeId = useId()
+  const copy = { ...defaultLabels, ...labels }
   const mobile = useIsMobile()
   const available = table
     .getAllLeafColumns()
@@ -78,45 +106,57 @@ export const DataTable = <T,>({
   return (
     <div className="min-w-0">
       <Card className="gap-0 pt-0" aria-busy={loading || undefined}>
-        <PageToolbar
-          variant="inset"
-          aria-label={`${label} controls`}
-          actions={
-            <>
-              {selected.length > 0 && bulkActions?.(selected)}
-              <DropdownMenu>
-                <DropdownMenuTrigger
-                  render={
-                    <Button variant="outline">
-                      <Columns3 />
-                      Columns
-                    </Button>
-                  }
-                />
-                <DropdownMenuContent align="end">
-                  {available
-                    .filter((column) => column.getCanHide())
-                    .map((column) => (
-                      <DropdownMenuCheckboxItem
-                        key={column.id}
-                        checked={column.getIsVisible()}
-                        disabled={column.getIsVisible() && visible.length <= 1}
-                        onCheckedChange={(checked) =>
-                          column.toggleVisibility(checked)
-                        }
-                      >
-                        {columnLabels[column.id] ?? column.id}
-                      </DropdownMenuCheckboxItem>
-                    ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </>
-          }
-        >
-          {toolbar}
-        </PageToolbar>
+        {browse && (
+          <PageToolbar
+            variant="inset"
+            aria-label={copy.controls(label)}
+            actions={
+              <>
+                {selected.length > 0 && bulkActions?.(selected)}
+                {toolbarActions}
+                <DropdownMenu>
+                  <DropdownMenuTrigger
+                    render={
+                      <Button variant="outline">
+                        <Columns3 />
+                        {copy.columns}
+                      </Button>
+                    }
+                  />
+                  <DropdownMenuContent align="end">
+                    {available
+                      .filter((column) => column.getCanHide())
+                      .map((column) => (
+                        <DropdownMenuCheckboxItem
+                          key={column.id}
+                          checked={column.getIsVisible()}
+                          disabled={
+                            column.getIsVisible() && visible.length <= 1
+                          }
+                          onCheckedChange={(checked) =>
+                            column.toggleVisibility(checked)
+                          }
+                        >
+                          {columnLabels[column.id] ??
+                            (typeof column.columnDef.header === "string"
+                              ? column.columnDef.header
+                              : column.id)}
+                        </DropdownMenuCheckboxItem>
+                      ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </>
+            }
+          >
+            {toolbar}
+          </PageToolbar>
+        )}
+        {selectionToolbar}
         <CardContent className="px-0">
-          <Table aria-label={label} className="table-fixed">
+          <Table
+            aria-label={label}
+            className={tableLayout === "fixed" ? "table-fixed" : "table-auto"}
+          >
             <TableHeader>
               {table.getHeaderGroups().map((group, groupIndex) => (
                 <TableRow key={group.id}>
@@ -126,7 +166,7 @@ export const DataTable = <T,>({
                       className="w-12 pl-6"
                     >
                       <Checkbox
-                        aria-label={`Select ${label.toLowerCase()} on this page`}
+                        aria-label={copy.selectPage(label)}
                         disabled={!rows.length || loading || Boolean(error)}
                         checked={table.getIsAllPageRowsSelected()}
                         indeterminate={
@@ -219,7 +259,7 @@ export const DataTable = <T,>({
                       <p>{error}</p>
                       {onRetry && (
                         <Button variant="outline" onClick={onRetry}>
-                          Retry
+                          {copy.retry}
                         </Button>
                       )}
                     </div>
@@ -229,12 +269,18 @@ export const DataTable = <T,>({
                 rows.map((row) => (
                   <TableRow
                     key={row.id}
-                    data-state={row.getIsSelected() ? "selected" : undefined}
+                    data-state={
+                      (rowSelected?.(row.original) ?? row.getIsSelected())
+                        ? "selected"
+                        : undefined
+                    }
                   >
                     {selectable && (
                       <TableCell className="pl-6">
                         <Checkbox
-                          aria-label={`Select ${getRowLabel?.(row.original) ?? row.id}`}
+                          aria-label={copy.selectRow(
+                            getRowLabel?.(row.original) ?? row.id,
+                          )}
                           checked={row.getIsSelected()}
                           disabled={!row.getCanSelect()}
                           onCheckedChange={(checked) =>
@@ -270,7 +316,7 @@ export const DataTable = <T,>({
                     {empty ?? (
                       <Empty>
                         <EmptyHeader>
-                          <EmptyTitle>No results found</EmptyTitle>
+                          <EmptyTitle>{copy.empty}</EmptyTitle>
                         </EmptyHeader>
                       </Empty>
                     )}
@@ -280,55 +326,56 @@ export const DataTable = <T,>({
             </TableBody>
           </Table>
         </CardContent>
-        <CardFooter className="flex-wrap justify-between gap-3 border-t pt-4">
-          <p role="status" className="text-xs text-muted-foreground">
-            {total} {label.toLowerCase()}
-            {selected.length ? ` · ${selected.length} selected` : ""}
-          </p>
-          <div className="flex flex-wrap items-center gap-3">
-            <Label className="sr-only" htmlFor={pageSizeId}>
-              Rows per page
-            </Label>
-            <SelectControl
-              id={pageSizeId}
-              aria-label="Rows per page"
-              value={String(page.pageSize)}
-              items={[...new Set([6, 10, 20, 50, page.pageSize])]
-                .sort((a, b) => a - b)
-                .map((value) => ({
-                  value: String(value),
-                  label: String(value),
-                }))}
-              onValueChange={(value) => {
-                if (value) table.setPageSize(Number(value))
-              }}
-            />
-            <nav
-              aria-label={`${label} pages`}
-              className="flex items-center gap-3"
-            >
-              <Button
-                size="sm"
-                variant="outline"
-                disabled={!table.getCanPreviousPage() || loading}
-                onClick={() => table.previousPage()}
+        {browse && (
+          <CardFooter className="flex-wrap justify-between gap-3 border-t pt-4">
+            <p role="status" className="text-xs text-muted-foreground">
+              {copy.results(total, label, selected.length)}
+            </p>
+            <div className="flex flex-wrap items-center gap-3">
+              <Label className="sr-only" htmlFor={pageSizeId}>
+                {copy.rowsPerPage}
+              </Label>
+              <SelectControl
+                id={pageSizeId}
+                aria-label={copy.rowsPerPage}
+                value={String(page.pageSize)}
+                items={[...new Set([6, 10, 20, 50, page.pageSize])]
+                  .sort((a, b) => a - b)
+                  .map((value) => ({
+                    value: String(value),
+                    label: String(value),
+                  }))}
+                onValueChange={(value) => {
+                  if (value) table.setPageSize(Number(value))
+                }}
+              />
+              <nav
+                aria-label={copy.pages(label)}
+                className="flex items-center gap-3"
               >
-                Previous
-              </Button>
-              <span className="text-xs tabular-nums">
-                {Math.min(page.pageIndex + 1, pageCount)} / {pageCount}
-              </span>
-              <Button
-                size="sm"
-                variant="outline"
-                disabled={!table.getCanNextPage() || loading}
-                onClick={() => table.nextPage()}
-              >
-                Next
-              </Button>
-            </nav>
-          </div>
-        </CardFooter>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={!table.getCanPreviousPage() || loading}
+                  onClick={() => table.previousPage()}
+                >
+                  {copy.previous}
+                </Button>
+                <span className="text-xs tabular-nums">
+                  {Math.min(page.pageIndex + 1, pageCount)} / {pageCount}
+                </span>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={!table.getCanNextPage() || loading}
+                  onClick={() => table.nextPage()}
+                >
+                  {copy.next}
+                </Button>
+              </nav>
+            </div>
+          </CardFooter>
+        )}
       </Card>
     </div>
   )
